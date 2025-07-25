@@ -200,6 +200,11 @@ export const PricingConfig: CollectionConfig = {
   hooks: {
     beforeValidate: [
       ({ data }) => {
+        // Guard clause: return early if data is undefined
+        if (!data) {
+          return data
+        }
+
         // Ensure valid date ranges for seasonal multipliers
         if (data.seasonalMultipliers) {
           data.seasonalMultipliers.forEach((season: any) => {

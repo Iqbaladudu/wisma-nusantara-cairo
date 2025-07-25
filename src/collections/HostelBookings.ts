@@ -468,6 +468,11 @@ export const HostelBookings: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, operation }) => {
+        // Guard clause: return early if data is undefined
+        if (!data) {
+          return data
+        }
+
         // Calculate pricing based on new structure
         if (operation === 'create' || operation === 'update') {
           const singleBedCost = (data.roomSelection?.singleBed || 0) * 30

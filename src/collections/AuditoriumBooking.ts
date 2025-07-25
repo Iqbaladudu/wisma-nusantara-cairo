@@ -206,6 +206,11 @@ export const AuditoriumBooking: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data }) => {
+        // Guard clause: return early if data is undefined
+        if (!data) {
+          return data
+        }
+
         return data
       },
     ],

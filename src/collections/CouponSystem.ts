@@ -247,6 +247,11 @@ export const CouponSystem: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data }) => {
+        // Guard clause: return early if data is undefined
+        if (!data) {
+          return data
+        }
+
         // Convert coupon code to uppercase
         if (data.code) {
           data.code = data.code.toUpperCase().replace(/\s+/g, '')
@@ -274,12 +279,20 @@ export const CouponSystem: CollectionConfig = {
     ],
     beforeValidate: [
       ({ data }) => {
+        // Guard clause: return early if data is undefined
+        if (!data) {
+          return data
+        }
+
         // Validate required fields based on type
         if (data.type === 'percentage' && (data.discountValue < 0 || data.discountValue > 100)) {
           throw new Error('Percentage discount must be between 0 and 100')
         }
 
-        if ((data.type === 'fixed' || data.type === 'free_nights' || data.type === 'free_hours') && data.discountValue <= 0) {
+        if (
+          (data.type === 'fixed' || data.type === 'free_nights' || data.type === 'free_hours') &&
+          data.discountValue <= 0
+        ) {
           throw new Error('Discount value must be greater than 0')
         }
 
