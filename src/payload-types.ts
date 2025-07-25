@@ -69,6 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'hostel-bookings': HostelBooking;
+    'auditorium-bookings': AuditoriumBooking;
+    'pricing-config': PricingConfig;
+    coupons: Coupon;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,12 +81,16 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'hostel-bookings': HostelBookingsSelect<false> | HostelBookingsSelect<true>;
+    'auditorium-bookings': AuditoriumBookingsSelect<false> | AuditoriumBookingsSelect<true>;
+    'pricing-config': PricingConfigSelect<false> | PricingConfigSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   globalsSelect: {};
@@ -118,7 +126,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,7 +150,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,23 +166,330 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hostel-bookings".
+ */
+export interface HostelBooking {
+  id: number;
+  fullName: string;
+  countryOfOrigin: string;
+  passportNumber: string;
+  /**
+   * Select multiple room types with quantities
+   */
+  roomSelection: {
+    /**
+     * Single bed rooms
+     */
+    singleBed: number;
+    /**
+     * Double bed rooms
+     */
+    doubleBed: number;
+    /**
+     * Extra beds
+     */
+    extraBed: number;
+  };
+  guestDetails: {
+    adults: number;
+    children: number;
+  };
+  stayDuration: {
+    checkInDate: string;
+    checkOutDate: string;
+  };
+  contactInfo: {
+    whatsappNumber: string;
+    phoneNumber: string;
+  };
+  /**
+   * Optional coupon code for discount
+   */
+  couponCode?: string | null;
+  /**
+   * Optional airport pickup service
+   */
+  airportPickup?: ('none' | 'medium_vehicle' | 'hiace') | null;
+  /**
+   * Optional departure date and time for airport pickup
+   */
+  departureDateTime?: {
+    departureDate?: string | null;
+    /**
+     * Format: HH:MM (24-hour format)
+     */
+    departureTime?: string | null;
+  };
+  /**
+   * Optional meal packages
+   */
+  mealOptions?: {
+    breakfastOption?: ('none' | 'nasi_goreng' | 'ayam_goreng' | 'nasi_kuning') | null;
+    breakfastPortions?: number | null;
+    breakfastFrequency?: ('checkin_only' | 'during_stay' | 'checkout_only') | null;
+    lunchOption?: ('none' | 'nasi_goreng' | 'ayam_goreng' | 'nasi_kuning') | null;
+    lunchPortions?: number | null;
+    lunchFrequency?: ('checkin_only' | 'during_stay' | 'checkout_only') | null;
+    dinnerOption?: ('none' | 'nasi_goreng' | 'ayam_goreng' | 'nasi_kuning') | null;
+    dinnerPortions?: number | null;
+    dinnerFrequency?: ('checkin_only' | 'during_stay' | 'checkout_only') | null;
+  };
+  /**
+   * Customer must accept terms and conditions to proceed with booking
+   */
+  acceptTerms: boolean;
+  price?: number | null;
+  paymentStatus: 'PAID' | 'DOWNPAYMENT' | 'INVOICED';
+  bookingNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auditorium-bookings".
+ */
+export interface AuditoriumBooking {
+  id: number;
+  fullName: string;
+  countryOfOrigin: string;
+  eventDetails: {
+    eventName: string;
+    eventDate: string;
+    eventTime: string;
+  };
+  contactInfo: {
+    egyptPhoneNumber: string;
+    whatsappNumber: string;
+  };
+  /**
+   * Optional coupon code for discount
+   */
+  couponCode?: string | null;
+  pricing: {
+    /**
+     * Calculated base price before discounts
+     */
+    basePrice?: number | null;
+    /**
+     * Applied seasonal pricing multiplier
+     */
+    seasonalMultiplier?: number | null;
+    /**
+     * Applied weekend pricing multiplier
+     */
+    weekendMultiplier?: number | null;
+    /**
+     * Discount applied from coupon
+     */
+    couponDiscount?: number | null;
+    /**
+     * Final calculated price
+     */
+    finalPrice: number;
+    /**
+     * Detailed breakdown of price calculation
+     */
+    priceBreakdown?: string | null;
+  };
+  paymentStatus: 'PAID' | 'INVOICED';
+  eventNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-config".
+ */
+export interface PricingConfig {
+  id: number;
+  /**
+   * Descriptive name for this pricing configuration
+   */
+  name: string;
+  type: 'hostel_per_person' | 'hostel_per_room' | 'hall_per_hour' | 'hall_per_day' | 'hall_per_event';
+  /**
+   * Base price in Egyptian Pounds
+   */
+  basePrice: number;
+  /**
+   * Define different pricing for different seasons/periods
+   */
+  seasonalMultipliers?:
+    | {
+        name: string;
+        startDate: string;
+        endDate: string;
+        /**
+         * Multiply base price by this value (e.g., 1.5 = 50% increase)
+         */
+        multiplier: number;
+        isActive?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Additional multiplier for weekends (Friday & Saturday)
+   */
+  weekendMultiplier?: number | null;
+  /**
+   * Minimum number of nights for hostel bookings
+   */
+  minimumStay?: number | null;
+  /**
+   * Maximum number of people/guests for this pricing tier
+   */
+  maximumCapacity?: number | null;
+  /**
+   * Extra fee per additional guest beyond base capacity
+   */
+  additionalGuestFee?: number | null;
+  /**
+   * Percentage discount for children
+   */
+  childDiscount?: number | null;
+  /**
+   * Whether this pricing configuration is currently active
+   */
+  isActive?: boolean | null;
+  /**
+   * Date from which this pricing becomes effective
+   */
+  validFrom?: string | null;
+  /**
+   * Date until which this pricing remains effective
+   */
+  validUntil?: string | null;
+  /**
+   * Additional notes about this pricing configuration
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons".
+ */
+export interface Coupon {
+  id: number;
+  /**
+   * Unique coupon code (will be converted to uppercase)
+   */
+  code: string;
+  /**
+   * Descriptive name for this coupon
+   */
+  name: string;
+  /**
+   * Description of what this coupon offers
+   */
+  description?: string | null;
+  type: 'percentage' | 'fixed' | 'free_nights' | 'free_hours';
+  /**
+   * Percentage (0-100) or fixed amount in EGP or number of free nights/hours
+   */
+  discountValue: number;
+  /**
+   * Maximum discount amount for percentage-based coupons
+   */
+  maxDiscountAmount?: number | null;
+  /**
+   * Minimum booking amount required to use this coupon
+   */
+  minimumOrderAmount?: number | null;
+  applicableServices: ('hostel' | 'hall')[];
+  /**
+   * Maximum number of times this coupon can be used (leave empty for unlimited)
+   */
+  usageLimit?: number | null;
+  /**
+   * Number of times this coupon has been used
+   */
+  usageCount?: number | null;
+  /**
+   * Maximum times a single user can use this coupon (leave empty for unlimited)
+   */
+  perUserLimit?: number | null;
+  /**
+   * Date from which this coupon becomes valid
+   */
+  validFrom?: string | null;
+  /**
+   * Date until which this coupon remains valid
+   */
+  validUntil?: string | null;
+  /**
+   * Whether this coupon is currently active
+   */
+  isActive?: boolean | null;
+  /**
+   * Restrict this coupon to first-time users only
+   */
+  isFirstTimeOnly?: boolean | null;
+  /**
+   * Prevent usage on weekends (Friday & Saturday)
+   */
+  excludeWeekends?: boolean | null;
+  /**
+   * Restrict coupon usage to specific countries (leave empty for all countries)
+   */
+  allowedCountries?:
+    | {
+        country: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * History of coupon usage
+   */
+  usageHistory?:
+    | {
+        bookingId?: string | null;
+        bookingType?: ('hostel' | 'hall') | null;
+        customerName?: string | null;
+        discountApplied?: number | null;
+        usedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'hostel-bookings';
+        value: number | HostelBooking;
+      } | null)
+    | ({
+        relationTo: 'auditorium-bookings';
+        value: number | AuditoriumBooking;
+      } | null)
+    | ({
+        relationTo: 'pricing-config';
+        value: number | PricingConfig;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: number | Coupon;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +499,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -207,7 +522,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -252,6 +567,173 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hostel-bookings_select".
+ */
+export interface HostelBookingsSelect<T extends boolean = true> {
+  fullName?: T;
+  countryOfOrigin?: T;
+  passportNumber?: T;
+  roomSelection?:
+    | T
+    | {
+        singleBed?: T;
+        doubleBed?: T;
+        extraBed?: T;
+      };
+  guestDetails?:
+    | T
+    | {
+        adults?: T;
+        children?: T;
+      };
+  stayDuration?:
+    | T
+    | {
+        checkInDate?: T;
+        checkOutDate?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        whatsappNumber?: T;
+        phoneNumber?: T;
+      };
+  couponCode?: T;
+  airportPickup?: T;
+  departureDateTime?:
+    | T
+    | {
+        departureDate?: T;
+        departureTime?: T;
+      };
+  mealOptions?:
+    | T
+    | {
+        breakfastOption?: T;
+        breakfastPortions?: T;
+        breakfastFrequency?: T;
+        lunchOption?: T;
+        lunchPortions?: T;
+        lunchFrequency?: T;
+        dinnerOption?: T;
+        dinnerPortions?: T;
+        dinnerFrequency?: T;
+      };
+  acceptTerms?: T;
+  price?: T;
+  paymentStatus?: T;
+  bookingNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auditorium-bookings_select".
+ */
+export interface AuditoriumBookingsSelect<T extends boolean = true> {
+  fullName?: T;
+  countryOfOrigin?: T;
+  eventDetails?:
+    | T
+    | {
+        eventName?: T;
+        eventDate?: T;
+        eventTime?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        egyptPhoneNumber?: T;
+        whatsappNumber?: T;
+      };
+  couponCode?: T;
+  pricing?:
+    | T
+    | {
+        basePrice?: T;
+        seasonalMultiplier?: T;
+        weekendMultiplier?: T;
+        couponDiscount?: T;
+        finalPrice?: T;
+        priceBreakdown?: T;
+      };
+  paymentStatus?: T;
+  eventNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-config_select".
+ */
+export interface PricingConfigSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  basePrice?: T;
+  seasonalMultipliers?:
+    | T
+    | {
+        name?: T;
+        startDate?: T;
+        endDate?: T;
+        multiplier?: T;
+        isActive?: T;
+        id?: T;
+      };
+  weekendMultiplier?: T;
+  minimumStay?: T;
+  maximumCapacity?: T;
+  additionalGuestFee?: T;
+  childDiscount?: T;
+  isActive?: T;
+  validFrom?: T;
+  validUntil?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  name?: T;
+  description?: T;
+  type?: T;
+  discountValue?: T;
+  maxDiscountAmount?: T;
+  minimumOrderAmount?: T;
+  applicableServices?: T;
+  usageLimit?: T;
+  usageCount?: T;
+  perUserLimit?: T;
+  validFrom?: T;
+  validUntil?: T;
+  isActive?: T;
+  isFirstTimeOnly?: T;
+  excludeWeekends?: T;
+  allowedCountries?:
+    | T
+    | {
+        country?: T;
+        id?: T;
+      };
+  usageHistory?:
+    | T
+    | {
+        bookingId?: T;
+        bookingType?: T;
+        customerName?: T;
+        discountApplied?: T;
+        usedAt?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
