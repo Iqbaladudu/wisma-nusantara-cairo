@@ -7,7 +7,6 @@ import {
   MapPin,
   CreditCard,
   Bed,
-  Users,
   Calendar,
   Phone,
   MessageCircle,
@@ -21,7 +20,7 @@ import {
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -538,18 +537,204 @@ export function BookingSummaryStep({ form, onEdit }: BookingSummaryStepProps) {
         </CardContent>
       </Card>
 
-      {/* Important Notice */}
-      <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800">
-        <CardContent className="pt-6">
-          <div className="space-y-3">
-            <h4 className="font-medium text-yellow-900 dark:text-yellow-100">Informasi Penting</h4>
-            <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
-              <li>• Konfirmasi booking akan dikirim melalui WhatsApp dalam 24 jam</li>
-              <li>• Pembayaran dapat dilakukan setelah konfirmasi booking</li>
-              <li>• Check-in: 14:00 - 23:00 | Check-out: 07:00 - 12:00</li>
-              <li>• Bawa paspor asli untuk proses check-in</li>
-              <li>• Hubungi customer service jika ada pertanyaan</li>
-            </ul>
+      {/* Terms and Conditions */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Syarat dan Ketentuan / Terms and Conditions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+            {/* Check-in Time */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 text-lg">🕐</span>
+              <div className="space-y-1">
+                <p className="font-medium">Jam Check-in:</p>
+                <ul className="ml-4 space-y-1">
+                  <li>🕐 Waktu check-in adalah mulai pukul 13.00 s/d 22.00.</li>
+                  <li>
+                    🕗 Melakukan check-in pada pukul 08.00 – 12.00 siang (early check-in) akan
+                    dikenakan biaya tambahan sebesar USD 5.
+                  </li>
+                  <li>
+                    🕛 Melakukan check-in pada pukul 22.00 – 06.00 akan dikenakan biaya penuh +
+                    biaya tambahan sebesar USD 5.
+                  </li>
+                  <li>
+                    🕕 Melakukan check-in pada pukul 06.00 – 08.00 akan dikenakan biaya sebesar USD
+                    15.
+                  </li>
+                </ul>
+                <p className="text-gray-600 dark:text-gray-400 italic font-medium">
+                  Check-in Time:
+                </p>
+                <ul className="ml-4 space-y-1 text-gray-600 dark:text-gray-400 italic">
+                  <li>🕐 Check-in time is from 1:00 PM to 10:00 PM.</li>
+                  <li>
+                    🕗 Early check-in from 8:00 AM to 12:00 PM incurs an additional fee of USD 5.
+                  </li>
+                  <li>
+                    🕛 Check-in from 10:00 PM to 6:00 AM incurs the full payment plus an additional
+                    fee of USD 5.
+                  </li>
+                  <li>🕕 Check-in from 6:00 AM to 8:00 AM incurs a fee of USD 15.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Check-out Time */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 text-lg">🕛</span>
+              <div className="space-y-1">
+                <p className="font-medium">Jam Check-out:</p>
+                <ul className="ml-4 space-y-1">
+                  <li>🕛 Batas maksmimal check-out adalah pukul 12.00 siang.</li>
+                  <li>
+                    🕐 Melakukan check-out pada pukul 13.00 – 16.00 dikenakan biaya tambahan sebesar
+                    USD 5
+                  </li>
+                  <li>
+                    🕔 Melakukan check-out pada pukul 16.00 – 18.00 dikenakan biaya tambahan sebesar
+                    USD 15
+                  </li>
+                  <li>
+                    🕗 Melakukan check-out pada pukul 18.00 – 12.00 siang di hari setelahnya
+                    dikenakan biaya penuh
+                  </li>
+                </ul>
+                <p className="text-gray-600 dark:text-gray-400 italic font-medium">
+                  Check-out Time:
+                </p>
+                <ul className="ml-4 space-y-1 text-gray-600 dark:text-gray-400 italic">
+                  <li>🕛 The maximum check-out time is 12:00 PM noon.</li>
+                  <li>
+                    🕐 Late check-out from 1:00 PM to 4:00 PM incurs an additional fee of USD 5.
+                  </li>
+                  <li>
+                    🕔 Late check-out from 4:00 PM to 6:00 PM incurs an additional fee of USD 15.
+                  </li>
+                  <li>
+                    🕕 Check-out from 6:00 PM to 12:00 PM the following day incurs the full payment.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 text-lg">⚠️</span>
+              <div className="space-y-1">
+                <p className="font-medium">Kebijakan Pembatalan Pemesanan:</p>
+                <p className="ml-4">
+                  ⚠️ Pembatalan yang dilakukan pada H-3 hingga Hari-H tanggal kedatangan, akan
+                  dikenakan biaya pembatalan seharga biaya 1 malam menginap dari jumlah kamar yang
+                  dipesan.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 italic font-medium">
+                  Cancellation Policy:
+                </p>
+                <p className="ml-4 text-gray-600 dark:text-gray-400 italic">
+                  ⚠️ Cancellations made from 3 days prior to arrival until the arrival date (H-3 to
+                  D-Day) will incur a cancellation fee equivalent to the cost of 1 night's stay per
+                  reserved room.
+                </p>
+              </div>
+            </div>
+
+            {/* Smoking Policy */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 text-lg">🚭</span>
+              <div className="space-y-1">
+                <p className="font-medium">Kebijakan Merokok:</p>
+                <ul className="ml-4 space-y-1">
+                  <li>
+                    ⚠️ Seluruh area Wisma Nusantara & semua kamar adalah area dilarang merokok.
+                  </li>
+                  <li>
+                    ⚠️ Bersedia membayar Biaya tambahan sebesar 100 USD untuk tamu yang melanggar
+                    kebijakan merokok.
+                  </li>
+                </ul>
+                <p className="text-gray-600 dark:text-gray-400 italic font-medium">
+                  Smoking Policy:
+                </p>
+                <ul className="ml-4 space-y-1 text-gray-600 dark:text-gray-400 italic">
+                  <li>
+                    ⚠️ All areas of Wisma Nusantara & all rooms are designated as non-smoking areas.
+                  </li>
+                  <li>
+                    ⚠️ Guests agree to pay an additional fee of 100 USD for violating the smoking
+                    policy.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Damage and Loss */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 text-lg">🛠️</span>
+              <div className="space-y-1">
+                <p className="font-medium">Kerusakan dan Kehilangan:</p>
+                <p className="ml-4">
+                  🛠️ Tamu bersedia bertanggung jawab atas segala kerusakan yang disebabkan pada
+                  kamar atau properti hotel selama menginap.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 italic font-medium">
+                  Damage and Loss:
+                </p>
+                <p className="ml-4 text-gray-600 dark:text-gray-400 italic">
+                  🛠️ Guests agree to be responsible for any damage caused to the room or hotel
+                  property during their stay.
+                </p>
+              </div>
+            </div>
+
+            {/* Force Majeure */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></span>
+              <div className="space-y-1">
+                <p className="font-medium">
+                  Wisma Nusantara tidak bertanggung jawab atas kegagalan memenuhi kewajibannya jika
+                  terjadi keadaan tak terduga di luar kendali.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 italic">
+                  Wisma Nusantara shall not be held responsible for failure to fulfill its
+                  obligations in the event of unforeseen circumstances beyond its control.
+                </p>
+              </div>
+            </div>
+
+            {/* Terms Amendment */}
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></span>
+              <div className="space-y-1">
+                <p className="font-medium">
+                  Wisma Nusantara berhak untuk mengubah syarat dan ketentuan ini tanpa pemberitahuan
+                  sebelumnya.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 italic">
+                  Wisma Nusantara reserves the right to modify these terms and conditions without
+                  prior notice.
+                </p>
+              </div>
+            </div>
+
+            {/* Additional Terms */}
+            <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+              <div className="space-y-2 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></span>
+                  <p>Konfirmasi booking akan dikirim melalui WhatsApp dalam 24 jam</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></span>
+                  <p>Pembayaran dapat dilakukan setelah konfirmasi booking</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></span>
+                  <p>Bawa paspor asli untuk proses check-in</p>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -559,42 +744,10 @@ export function BookingSummaryStep({ form, onEdit }: BookingSummaryStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg text-amber-900 dark:text-amber-100">
             <FileCheck className="h-5 w-5 text-amber-600" />
-            Syarat dan Ketentuan{/*  */}
+            Persetujuan Syarat dan Ketentuan
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="text-sm text-amber-700 dark:text-amber-300 space-y-2">
-              <p className="font-medium">Dengan melanjutkan booking, Anda menyetujui:</p>
-              <ul className="space-y-1 ml-4">
-                <li>
-                  • <strong>Jam Check-in:</strong> 13:00-22:00 (biaya tambahan untuk early/late
-                  check-in)
-                </li>
-                <li>
-                  • <strong>Jam Check-out:</strong> Maksimal 12:00 (biaya tambahan untuk late
-                  check-out)
-                </li>
-                <li>
-                  • <strong>Pembatalan:</strong> H-3 hingga H-0 dikenakan biaya 1 malam per kamar
-                </li>
-                <li>
-                  • <strong>Kebijakan Merokok:</strong> Dilarang merokok (denda USD 100)
-                </li>
-                <li>
-                  • <strong>Kerusakan:</strong> Tamu bertanggung jawab atas kerusakan properti
-                </li>
-                <li>
-                  • <strong>Force Majeure:</strong> Wisma tidak bertanggung jawab atas keadaan tak
-                  terduga
-                </li>
-                <li>
-                  • <strong>Perubahan:</strong> Syarat dapat berubah tanpa pemberitahuan
-                </li>
-              </ul>
-            </div>
-          </div>
-
+        <CardContent>
           <FormField
             control={form.control}
             name="acceptTerms"

@@ -238,10 +238,254 @@ export function calculateBookingPrice(data: Partial<HostelBookingFormData>): {
 
 // AUDITORIUM BOOKING API FUNCTIONS
 
+// Auditorium pricing packages (in EGP)
+const AUDITORIUM_PACKAGES = {
+  1: 115, // 1 hour
+  4: 420, // 4 hours
+  9: 900, // 9 hours
+  12: 1100, // 12 hours
+  14: 1250, // 14 hours
+} as const
+
+// Exclude services pricing (in EGP)
+const EXCLUDE_SERVICES_PRICING = {
+  airConditioner: {
+    none: 0,
+    '4-6_hours': 100,
+    '7-9_hours': 150,
+    '9-12_hours': 250,
+    '12-14_hours': 300,
+  },
+  extraChairs: {
+    none: 0,
+    '3_chairs': 75,
+    '5_chairs': 120,
+    '7_chairs': 160,
+    '10_chairs': 210,
+    '15_chairs': 300,
+    '20_chairs': 380,
+    '30_chairs': 540,
+    '40_chairs': 680,
+  },
+  projector: {
+    none: 0,
+    projector_only: 250,
+    screen_only: 75,
+    projector_and_screen: 275,
+  },
+  extraTables: {
+    none: 0,
+    '3_tables': 140,
+    '6_tables': 240,
+    '9_tables': 300,
+    more_than_9: 0, // Contact for availability
+  },
+  plates: {
+    none: 0,
+    '6_plates': 60,
+    '12_plates': 110,
+    '18_plates': 160,
+    '24_plates': 200,
+  },
+  glasses: {
+    none: 0,
+    '3_glasses': 20,
+    '6_glasses': 35,
+    '12_glasses': 60,
+  },
+} as const
+
+// Calculate auditorium pricing based on duration
+export function calculateAuditoriumPrice(
+  startTime: string,
+  endTime: string,
+): {
+  totalHours: number
+  totalPrice: number
+  priceBreakdown: string
+  packageUsed: string
+} {
+  if (!startTime || !endTime) {
+    return {
+      totalHours: 0,
+      totalPrice: 0,
+      priceBreakdown: 'Waktu belum ditentukan',
+      packageUsed: 'Belum ada paket',
+    }
+  }
+
+  // Convert time strings to minutes
+  const [startHour, startMin] = startTime.split(':').map(Number)
+  const [endHour, endMin] = endTime.split(':').map(Number)
+
+  const startMinutes = startHour * 60 + startMin
+  const endMinutes = endHour * 60 + endMin
+
+  // Calculate duration in hours (rounded up to nearest hour)
+  const durationMinutes = endMinutes - startMinutes
+  const totalHours = Math.ceil(durationMinutes / 60)
+
+  if (totalHours <= 0) {
+    return {
+      totalHours: 0,
+      totalPrice: 0,
+      priceBreakdown: 'Durasi tidak valid',
+      packageUsed: 'Tidak ada paket',
+    }
+  }
+
+  // Find the best pricing combination
+  let remainingHours = totalHours
+  let totalPrice = 0
+  const usedPackages: string[] = []
+
+  // Sort packages by efficiency (price per hour)
+  const packagesByEfficiency = [
+    { hours: 14, price: 1250, efficiency: 1250 / 14 },
+    { hours: 12, price: 1100, efficiency: 1100 / 12 },
+    { hours: 9, price: 900, efficiency: 900 / 9 },
+    { hours: 4, price: 420, efficiency: 420 / 4 },
+    { hours: 1, price: 115, efficiency: 115 / 1 },
+  ].sort((a, b) => a.efficiency - b.efficiency)
+
+  // Use the most efficient packages first
+  for (const pkg of packagesByEfficiency) {
+    while (remainingHours >= pkg.hours) {
+      remainingHours -= pkg.hours
+      totalPrice += pkg.price
+      usedPackages.push(`Paket ${pkg.hours} Jam (${pkg.price} EGP)`)
+    }
+  }
+
+  // Handle any remaining hours with 1-hour packages
+  while (remainingHours > 0) {
+    remainingHours -= 1
+    totalPrice += AUDITORIUM_PACKAGES[1]
+    usedPackages.push(`Paket 1 Jam (${AUDITORIUM_PACKAGES[1]} EGP)`)
+  }
+
+  const priceBreakdown = usedPackages.join(' + ')
+  const packageUsed =
+    usedPackages.length === 1 ? usedPackages[0] : `${usedPackages.length} paket kombinasi`
+
+  return {
+    totalHours,
+    totalPrice,
+    priceBreakdown,
+    packageUsed,
+  }
+}
+
+// Calculate exclude services pricing
+export function calculateExcludeServicesPrice(excludeServices: any): {
+  totalPrice: number
+  breakdown: string[]
+  details: { [key: string]: { selected: string; price: number } }
+} {
+  if (!excludeServices) {
+    return {
+      totalPrice: 0,
+      breakdown: [],
+      details: {},
+    }
+  }
+
+  let totalPrice = 0
+  const breakdown: string[] = []
+  const details: { [key: string]: { selected: string; price: number } } = {}
+
+  // Air Conditioner
+  if (excludeServices.airConditioner && excludeServices.airConditioner !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.airConditioner[excludeServices.airConditioner] || 0
+    totalPrice += price
+    const label = excludeServices.airConditioner.replace('_', '-').replace('hours', 'jam')
+    breakdown.push(`AC ${label}: ${price} EGP`)
+    details.airConditioner = { selected: excludeServices.airConditioner, price }
+  }
+
+  // Extra Chairs
+  if (excludeServices.extraChairs && excludeServices.extraChairs !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.extraChairs[excludeServices.extraChairs] || 0
+    totalPrice += price
+    const chairCount = excludeServices.extraChairs.replace('_chairs', '')
+    breakdown.push(`${chairCount} Kursi Ekstra: ${price} EGP`)
+    details.extraChairs = { selected: excludeServices.extraChairs, price }
+  }
+
+  // Projector
+  if (excludeServices.projector && excludeServices.projector !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.projector[excludeServices.projector] || 0
+    totalPrice += price
+    let label = ''
+    switch (excludeServices.projector) {
+      case 'projector_only':
+        label = 'Proyektor'
+        break
+      case 'screen_only':
+        label = 'Layar'
+        break
+      case 'projector_and_screen':
+        label = 'Proyektor + Layar'
+        break
+    }
+    breakdown.push(`${label}: ${price} EGP`)
+    details.projector = { selected: excludeServices.projector, price }
+  }
+
+  // Extra Tables
+  if (excludeServices.extraTables && excludeServices.extraTables !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.extraTables[excludeServices.extraTables] || 0
+    totalPrice += price
+    if (excludeServices.extraTables === 'more_than_9') {
+      breakdown.push('Lebih dari 9 Meja: Tanya ketersediaan')
+    } else {
+      const tableCount = excludeServices.extraTables.replace('_tables', '')
+      breakdown.push(`${tableCount} Meja Tambahan: ${price} EGP`)
+    }
+    details.extraTables = { selected: excludeServices.extraTables, price }
+  }
+
+  // Plates
+  if (excludeServices.plates && excludeServices.plates !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.plates[excludeServices.plates] || 0
+    totalPrice += price
+    const plateCount = excludeServices.plates.replace('_plates', '')
+    breakdown.push(`${plateCount} Piring: ${price} EGP`)
+    details.plates = { selected: excludeServices.plates, price }
+  }
+
+  // Glasses
+  if (excludeServices.glasses && excludeServices.glasses !== 'none') {
+    const price = EXCLUDE_SERVICES_PRICING.glasses[excludeServices.glasses] || 0
+    totalPrice += price
+    const glassCount = excludeServices.glasses.replace('_glasses', '')
+    breakdown.push(`${glassCount} Gelas: ${price} EGP`)
+    details.glasses = { selected: excludeServices.glasses, price }
+  }
+
+  return {
+    totalPrice,
+    breakdown,
+    details,
+  }
+}
+
 // Format auditorium booking data for PayloadCMS API
 export function formatAuditoriumBookingForAPI(
   data: AuditoriumBookingFormData,
 ): Partial<AuditoriumBooking> {
+  const basePricing = calculateAuditoriumPrice(
+    data.eventDetails.eventTime,
+    data.eventDetails.eventEndTime,
+  )
+
+  const excludeServicesPricing = calculateExcludeServicesPrice(data.excludeServices)
+  const totalPrice = basePricing.totalPrice + excludeServicesPricing.totalPrice
+
+  // Clean phone numbers (remove spaces and special characters except +)
+  const cleanEgyptPhone = data.contactInfo.egyptPhoneNumber.replace(/[\s\-\(\)]/g, '')
+  const cleanWhatsAppPhone = data.contactInfo.whatsappNumber.replace(/[\s\-\(\)]/g, '')
+
   return {
     fullName: data.fullName,
     countryOfOrigin: data.countryOfOrigin,
@@ -249,13 +493,23 @@ export function formatAuditoriumBookingForAPI(
       eventName: data.eventDetails.eventName,
       eventDate: data.eventDetails.eventDate.toISOString(),
       eventTime: data.eventDetails.eventTime,
+      eventEndTime: data.eventDetails.eventEndTime,
     },
     contactInfo: {
-      egyptPhoneNumber: data.contactInfo.egyptPhoneNumber,
-      whatsappNumber: data.contactInfo.whatsappNumber,
+      egyptPhoneNumber: cleanEgyptPhone,
+      whatsappNumber: cleanWhatsAppPhone,
+    },
+    excludeServices: data.excludeServices,
+    pricing: {
+      basePrice: basePricing.totalPrice,
+      excludeServicesPrice: excludeServicesPricing.totalPrice,
+      finalPrice: totalPrice,
+      priceBreakdown: basePricing.priceBreakdown,
+      excludeServicesBreakdown: excludeServicesPricing.breakdown.join(', '),
     },
     couponCode: data.couponCode || undefined,
     eventNotes: data.eventNotes || undefined,
+    acceptTerms: data.acceptTerms,
     paymentStatus: 'INVOICED' as const,
   }
 }
@@ -266,6 +520,13 @@ export async function submitAuditoriumBooking(
 ): Promise<AuditoriumBooking> {
   try {
     const formattedData = formatAuditoriumBookingForAPI(data)
+
+    // Debug logging
+    console.log('Submitting auditorium booking with data:', {
+      egyptPhoneNumber: data.contactInfo.egyptPhoneNumber,
+      whatsappNumber: data.contactInfo.whatsappNumber,
+      formattedData: formattedData.contactInfo,
+    })
 
     const response = await fetch(`${API_BASE_URL}/auditorium-bookings`, {
       method: 'POST',

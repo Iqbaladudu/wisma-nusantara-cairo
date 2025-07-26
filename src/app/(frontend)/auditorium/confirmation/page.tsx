@@ -26,6 +26,7 @@ import {
   previewAuditoriumBookingPDF,
   generatePDFWithFeedback,
 } from '@/lib/pdf-utils'
+import { calculateAuditoriumPrice, calculateExcludeServicesPrice } from '@/lib/api'
 
 // Loading component for Suspense fallback
 function AuditoriumConfirmationLoading() {
@@ -47,8 +48,6 @@ function AuditoriumConfirmationContent() {
   const [bookingId, setBookingId] = useState<string | null>(null)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [pdfProgress, setPdfProgress] = useState<string>('')
-  const [isSendingWhatsApp, setIsSendingWhatsApp] = useState(false)
-  const [whatsappSent, setWhatsappSent] = useState(false)
 
   useEffect(() => {
     // Get booking data from URL params (base64 encoded)
@@ -136,40 +135,6 @@ function AuditoriumConfirmationContent() {
     }
   }
 
-  const handleSendWhatsApp = async () => {
-    if (!bookingData) return
-
-    try {
-      setIsSendingWhatsApp(true)
-      toast.info('Mengirim konfirmasi via WhatsApp...')
-
-      const response = await fetch('/api/whatsapp/send-confirmation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'auditorium',
-          bookingData,
-          bookingId,
-        }),
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        setWhatsappSent(true)
-        toast.success('Konfirmasi berhasil dikirim via WhatsApp!')
-      } else {
-        throw new Error(result.error || 'Gagal mengirim konfirmasi')
-      }
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal mengirim konfirmasi via WhatsApp')
-    } finally {
-      setIsSendingWhatsApp(false)
-    }
-  }
-
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -191,6 +156,15 @@ function AuditoriumConfirmationContent() {
       }
     }
   }
+
+  // Calculate pricing
+  const basePricing = calculateAuditoriumPrice(
+    bookingData.eventDetails.eventTime,
+    bookingData.eventDetails.eventEndTime,
+  )
+
+  const excludeServicesPricing = calculateExcludeServicesPrice(bookingData.excludeServices)
+  const totalPrice = basePricing.totalPrice + excludeServicesPricing.totalPrice
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950 dark:to-blue-950">
@@ -239,8 +213,12 @@ function AuditoriumConfirmationContent() {
                   <p className="font-medium">{formatDate(bookingData.eventDetails.eventDate)}</p>
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-muted-foreground">Waktu Acara</span>
+                  <span className="text-sm font-medium text-muted-foreground">Waktu Mulai</span>
                   <p className="font-medium">{formatTime(bookingData.eventDetails.eventTime)}</p>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground">Waktu Selesai</span>
+                  <p className="font-medium">{formatTime(bookingData.eventDetails.eventEndTime)}</p>
                 </div>
               </CardContent>
             </Card>
@@ -313,6 +291,84 @@ function AuditoriumConfirmationContent() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Exclude Services */}
+            {excludeServicesPricing.totalPrice > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Layanan Tambahan</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {excludeServicesPricing.breakdown.map((service, index) => (
+                    <div key={index} className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        • {service.split(':')[0]}
+                      </span>
+                      <Badge variant="outline">{service.split(':')[1]?.trim()}</Badge>
+                    </div>
+                  ))}
+                  <Separator />
+                  <div className="flex justify-between items-center font-medium">
+                    <span>Total Layanan Tambahan</span>
+                    <Badge variant="secondary" className="text-lg px-3 py-1">
+                      {excludeServicesPricing.totalPrice} EGP
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Pricing Summary */}
+            <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950 border-green-200 dark:border-green-800">
+              <CardHeader>
+                <CardTitle className="text-green-800 dark:text-green-200">
+                  Ringkasan Biaya
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                    <Badge variant="secondary" className="mb-2 text-lg px-3 py-1">
+                      {basePricing.totalHours} Jam
+                    </Badge>
+                    <p className="text-sm text-muted-foreground">Durasi Acara</p>
+                  </div>
+                  <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                    <Badge variant="outline" className="mb-2 text-lg px-3 py-1">
+                      {basePricing.totalPrice} EGP
+                    </Badge>
+                    <p className="text-sm text-muted-foreground">Biaya Auditorium</p>
+                  </div>
+                  {excludeServicesPricing.totalPrice > 0 && (
+                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                      <Badge variant="outline" className="mb-2 text-lg px-3 py-1">
+                        {excludeServicesPricing.totalPrice} EGP
+                      </Badge>
+                      <p className="text-sm text-muted-foreground">Layanan Tambahan</p>
+                    </div>
+                  )}
+                </div>
+
+                <Separator />
+
+                <div className="text-center p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+                  <div className="flex justify-center items-center gap-2 mb-2">
+                    <span className="text-lg font-medium text-green-800 dark:text-green-200">
+                      TOTAL BIAYA:
+                    </span>
+                    <Badge
+                      variant="default"
+                      className="text-xl px-4 py-2 bg-green-600 hover:bg-green-700"
+                    >
+                      {totalPrice} EGP
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-green-700 dark:text-green-300">
+                    Paket: {basePricing.priceBreakdown}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Summary & Next Steps */}
@@ -428,15 +484,6 @@ function AuditoriumConfirmationContent() {
           >
             <Eye className="h-4 w-4" />
             {isGeneratingPDF ? 'Membuat...' : 'Preview PDF'}
-          </Button>
-          <Button
-            onClick={handleSendWhatsApp}
-            variant={whatsappSent ? 'secondary' : 'outline'}
-            className="flex items-center gap-2"
-            disabled={isSendingWhatsApp || whatsappSent}
-          >
-            <MessageCircle className="h-4 w-4" />
-            {isSendingWhatsApp ? 'Mengirim...' : whatsappSent ? 'Terkirim ✓' : 'Kirim via WhatsApp'}
           </Button>
           <Button
             onClick={handleDownloadPDF}

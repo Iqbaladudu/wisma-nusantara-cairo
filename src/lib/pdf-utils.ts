@@ -51,11 +51,8 @@ export async function downloadAuditoriumBookingPDF(
   bookingId?: string,
 ): Promise<void> {
   try {
-    // Create PDF document
-    const doc = AuditoriumBookingPDF({ bookingData, bookingId })
-
-    // Generate PDF blob
-    const blob = await pdf(doc).toBlob()
+    // Generate PDF blob using the shared function
+    const blob = await generateAuditoriumBookingPDFBlob(bookingData, bookingId)
 
     // Create download link
     const url = URL.createObjectURL(blob)
@@ -109,9 +106,13 @@ export async function generateAuditoriumBookingPDFBlob(
 ): Promise<Blob> {
   try {
     const doc = AuditoriumBookingPDF({ bookingData, bookingId })
-    return await pdf(doc).toBlob()
+    const blob = await pdf(doc).toBlob()
+    return blob
   } catch (error) {
-    throw new Error('Gagal membuat PDF.')
+    console.error('PDF generation error:', error)
+    throw new Error(
+      `Gagal membuat PDF: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    )
   }
 }
 
@@ -158,7 +159,7 @@ export async function previewAuditoriumBookingPDF(
     // Open in new tab
     const newWindow = window.open(url, '_blank')
     if (!newWindow) {
-      throw new Error('Popup blocked. Please allow popups for this site.')
+      throw new Error('Popup diblokir. Silakan izinkan popup untuk situs ini.')
     }
 
     // Cleanup after a delay to allow the PDF to load
@@ -166,7 +167,10 @@ export async function previewAuditoriumBookingPDF(
       URL.revokeObjectURL(url)
     }, 1000)
   } catch (error) {
-    throw new Error('Gagal membuka preview PDF.')
+    console.error('Preview error:', error)
+    throw new Error(
+      `Gagal membuka preview PDF: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    )
   }
 }
 
@@ -241,7 +245,9 @@ export function validateAuditoriumBookingData(data: AuditoriumBookingFormData): 
   if (!data.countryOfOrigin?.trim()) errors.push('Asal negara tidak boleh kosong')
   if (!data.eventDetails?.eventName?.trim()) errors.push('Nama acara tidak boleh kosong')
   if (!data.eventDetails?.eventDate) errors.push('Tanggal acara tidak valid')
-  if (!data.eventDetails?.eventTime?.trim()) errors.push('Waktu acara tidak boleh kosong')
+  if (!data.eventDetails?.eventTime?.trim()) errors.push('Waktu mulai acara tidak boleh kosong')
+  if (!data.eventDetails?.eventEndTime?.trim())
+    errors.push('Waktu selesai acara tidak boleh kosong')
   if (!data.contactInfo?.egyptPhoneNumber?.trim())
     errors.push('Nomor telepon Egypt tidak boleh kosong')
   if (!data.contactInfo?.whatsappNumber?.trim()) errors.push('Nomor WhatsApp tidak boleh kosong')

@@ -2,7 +2,7 @@ import React from 'react'
 import { renderToBuffer } from '@react-pdf/renderer'
 import { HostelBookingFormData, AuditoriumBookingFormData } from './schemas'
 import { HostelBookingPDF } from '@/components/pdf/hostel-booking-pdf'
-import { AuditoriumBookingPDF } from '@/components/pdf/auditorium-booking-pdf'
+import { AuditoriumBookingPDF } from '../components/pdf/auditorium-booking-pdf'
 
 /**
  * Server-side PDF generation for hostel booking
@@ -65,7 +65,7 @@ export async function generateHostelBookingPDFBlobServer(
 
 /**
  * Server-side PDF generation with blob output for auditorium booking
- * This creates a blob that can be used with WhatsApp API
+ * This creates a blob that can be used with WhatsApp API:
  */
 export async function generateAuditoriumBookingPDFBlobServer(
   bookingData: AuditoriumBookingFormData,

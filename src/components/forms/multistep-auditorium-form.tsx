@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { User, Calendar, Phone, FileText, FileCheck } from 'lucide-react'
+import { User, Calendar, Phone, Settings, FileText, FileCheck } from 'lucide-react'
 
 import { MultiStepForm } from '@/components/ui/multi-step-form'
 import { Form } from '@/components/ui/form'
@@ -21,6 +21,7 @@ import { submitAuditoriumBooking } from '@/lib/api'
 import { AuditoriumPersonalInfoStep } from './steps/auditorium-personal-info-step'
 import { AuditoriumEventDetailsStep } from './steps/auditorium-event-details-step'
 import { AuditoriumContactInfoStep } from './steps/auditorium-contact-info-step'
+import { AuditoriumExcludeServicesStep } from './steps/auditorium-exclude-services-step'
 import { AuditoriumAdditionalInfoStep } from './steps/auditorium-additional-info-step'
 import { AuditoriumBookingSummaryStep } from './steps/auditorium-booking-summary-step'
 
@@ -43,6 +44,12 @@ const steps = [
     title: 'Informasi Kontak',
     description: 'Masukkan nomor telepon dan WhatsApp',
     icon: <Phone className="h-4 w-4" />,
+  },
+  {
+    id: 'exclude-services',
+    title: 'Layanan Tambahan',
+    description: 'Pilih layanan tambahan yang dibutuhkan',
+    icon: <Settings className="h-4 w-4" />,
   },
   {
     id: 'additional-info',
@@ -168,8 +175,10 @@ export function MultistepAuditoriumForm({
       case 3:
         return <AuditoriumContactInfoStep form={form} />
       case 4:
-        return <AuditoriumAdditionalInfoStep form={form} />
+        return <AuditoriumExcludeServicesStep form={form} />
       case 5:
+        return <AuditoriumAdditionalInfoStep form={form} />
+      case 6:
         return <AuditoriumBookingSummaryStep form={form} onEdit={setCurrentStep} />
       default:
         return null

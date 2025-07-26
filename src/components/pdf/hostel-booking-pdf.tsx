@@ -4,8 +4,6 @@ import { HostelBookingFormData } from '@/lib/schemas'
 import { calculateBookingPrice } from '@/lib/api'
 
 // Use system fonts for better compatibility
-// Font registration removed to avoid loading issues
-
 Font.register({
   family: 'Plus Jakarta Sans Variable',
   fonts: [
@@ -88,6 +86,7 @@ const styles = StyleSheet.create({
   gridItem: {
     width: '48%',
   },
+
   priceSection: {
     backgroundColor: '#f9fafb',
     padding: 15,
@@ -169,70 +168,6 @@ const styles = StyleSheet.create({
   contact: {
     fontSize: 9,
     color: '#3b82f6',
-  },
-  termsItem: {
-    marginBottom: 8,
-  },
-  termsItemTitle: {
-    fontSize: 9,
-    fontWeight: 'bold',
-    color: '#92400e',
-    marginBottom: 3,
-  },
-  termsItemContent: {
-    fontSize: 8,
-    color: '#451a03',
-    lineHeight: 1.3,
-    marginLeft: 5,
-  },
-  termsWarning: {
-    fontSize: 8,
-    color: '#dc2626',
-    fontWeight: 'bold',
-  },
-  // Terms Page Styles
-  termsPageHeader: {
-    marginBottom: 30,
-    textAlign: 'center',
-    borderBottomWidth: 2,
-    borderBottomStyle: 'solid',
-    borderBottomColor: '#f59e0b',
-    paddingBottom: 20,
-  },
-  termsPageTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#92400e',
-    marginBottom: 5,
-  },
-  termsPageSubtitle: {
-    fontSize: 12,
-    color: '#92400e',
-    marginBottom: 2,
-  },
-  termsContent: {
-    flex: 1,
-  },
-  termsItemContentEn: {
-    fontSize: 8,
-    color: '#451a03',
-    lineHeight: 1.3,
-    marginLeft: 5,
-    marginTop: 3,
-  },
-  termsWarningEn: {
-    fontSize: 8,
-    color: '#dc2626',
-    fontWeight: 'bold',
-    marginTop: 3,
-  },
-  termsPageFooter: {
-    marginTop: 20,
-    paddingTop: 15,
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
-    borderTopColor: '#f59e0b',
-    textAlign: 'center',
   },
 })
 
@@ -434,134 +369,6 @@ export function HostelBookingPDF({ bookingData, bookingId }: HostelBookingPDFPro
             WhatsApp: +20 123 456 7890 | Email: info@wismanusantara.com
           </Text>
           <Text style={styles.footerText}>Wisma Nusantara Cairo - Your Home Away From Home</Text>
-        </View>
-      </Page>
-
-      {/* Second Page - Terms of Service */}
-      <Page size="A4" style={styles.page}>
-        {/* Header for Terms Page */}
-        <View style={styles.termsPageHeader}>
-          <Text style={styles.termsPageTitle}>SYARAT DAN KETENTUAN</Text>
-          <Text style={styles.termsPageSubtitle}>TERMS OF SERVICE</Text>
-          <Text style={styles.termsPageSubtitle}>Wisma Nusantara Cairo</Text>
-        </View>
-
-        {/* Terms Content */}
-        <View style={styles.termsContent}>
-          {/* Check-in Policy */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>1. Jam Check-in / Check-in Time:</Text>
-            <Text style={styles.termsItemContent}>
-              • Waktu check-in adalah mulai pukul 13.00 s/d 22.00.{'\n'}• Early check-in
-              (08.00-12.00) dikenakan biaya tambahan USD 5.{'\n'}• Check-in (22.00-06.00) dikenakan
-              biaya penuh + USD 5.{'\n'}• Check-in (06.00-08.00) dikenakan biaya USD 15.
-            </Text>
-            <Text style={styles.termsItemContentEn}>
-              • Check-in time is from 1:00 PM to 10:00 PM.{'\n'}• Early check-in (8:00 AM - 12:00
-              PM) incurs an additional fee of USD 5.{'\n'}• Check-in (10:00 PM - 6:00 AM) incurs the
-              full payment plus USD 5.{'\n'}• Check-in (6:00 AM - 8:00 AM) incurs a fee of USD 15.
-            </Text>
-          </View>
-
-          {/* Check-out Policy */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>2. Jam Check-out / Check-out Time:</Text>
-            <Text style={styles.termsItemContent}>
-              • Batas maksimal check-out adalah pukul 12.00 siang.{'\n'}• Late check-out
-              (13.00-16.00) dikenakan biaya tambahan USD 5.{'\n'}• Late check-out (16.00-18.00)
-              dikenakan biaya tambahan USD 15.{'\n'}• Check-out (18.00-12.00 hari berikutnya)
-              dikenakan biaya penuh.
-            </Text>
-            <Text style={styles.termsItemContentEn}>
-              • The maximum check-out time is 12:00 PM noon.{'\n'}• Late check-out (1:00 PM - 4:00
-              PM) incurs an additional fee of USD 5.{'\n'}• Late check-out (4:00 PM - 6:00 PM)
-              incurs an additional fee of USD 15.{'\n'}• Check-out (6:00 PM - 12:00 PM the following
-              day) incurs the full payment.
-            </Text>
-          </View>
-
-          {/* Cancellation Policy */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>
-              3. Kebijakan Pembatalan / Cancellation Policy:
-            </Text>
-            <Text style={styles.termsWarning}>
-              PENTING: Pembatalan H-3 hingga Hari-H dikenakan biaya pembatalan seharga 1 malam
-              menginap per kamar.
-            </Text>
-            <Text style={styles.termsWarningEn}>
-              IMPORTANT: Cancellations made from 3 days prior to arrival until the arrival date (H-3
-              to D-Day) will incur a cancellation fee equivalent to the cost of 1 night's stay per
-              reserved room.
-            </Text>
-          </View>
-
-          {/* Smoking Policy */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>4. Kebijakan Merokok / Smoking Policy:</Text>
-            <Text style={styles.termsWarning}>
-              PENTING: Seluruh area Wisma Nusantara & semua kamar adalah area dilarang merokok.
-              {'\n'}
-              DENDA: Pelanggaran dikenakan biaya tambahan USD 100.
-            </Text>
-            <Text style={styles.termsWarningEn}>
-              IMPORTANT: All areas of Wisma Nusantara & all rooms are designated as non-smoking
-              areas.{'\n'}
-              FINE: Guests agree to pay an additional fee of 100 USD for violating the smoking
-              policy.
-            </Text>
-          </View>
-
-          {/* Damage Policy */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>
-              5. Kerusakan dan Kehilangan / Damage and Loss:
-            </Text>
-            <Text style={styles.termsItemContent}>
-              • Tamu bertanggung jawab atas segala kerusakan pada kamar atau properti hotel selama
-              menginap.
-            </Text>
-            <Text style={styles.termsItemContentEn}>
-              • Guests agree to be responsible for any damage caused to the room or hotel property
-              during their stay.
-            </Text>
-          </View>
-
-          {/* Force Majeure */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>6. Keadaan Tak Terduga / Force Majeure:</Text>
-            <Text style={styles.termsItemContent}>
-              Wisma Nusantara tidak bertanggung jawab atas kegagalan memenuhi kewajibannya jika
-              terjadi keadaan tak terduga di luar kendali.
-            </Text>
-            <Text style={styles.termsItemContentEn}>
-              Wisma Nusantara shall not be held responsible for failure to fulfill its obligations
-              in the event of unforeseen circumstances beyond its control.
-            </Text>
-          </View>
-
-          {/* Terms Modification */}
-          <View style={styles.termsItem}>
-            <Text style={styles.termsItemTitle}>7. Perubahan Syarat / Terms Modification:</Text>
-            <Text style={styles.termsItemContent}>
-              Wisma Nusantara berhak untuk mengubah syarat dan ketentuan ini tanpa pemberitahuan
-              sebelumnya.
-            </Text>
-            <Text style={styles.termsItemContentEn}>
-              Wisma Nusantara reserves the right to modify these terms and conditions without prior
-              notice.
-            </Text>
-          </View>
-        </View>
-
-        {/* Terms Page Footer */}
-        <View style={styles.termsPageFooter}>
-          <Text style={styles.footerText}>
-            Dengan melakukan booking, Anda menyetujui semua syarat dan ketentuan di atas
-          </Text>
-          <Text style={styles.footerText}>
-            By making a booking, you agree to all the terms and conditions above
-          </Text>
         </View>
       </Page>
     </Document>

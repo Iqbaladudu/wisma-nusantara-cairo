@@ -256,10 +256,34 @@ export interface AuditoriumBooking {
     eventName: string;
     eventDate: string;
     eventTime: string;
+    eventEndTime: string;
   };
   contactInfo: {
     egyptPhoneNumber: string;
     whatsappNumber: string;
+  };
+  excludeServices?: {
+    airConditioner?: ('none' | '4-6_hours' | '7-9_hours' | '9-12_hours' | '12-14_hours') | null;
+    extraChairs?:
+      | (
+          | 'none'
+          | '3_chairs'
+          | '5_chairs'
+          | '7_chairs'
+          | '10_chairs'
+          | '15_chairs'
+          | '20_chairs'
+          | '30_chairs'
+          | '40_chairs'
+        )
+      | null;
+    /**
+     * BenQ GV30 - Resolusi 720p, portable, koneksi kabel & nirkabel, speaker terintegrasi
+     */
+    projector?: ('none' | 'projector_only' | 'screen_only' | 'projector_and_screen') | null;
+    extraTables?: ('none' | '3_tables' | '6_tables' | '9_tables' | 'more_than_9') | null;
+    plates?: ('none' | '6_plates' | '12_plates' | '18_plates' | '24_plates') | null;
+    glasses?: ('none' | '3_glasses' | '6_glasses' | '12_glasses') | null;
   };
   /**
    * Optional coupon code for discount
@@ -290,8 +314,20 @@ export interface AuditoriumBooking {
      * Detailed breakdown of price calculation
      */
     priceBreakdown?: string | null;
+    /**
+     * Total price for additional services
+     */
+    excludeServicesPrice?: number | null;
+    /**
+     * Detailed breakdown of additional services
+     */
+    excludeServicesBreakdown?: string | null;
   };
   paymentStatus: 'PAID' | 'INVOICED';
+  /**
+   * Customer must accept terms and conditions to proceed with booking
+   */
+  acceptTerms: boolean;
   eventNotes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -642,12 +678,23 @@ export interface AuditoriumBookingsSelect<T extends boolean = true> {
         eventName?: T;
         eventDate?: T;
         eventTime?: T;
+        eventEndTime?: T;
       };
   contactInfo?:
     | T
     | {
         egyptPhoneNumber?: T;
         whatsappNumber?: T;
+      };
+  excludeServices?:
+    | T
+    | {
+        airConditioner?: T;
+        extraChairs?: T;
+        projector?: T;
+        extraTables?: T;
+        plates?: T;
+        glasses?: T;
       };
   couponCode?: T;
   pricing?:
@@ -659,8 +706,11 @@ export interface AuditoriumBookingsSelect<T extends boolean = true> {
         couponDiscount?: T;
         finalPrice?: T;
         priceBreakdown?: T;
+        excludeServicesPrice?: T;
+        excludeServicesBreakdown?: T;
       };
   paymentStatus?: T;
+  acceptTerms?: T;
   eventNotes?: T;
   updatedAt?: T;
   createdAt?: T;

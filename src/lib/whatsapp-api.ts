@@ -3,6 +3,7 @@ import {
   generateHostelBookingPDFBlobServer,
   generateAuditoriumBookingPDFBlobServer,
 } from './pdf-server'
+import { calculateAuditoriumPrice, calculateExcludeServicesPrice } from './api'
 
 // WhatsApp API configuration
 const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL || ''
@@ -95,7 +96,39 @@ Terima kasih telah melakukan booking auditorium. Berikut detail booking Anda:
 🎪 *Detail Event:*
 • Nama Event: ${bookingData.eventDetails.eventName}
 • Tanggal: ${bookingData.eventDetails.eventDate.toLocaleDateString('id-ID')}
-• Waktu: ${bookingData.eventDetails.eventTime}
+• Waktu: ${bookingData.eventDetails.eventTime} - ${bookingData.eventDetails.eventEndTime}
+
+💰 *Informasi Harga:*
+${(() => {
+  const basePricing = calculateAuditoriumPrice(
+    bookingData.eventDetails.eventTime,
+    bookingData.eventDetails.eventEndTime,
+  )
+
+  const excludeServicesPricing = calculateExcludeServicesPrice(bookingData.excludeServices)
+  const totalPrice = basePricing.totalPrice + excludeServicesPricing.totalPrice
+
+  if (basePricing.totalHours > 0) {
+    let priceInfo = `• Durasi: ${basePricing.totalHours} jam
+• Biaya Auditorium: ${basePricing.totalPrice} EGP
+• Paket Auditorium: ${basePricing.priceBreakdown}`
+
+    if (excludeServicesPricing.totalPrice > 0) {
+      priceInfo += `
+• Layanan Tambahan: ${excludeServicesPricing.totalPrice} EGP
+• Rincian Layanan: ${excludeServicesPricing.breakdown.join(', ')}`
+    }
+
+    priceInfo += `
+• *TOTAL BIAYA: ${totalPrice} EGP*
+• Status: Menunggu konfirmasi pembayaran`
+
+    return priceInfo
+  } else {
+    return `• Durasi: Belum ditentukan
+• Status: Menunggu konfirmasi pembayaran`
+  }
+})()}
 
 📞 *Kontak:*
 • Telepon Egypt: ${bookingData.contactInfo.egyptPhoneNumber}
