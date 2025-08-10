@@ -1,5 +1,5 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer'
 import { HostelBookingFormData } from '@/lib/schemas'
 import { calculateBookingPrice } from '@/lib/api'
 
@@ -31,6 +31,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#10b981',
     paddingBottom: 20,
   },
+  logo: {
+    width: 56,
+    height: 56,
+    objectFit: 'contain',
+    marginHorizontal: 'auto',
+    marginBottom: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -41,6 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#374151',
     marginBottom: 4,
+    marginTop: 10,
   },
   bookingId: {
     fontSize: 12,
@@ -153,8 +161,8 @@ const styles = StyleSheet.create({
     color: '#1e40af',
   },
   footer: {
-    marginTop: 30,
-    paddingTop: 20,
+    marginTop: 10,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopStyle: 'solid',
     borderTopColor: '#e5e7eb',
@@ -174,9 +182,10 @@ const styles = StyleSheet.create({
 interface HostelBookingPDFProps {
   bookingData: HostelBookingFormData
   bookingId?: string
+  logoSrc?: string
 }
 
-export function HostelBookingPDF({ bookingData, bookingId }: HostelBookingPDFProps) {
+export function HostelBookingPDF({ bookingData, bookingId, logoSrc }: HostelBookingPDFProps) {
   const pricing = calculateBookingPrice(bookingData)
 
   const formatDate = (date: Date) => {
@@ -200,6 +209,11 @@ export function HostelBookingPDF({ bookingData, bookingId }: HostelBookingPDFPro
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <Image
+            src="https://res.cloudinary.com/dumgfj4nh/image/upload/v1754863207/wisma_tnpfsc.png"
+            style={styles.logo}
+          />
           <Text style={styles.title}>KONFIRMASI BOOKING HOSTEL</Text>
           <Text style={styles.subtitle}>Wisma Nusantara Cairo</Text>
           <Text style={styles.subtitle}>Booking berhasil untuk {bookingData.fullName}</Text>

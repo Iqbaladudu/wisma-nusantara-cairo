@@ -5,6 +5,22 @@ import { HostelBookingPDF } from '@/components/pdf/hostel-booking-pdf'
 import { AuditoriumBookingPDF } from '@/components/pdf/auditorium-booking-pdf'
 import { HostelBookingFormData, AuditoriumBookingFormData } from '@/lib/schemas'
 
+async function loadLogoDataUrl(): Promise<string | undefined> {
+  try {
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    const res = await fetch(`${origin}/wisma.png`)
+    if (!res.ok) return undefined
+    const blob = await res.blob()
+    return await new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return undefined
+  }
+}
+
 /**
  * Generate and download PDF for hostel booking
  */
@@ -73,7 +89,7 @@ export async function downloadAuditoriumBookingPDF(
 
     // Cleanup
     URL.revokeObjectURL(url)
-  } catch (error) {
+  } catch {
     throw new Error('Gagal membuat PDF. Silakan coba lagi.')
   }
 }
@@ -86,7 +102,8 @@ export async function generateHostelBookingPDFBlob(
   bookingId?: string,
 ): Promise<Blob> {
   try {
-    const doc = HostelBookingPDF({ bookingData, bookingId })
+    const logoSrc = await loadLogoDataUrl()
+    const doc = HostelBookingPDF({ bookingData, bookingId, logoSrc })
     const blob = await pdf(doc).toBlob()
     return blob
   } catch (error) {
@@ -105,7 +122,8 @@ export async function generateAuditoriumBookingPDFBlob(
   bookingId?: string,
 ): Promise<Blob> {
   try {
-    const doc = AuditoriumBookingPDF({ bookingData, bookingId })
+    const logoSrc = await loadLogoDataUrl()
+    const doc = AuditoriumBookingPDF({ bookingData, bookingId, logoSrc })
     const blob = await pdf(doc).toBlob()
     return blob
   } catch (error) {

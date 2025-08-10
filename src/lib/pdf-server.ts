@@ -1,5 +1,7 @@
 import React from 'react'
 import { renderToBuffer } from '@react-pdf/renderer'
+import fs from 'fs'
+import path from 'path'
 import { HostelBookingFormData, AuditoriumBookingFormData } from './schemas'
 import { HostelBookingPDF } from '@/components/pdf/hostel-booking-pdf'
 import { AuditoriumBookingPDF } from '../components/pdf/auditorium-booking-pdf'
@@ -13,13 +15,23 @@ export async function generateHostelBookingPDFBuffer(
   bookingId?: string,
 ): Promise<Buffer> {
   try {
+    // Resolve logo as data URL for server-side rendering
+    const publicDir = path.join(process.cwd(), 'public')
+    const logoPath = path.join(publicDir, 'wisma.png')
+    let logoSrc: string | undefined
+    try {
+      const logoBuffer = fs.readFileSync(logoPath)
+      const base64 = logoBuffer.toString('base64')
+      logoSrc = `data:image/png;base64,${base64}`
+    } catch {
+      logoSrc = undefined
+    }
     // Create PDF document using React PDF
-    const pdfBuffer = await renderToBuffer(
-      React.createElement(HostelBookingPDF, { bookingData, bookingId }) as any,
-    )
+    const element = React.createElement(HostelBookingPDF, { bookingData, bookingId, logoSrc })
+    const pdfBuffer = await renderToBuffer(element as React.ReactElement)
 
     return pdfBuffer
-  } catch (error) {
+  } catch {
     throw new Error('Failed to generate hostel booking PDF')
   }
 }
@@ -33,13 +45,23 @@ export async function generateAuditoriumBookingPDFBuffer(
   bookingId?: string,
 ): Promise<Buffer> {
   try {
+    // Resolve logo as data URL for server-side rendering
+    const publicDir = path.join(process.cwd(), 'public')
+    const logoPath = path.join(publicDir, 'wisma.png')
+    let logoSrc: string | undefined
+    try {
+      const logoBuffer = fs.readFileSync(logoPath)
+      const base64 = logoBuffer.toString('base64')
+      logoSrc = `data:image/png;base64,${base64}`
+    } catch {
+      logoSrc = undefined
+    }
     // Create PDF document using React PDF
-    const pdfBuffer = await renderToBuffer(
-      React.createElement(AuditoriumBookingPDF, { bookingData, bookingId }) as any,
-    )
+    const element = React.createElement(AuditoriumBookingPDF, { bookingData, bookingId, logoSrc })
+    const pdfBuffer = await renderToBuffer(element as React.ReactElement)
 
     return pdfBuffer
-  } catch (error) {
+  } catch {
     throw new Error('Failed to generate auditorium booking PDF')
   }
 }
