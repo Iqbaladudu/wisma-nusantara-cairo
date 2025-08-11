@@ -1,0 +1,729 @@
+{
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit Booking",
+    "submitting": "Submitting...",
+    "step": "Step {current} of {total}",
+    "complete": "{percent}% Complete",
+    "optional": "Optional",
+    "languageSwitcher": {
+      "button": "Language",
+      "title": "Choose Language",
+      "desc": "This will change the language for this page",
+      "current": "Current",
+      "id": "Indonesian",
+      "en": "English",
+      "ar": "Arabic"
+    }
+  },
+  "hostel": {
+    "steps": {
+      "personalInfo": {
+        "title": "Personal Information",
+        "description": "Enter your personal details"
+      },
+      "roomSelection": {
+        "title": "Select Room",
+        "description": "Choose room types and quantities"
+      },
+      "stayDuration": {
+        "title": "Stay Duration",
+        "description": "Pick check-in and check-out dates"
+      },
+      "contactInfo": {
+        "title": "Contact Information",
+        "description": "Enter phone and WhatsApp numbers"
+      },
+      "additionalServices": {
+        "title": "Additional Services",
+        "description": "Choose optional add-on services"
+      },
+      "summary": { "title": "Booking Summary", "description": "Review your booking details" }
+    },
+    "toasts": {
+      "successTitle": "Booking submitted successfully!",
+      "successDesc": "You'll receive confirmation via email and WhatsApp.",
+      "errorTitle": "Failed to submit booking",
+      "errorGeneric": "Something went wrong",
+      "errorGenericDesc": "Please try again or contact customer service."
+    },
+    "personal": {
+      "title": "Personal Information",
+      "description": "Enter your personal details as shown on your official documents",
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "Enter full name as in passport",
+        "description": "Must match your passport"
+      },
+      "countryOfOrigin": {
+        "label": "Country of Origin",
+        "placeholder": "Example: Indonesia",
+        "description": "Citizenship country"
+      },
+      "passportNumber": {
+        "label": "Passport Number",
+        "placeholder": "Enter passport number",
+        "description": "Used for check-in"
+      },
+      "info": {
+        "title": "Important Information",
+        "lines": [
+          "Ensure data matches your official documents.",
+          "This data is used for hostel check-in."
+        ]
+      }
+    },
+    "room": {
+      "title": "Choose Room Types",
+      "description": "Select the room types and quantities you need",
+      "single": {
+        "title": "Single Bed Room",
+        "price": "$30/night",
+        "desc": "Room with 1 single bed"
+      },
+      "double": {
+        "title": "Double Bed Room",
+        "price": "$35/night",
+        "desc": "Room with 1 double bed"
+      },
+      "extra": {
+        "title": "Extra Bed",
+        "price": "$10/night",
+        "desc": "Additional bed in existing room"
+      },
+      "guests": {
+        "title": "Guest Details",
+        "description": "Specify number of guests",
+        "adults": { "label": "Adults", "desc": "Age 18+" },
+        "children": { "label": "Children", "desc": "Under 18" }
+      },
+      "summary": {
+        "rooms": "Rooms",
+        "beds": "Beds",
+        "guests": "Guests",
+        "warning": "⚠️ Not enough beds for all guests"
+      }
+    },
+    "stay": {
+      "title": "Stay Duration",
+      "description": "Pick your check-in and check-out dates",
+      "checkIn": {
+        "label": "Check-in Date",
+        "placeholder": "Select check-in date",
+        "desc": "Check-in available from 14:00"
+      },
+      "checkOut": {
+        "label": "Check-out Date",
+        "placeholder": "Select check-out date",
+        "desc": "Check-out before 12:00"
+      },
+      "duration": { "title": "Stay Duration", "nights": "{count} night(s)", "nightWord": "night" },
+      "pricing": {
+        "title": "Estimated Room Charges",
+        "single": "Single Bed ({rooms} room × {nights} nights)",
+        "double": "Double Bed ({rooms} room × {nights} nights)",
+        "extra": "Extra Bed ({beds} bed × {nights} nights)",
+        "total": "Total Room Charges"
+      },
+      "info": {
+        "title": "Check-in & Check-out Info",
+        "lines": [
+          "Check-in: 14:00 - 23:00",
+          "Check-out: 07:00 - 12:00",
+          "Late check-in available with prior notice",
+          "Early check-in subject to availability"
+        ]
+      }
+    },
+    "contact": {
+      "title": "Contact Information",
+      "description": "Enter phone and WhatsApp for booking communication",
+      "whatsapp": {
+        "label": "WhatsApp Number",
+        "desc": "Active WhatsApp for confirmation and updates",
+        "placeholder": "Select country and enter number"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "desc": "Reachable phone (may be same as WhatsApp)",
+        "placeholder": "Select country and enter number"
+      },
+      "cards": {
+        "whatsapp": {
+          "title": "WhatsApp",
+          "lines": ["Booking confirmation and updates via WhatsApp"]
+        },
+        "phone": {
+          "title": "Phone",
+          "lines": ["For emergency communication and check-in coordination"]
+        },
+        "important": {
+          "title": "Important",
+          "lines": [
+            "Ensure numbers are active and reachable",
+            "Confirmation sent within 24 hours",
+            "Contact support if you don't receive confirmation",
+            "WhatsApp used for check-in coordination"
+          ]
+        },
+        "guide": {
+          "title": "How to use the phone input",
+          "features": {
+            "title": "Modern Features:",
+            "lines": [
+              "Country flag dropdown",
+              "Search by country name/code",
+              "Auto-format number",
+              "International format validation"
+            ]
+          },
+          "how": {
+            "title": "How to use:",
+            "lines": [
+              "Pick country from dropdown",
+              "Type country name to search",
+              "Enter number without country code",
+              "Auto-formats to international standard"
+            ]
+          }
+        }
+      }
+    },
+    "services": {
+      "coupon": {
+        "title": "Coupon Code (Optional)",
+        "desc": "Enter coupon code to get a discount",
+        "placeholder": "Enter coupon code",
+        "validate": "Validate",
+        "validating": "Validating...",
+        "error": "Error validating coupon",
+        "validDiscount": "Valid - {discount}% off"
+      },
+      "pickup": {
+        "title": "Airport Pickup (Optional)",
+        "desc": "Choose airport pickup from Cairo airport",
+        "none": {
+          "label": "No Pickup Needed",
+          "desc": "I'll come to the hostel by myself",
+          "price": "Free"
+        },
+        "medium": {
+          "label": "Medium Private Vehicle",
+          "desc": "For 2-4 passengers with luggage",
+          "price": "$35 USD"
+        },
+        "hiace": {
+          "label": "Hiace Van",
+          "desc": "Up to 10 passengers with large luggage",
+          "price": "$50 USD"
+        },
+        "details": {
+          "title": "Pickup Details",
+          "date": { "label": "Departure Date", "placeholder": "Pick a date" },
+          "time": {
+            "label": "Departure Time",
+            "placeholder": "HH:MM (e.g., 14:30)",
+            "desc": "24-hour format (e.g., 14:30)"
+          }
+        }
+      },
+      "meals": {
+        "title": "Indonesian Meal Package (Optional)",
+        "desc": "Order Indonesian meals for your stay",
+        "breakfast": { "title": "Breakfast", "placeholder": "Select breakfast menu" },
+        "lunch": { "title": "Lunch", "placeholder": "Select lunch menu" },
+        "dinner": { "title": "Dinner", "placeholder": "Select dinner menu" },
+        "options": {
+          "none": "No Order",
+          "nasi_goreng": "Nasi Goreng",
+          "ayam_goreng": "Ayam Goreng",
+          "nasi_kuning": "Nasi Kuning",
+          "prices": {
+            "nasi_goreng": "100 EGP/portion",
+            "ayam_goreng": "120 EGP/portion",
+            "nasi_kuning": "130 EGP/portion"
+          }
+        },
+        "portions": "Portions",
+        "frequency": {
+          "label": "Frequency",
+          "placeholder": "Select frequency",
+          "checkin_only": "Check-in Day Only",
+          "during_stay": "During Stay",
+          "checkout_only": "Check-out Day Only"
+        },
+        "info": {
+          "title": "Meal Package Info",
+          "lines": [
+            "Authentic Indonesian recipes",
+            "Minimum 4 portions for Nasi Goreng and Ayam Goreng",
+            "Minimum 10 portions for Nasi Kuning",
+            "Order must be confirmed D-1",
+            "Price includes rice, sides and veggies"
+          ]
+        }
+      }
+    },
+    "summary": {
+      "header": {
+        "title": "Booking Summary",
+        "desc": "Review all booking details before submitting"
+      },
+      "sections": {
+        "personal": "Personal Information",
+        "roomGuests": "Rooms & Guests",
+        "stayDuration": "Stay Duration",
+        "contact": "Contact Information",
+        "services": "Additional Services",
+        "coupon": "Coupon Code",
+        "airportPickup": "Airport Pickup",
+        "mealPackage": "Meal Package",
+        "noMeals": "No meal package selected"
+      },
+      "labels": {
+        "fullName": "Full Name",
+        "country": "Country",
+        "passport": "Passport Number",
+        "singleRoom": "Single Bed Room",
+        "doubleRoom": "Double Bed Room",
+        "extraBed": "Extra Bed",
+        "rooms": "room(s)",
+        "beds": "bed(s)",
+        "adults": "Adults",
+        "children": "Children",
+        "people": "people",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "duration": "Duration",
+        "whatsapp": "WhatsApp",
+        "phone": "Phone"
+      },
+      "pricing": {
+        "summary": "Price Summary",
+        "room": "Room Charges",
+        "subtotalRoom": "Room Subtotal",
+        "services": "Additional Services",
+        "subtotalServices": "Services Subtotal",
+        "total": "Total"
+      },
+      "terms": {
+        "title": "Terms and Conditions",
+        "checkInTime": {
+          "en": [
+            "Check-in time is from 1:00 PM to 10:00 PM.",
+            "Early check-in from 8:00 AM to 12:00 PM incurs an additional fee of USD 5.",
+            "Check-in from 10:00 PM to 6:00 AM incurs the full payment plus an additional fee of USD 5.",
+            "Check-in from 6:00 AM to 8:00 AM incurs a fee of USD 15."
+          ]
+        },
+        "checkOutTime": {
+          "en": [
+            "The maximum check-out time is 12:00 PM noon.",
+            "Late check-out from 1:00 PM to 4:00 PM incurs an additional fee of USD 5.",
+            "Late check-out from 4:00 PM to 6:00 PM incurs an additional fee of USD 15.",
+            "Check-out from 6:00 PM to 12:00 PM the following day incurs the full payment."
+          ]
+        },
+        "cancellation": {
+          "en": [
+            "Cancellations made from 3 days prior to arrival until the arrival date (H-3 to D-Day) will incur a cancellation fee equivalent to the cost of 1 night's stay per reserved room."
+          ]
+        },
+        "smoking": {
+          "en": [
+            "All areas of Wisma Nusantara & all rooms are designated as non-smoking areas.",
+            "Guests agree to pay an additional fee of 100 USD for violating the smoking policy."
+          ]
+        },
+        "damage": {
+          "en": [
+            "Guests agree to be responsible for any damage caused to the room or hotel property during their stay."
+          ]
+        },
+        "forceMajeure": {
+          "en": [
+            "Wisma Nusantara shall not be held responsible for failure to fulfill its obligations in the event of unforeseen circumstances beyond its control."
+          ]
+        },
+        "amendment": {
+          "en": [
+            "Wisma Nusantara reserves the right to modify these terms and conditions without prior notice."
+          ]
+        },
+        "additional": [
+          "Booking confirmation will be sent via WhatsApp within 24 hours",
+          "Payment can be made after booking confirmation",
+          "Bring original passport for check-in"
+        ],
+        "agree": {
+          "title": "Agreement",
+          "label": "I have read and agree to the terms and conditions above"
+        }
+      }
+    }
+  },
+  "auditorium": {
+    "steps": {
+      "personalInfo": {
+        "title": "Personal Information",
+        "description": "Enter your personal information for auditorium booking"
+      },
+      "eventDetails": { "title": "Event Details", "description": "Enter details about your event" },
+      "contactInfo": {
+        "title": "Contact Information",
+        "description": "Enter phone numbers for confirmation and communication"
+      },
+      "excludeServices": {
+        "title": "Additional Services",
+        "description": "Select additional services needed for your event"
+      },
+      "additionalInfo": {
+        "title": "Additional Information",
+        "description": "Optional information to complete your booking"
+      },
+      "summary": {
+        "title": "Auditorium Booking Summary",
+        "description": "Review all information before submitting"
+      }
+    },
+    "toasts": {
+      "successTitle": "Auditorium booking submitted!",
+      "successDesc": "You'll receive confirmation via email and WhatsApp.",
+      "errorTitle": "Failed to submit booking",
+      "errorGeneric": "Something went wrong",
+      "errorGenericDesc": "Please try again or contact customer service."
+    },
+    "personal": {
+      "title": "Personal Information",
+      "description": "Enter your personal information for auditorium booking",
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name",
+        "description": "As per official ID"
+      },
+      "countryOfOrigin": {
+        "label": "Country of Origin",
+        "placeholder": "e.g., Indonesia, Malaysia, Egypt",
+        "description": "Your nationality"
+      },
+      "info": {
+        "title": "Important Information:",
+        "lines": [
+          "Ensure your name matches your ID",
+          "Used for booking confirmation",
+          "Your personal data is kept confidential"
+        ]
+      }
+    },
+    "event": {
+      "title": "Event Details",
+      "description": "Enter event details",
+      "eventName": {
+        "label": "Event Name",
+        "placeholder": "e.g., Tech Seminar, Business Workshop, Conference",
+        "description": "Name or title of the event"
+      },
+      "eventDate": {
+        "label": "Event Date",
+        "placeholder": "Pick event date",
+        "description": "Event date (cannot be in the past)"
+      },
+      "eventTime": {
+        "label": "Start Time",
+        "placeholder": "e.g., 09:00",
+        "description": "24-hour format: HH:MM"
+      },
+      "eventEndTime": {
+        "label": "End Time",
+        "placeholder": "e.g., 17:00",
+        "description": "24-hour format: HH:MM"
+      },
+      "pricing": {
+        "title": "Estimated Rental Charges",
+        "duration": "Event Duration",
+        "total": "Total Charges",
+        "avgPerHour": "Avg per Hour",
+        "breakdownTitle": "Package Breakdown:",
+        "packagesTitle": "Available Packages:",
+        "packages": [
+          "1 Hour: 115 EGP",
+          "4 Hours: 420 EGP",
+          "9 Hours: 900 EGP",
+          "12 Hours: 1100 EGP",
+          "14 Hours: 1250 EGP"
+        ]
+      },
+      "notes": {
+        "title": "Important Notes:",
+        "lines": [
+          "Auditorium available from 08:00 - 22:00",
+          "Prefer booking at least D-1 from the event date",
+          "Availability will be confirmed via WhatsApp",
+          "Maximum daily usage is 8 hours"
+        ]
+      }
+    },
+    "contact": {
+      "title": "Contact Information",
+      "description": "Enter numbers for confirmation and communication",
+      "egyptPhone": {
+        "label": "Phone Number (Egypt)",
+        "desc": "Egypt phone number for direct confirmation",
+        "placeholder": "Select country and enter number"
+      },
+      "whatsapp": {
+        "label": "WhatsApp Number",
+        "desc": "Active WhatsApp for communication and updates",
+        "placeholder": "Select country and enter number"
+      },
+      "cards": {
+        "egypt": {
+          "title": "Egypt Phone Number",
+          "lines": [
+            "Modern dropdown with search",
+            "Egypt prioritized on top",
+            "For direct confirmation"
+          ]
+        },
+        "wa": {
+          "title": "WhatsApp",
+          "lines": [
+            "All countries available",
+            "Search by country name",
+            "For updates and communication"
+          ]
+        },
+        "info": {
+          "title": "Contact Information:",
+          "lines": [
+            "Both numbers will be used for booking confirmation",
+            "Make sure numbers are active",
+            "Availability confirmation within 24 hours",
+            "Payment updates via WhatsApp"
+          ]
+        }
+      }
+    },
+    "exclude": {
+      "title": "Additional Services",
+      "description": "Select additional services needed for your event",
+      "notice": "Important: Additional services are only available as listed packages, not individually.",
+      "ac": {
+        "label": "Air Conditioner (AC)",
+        "placeholder": "Choose AC package",
+        "desc": "Select AC package based on event duration",
+        "options": {
+          "none": "No AC",
+          "4-6_hours": "4 - 6 Hours: 100 EGP",
+          "7-9_hours": "7 - 9 Hours: 150 EGP",
+          "9-12_hours": "9 - 12 Hours: 250 EGP",
+          "12-14_hours": "12 - 14 Hours: 300 EGP"
+        }
+      },
+      "chairs": {
+        "label": "Extra Chairs",
+        "placeholder": "Select chair count",
+        "desc": "Additional chairs for extra guests",
+        "options": {
+          "none": "Not needed",
+          "3_chairs": "3 chairs: 75 EGP",
+          "5_chairs": "5 chairs: 120 EGP",
+          "7_chairs": "7 chairs: 160 EGP",
+          "10_chairs": "10 chairs: 210 EGP",
+          "15_chairs": "15 chairs: 300 EGP",
+          "20_chairs": "20 chairs: 380 EGP",
+          "30_chairs": "30 chairs: 540 EGP",
+          "40_chairs": "40 chairs: 680 EGP"
+        }
+      },
+      "projector": {
+        "label": "Projector",
+        "placeholder": "Select projector package",
+        "desc": "BenQ GV30: 720p, portable, wired & wireless, built-in speaker",
+        "options": {
+          "none": "No projector",
+          "projector_only": "Projector only: 250 EGP",
+          "screen_only": "Screen only: 75 EGP",
+          "projector_and_screen": "Projector + Screen: 275 EGP"
+        }
+      },
+      "tables": {
+        "label": "Extra Tables",
+        "placeholder": "Select table count",
+        "desc": "Extra tables for event needs",
+        "options": {
+          "none": "No tables",
+          "3_tables": "3 tables: 140 EGP",
+          "6_tables": "6 tables: 240 EGP",
+          "9_tables": "9 tables: 300 EGP",
+          "more_than_9": "More than 9 tables: Ask availability"
+        }
+      },
+      "plates": {
+        "label": "Plates",
+        "placeholder": "Select plates count",
+        "desc": "Plates for meals",
+        "options": {
+          "none": "Not needed",
+          "6_plates": "6 plates: 60 EGP",
+          "12_plates": "12 plates: 110 EGP",
+          "18_plates": "18 plates: 160 EGP",
+          "24_plates": "24 plates: 200 EGP"
+        }
+      },
+      "glasses": {
+        "label": "Glasses",
+        "placeholder": "Select glasses count",
+        "desc": "Glasses for drinks",
+        "options": {
+          "none": "Not needed",
+          "3_glasses": "3 glasses: 20 EGP",
+          "6_glasses": "6 glasses: 35 EGP",
+          "12_glasses": "12 glasses: 60 EGP"
+        }
+      },
+      "total": {
+        "title": "Additional Services Total",
+        "desc": "Total Additional Services Cost",
+        "breakdown": "Services Breakdown:"
+      }
+    },
+    "additional": {
+      "title": "Additional Information",
+      "description": "Optional information to complete your booking",
+      "coupon": {
+        "label": "Coupon Code (Optional)",
+        "placeholder": "Enter coupon code if any",
+        "validate": "Validate",
+        "valid": "Valid - {discount}% discount",
+        "invalid": "Failed to validate coupon",
+        "enterFirst": "Enter coupon code first"
+      },
+      "notes": {
+        "label": "Event Notes (Optional)",
+        "placeholder": "Add special notes about your event, tech needs, or other requests...",
+        "desc": "Additional notes about the event or special requests"
+      },
+      "tips": {
+        "title": "Event Notes Tips:",
+        "lines": [
+          "Estimated number of attendees",
+          "Technical needs (projector, sound system, etc.)",
+          "Preferred seating layout",
+          "Catering or refreshment needs",
+          "Setup and breakdown times needed"
+        ]
+      }
+    },
+    "summary": {
+      "header": {
+        "title": "Auditorium Booking Summary",
+        "desc": "Review all information before submitting"
+      },
+      "edit": "Edit",
+      "sections": {
+        "personal": "Personal Information",
+        "event": "Event Details",
+        "contact": "Contact Information",
+        "additional": "Additional Information",
+        "priceInfo": "Price Information",
+        "agree": "Terms Agreement"
+      },
+      "labels": {
+        "fullName": "Full Name",
+        "country": "Country",
+        "eventName": "Event Name",
+        "eventDate": "Event Date",
+        "startTime": "Start Time",
+        "endTime": "End Time",
+        "egyptPhone": "Phone (Egypt)",
+        "whatsapp": "WhatsApp",
+        "coupon": "Coupon Code",
+        "notes": "Event Notes",
+        "none": "None",
+        "noNotes": "No special notes"
+      },
+      "pricing": {
+        "duration": "Event Duration",
+        "base": "Base Charges",
+        "extra": "Additional Services",
+        "total": "Total Charges",
+        "auditoriumPackagesTitle": "Available Auditorium Packages:",
+        "auditoriumPackages": [
+          "1 Hour: 115 EGP",
+          "4 Hours: 420 EGP",
+          "9 Hours: 900 EGP",
+          "12 Hours: 1100 EGP",
+          "14 Hours: 1250 EGP"
+        ],
+        "fillTimesInfo": {
+          "title": "Price Information:",
+          "lines": [
+            "Fill start and end time to see estimate",
+            "Calculated from available duration packages",
+            "Coupon discount applied if valid",
+            "Invoice will be sent via WhatsApp"
+          ]
+        }
+      },
+      "terms": {
+        "title": "Terms and Conditions",
+        "opsHours": {
+          "en": "Operating hours are from 08:00 to 22:00. There is an additional charge of 125 EGP (plus rental fees) for rentals outside these hours."
+        },
+        "cancel": {
+          "en": [
+            "In case of cancellation, a cancellation fee will be imposed depending on the time to be used as follows:",
+            "One day prior: 40% of the intended time",
+            "Day of or after: 50% of the intended time"
+          ]
+        },
+        "clean": {
+          "en": [
+            "Willing to maintain the cleanliness of the Wisma Nusantara auditorium and its surroundings.",
+            "A cleaning fee of 150 EGP will be charged if leaving the Auditorium area dirty."
+          ]
+        },
+        "walls": {
+          "en": [
+            "Not to attach/install anything on the auditorium walls such as adhesive tape, masking tape, glue, nails, and other accessories without staff permission, and willing to be fined if violated."
+          ]
+        },
+        "smoking": {
+          "en": [
+            "Smoking Policy:",
+            "Smoking is prohibited in all areas of Wisma Nusantara.",
+            "Guests who violate the smoking policy are subject to an additional fee of EGP 100 per person."
+          ]
+        },
+        "damage": {
+          "en": ["Willing to compensate for any damage/loss of Wisma Nusantara facilities."]
+        },
+        "forceMajeure": {
+          "en": [
+            "Wisma Nusantara is not responsible for failing to meet its obligations in the event of unforeseen circumstances beyond its control."
+          ]
+        },
+        "amendment": {
+          "en": [
+            "Wisma Nusantara reserves the right to change these terms and conditions without prior notice."
+          ]
+        },
+        "additional": [
+          "Booking will be confirmed within 24 hours after submission",
+          "Payment is made after availability confirmation",
+          "Technical facilities available based on needs and availability"
+        ],
+        "agree": {
+          "title": "Agreement",
+          "label": "I have read and agree to the terms and conditions above"
+        },
+        "ready": {
+          "title": "Ready to submit your booking?",
+          "desc": "Ensure all information is correct. You'll receive confirmation via WhatsApp within 24 hours."
+        }
+      }
+    }
+  }
+}

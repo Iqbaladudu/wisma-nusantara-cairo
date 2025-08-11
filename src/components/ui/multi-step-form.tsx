@@ -5,8 +5,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { AnimatedButton } from '@/components/ui/animated-button'
-import { StepIndicator, StepDots, type Step } from '@/components/ui/step-indicator'
+import { StepDots, type Step } from '@/components/ui/step-indicator'
 import { Progress } from '@/components/ui/progress'
+import { useTranslations } from 'next-intl'
 
 export interface MultiStepFormProps {
   steps: Step[]
@@ -38,13 +39,14 @@ export function MultiStepForm({
   className,
   showProgress = true,
   showStepIndicator = false,
-  allowStepNavigation = false,
+  allowStepNavigation: _allowStepNavigation = false,
   isLoading = false,
-  nextButtonText = 'Next',
-  previousButtonText = 'Previous',
-  submitButtonText = 'Submit',
+  nextButtonText,
+  previousButtonText,
+  submitButtonText,
   variant = 'default',
 }: MultiStepFormProps) {
+  const t = useTranslations('common')
   const isFirstStep = currentStep === 1
   const isLastStep = currentStep === steps.length
   const progress = (currentStep / steps.length) * 100
@@ -71,11 +73,7 @@ export function MultiStepForm({
     }
   }
 
-  const handleStepClick = (stepNumber: number) => {
-    if (allowStepNavigation && stepNumber <= currentStep) {
-      onStepChange(stepNumber)
-    }
-  }
+  // Step click handler omitted in this variant
 
   const content = (
     <div className="space-y-6">
@@ -83,10 +81,8 @@ export function MultiStepForm({
       {showProgress && (
         <div className="animate-fade-in mb-6">
           <div className="flex justify-between text-sm text-muted-foreground mb-2">
-            <span>
-              Step {currentStep} of {steps.length}
-            </span>
-            <span>{Math.round(progress)}% Complete</span>
+            <span>{t('step', { current: currentStep, total: steps.length })}</span>
+            <span>{t('complete', { percent: Math.round(progress) })}</span>
           </div>
           <Progress value={progress} className="h-2" />
           <div className="text-center mt-2">
@@ -113,8 +109,8 @@ export function MultiStepForm({
               disabled={isLoading}
               icon={<ChevronLeft className="h-4 w-4" />}
             >
-              <span className="hidden sm:inline">{previousButtonText}</span>
-              <span className="sm:hidden">Back</span>
+              <span className="hidden sm:inline">{previousButtonText ?? t('back')}</span>
+              <span className="sm:hidden">{t('back')}</span>
             </AnimatedButton>
           )}
         </div>
@@ -134,12 +130,12 @@ export function MultiStepForm({
               size="default"
               onClick={handleSubmit}
               loading={isLoading}
-              loadingText="Submitting..."
+              loadingText={t('submitting')}
               disabled={isLoading}
               rightIcon={!isLoading && <ChevronRight className="h-4 w-4" />}
             >
-              <span className="hidden sm:inline">{submitButtonText}</span>
-              <span className="sm:hidden">Submit</span>
+              <span className="hidden sm:inline">{submitButtonText ?? t('submit')}</span>
+              <span className="sm:hidden">{t('submit')}</span>
             </AnimatedButton>
           ) : (
             <AnimatedButton
@@ -150,8 +146,8 @@ export function MultiStepForm({
               disabled={isLoading}
               rightIcon={<ChevronRight className="h-4 w-4" />}
             >
-              <span className="hidden sm:inline">{nextButtonText}</span>
-              <span className="sm:hidden">Next</span>
+              <span className="hidden sm:inline">{nextButtonText ?? t('next')}</span>
+              <span className="sm:hidden">{t('next')}</span>
             </AnimatedButton>
           )}
         </div>

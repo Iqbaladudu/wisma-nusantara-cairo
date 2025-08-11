@@ -15,23 +15,23 @@ import {
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { HostelBookingFormData } from '@/lib/schemas'
+import { useTranslations } from 'next-intl'
 
 interface PersonalInfoStepProps {
   form: UseFormReturn<HostelBookingFormData>
 }
 
 export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
+  const t = useTranslations('hostel.personal')
   return (
     <div className="space-y-6">
       <Card className="border-l-4 border-l-primary">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <User className="h-5 w-5 text-primary" />
-            Informasi Personal
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Masukkan data pribadi Anda sesuai dengan dokumen resmi
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Full Name */}
@@ -42,18 +42,12 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <User className="h-4 w-4" />
-                  Nama Lengkap
+                  {t('fullName.label')}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Masukkan nama lengkap sesuai paspor"
-                    {...field}
-                    className="h-11"
-                  />
+                  <Input placeholder={t('fullName.placeholder')} {...field} className="h-11" />
                 </FormControl>
-                <FormDescription>
-                  Nama harus sama dengan yang tertera di paspor
-                </FormDescription>
+                <FormDescription>{t('fullName.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -67,18 +61,16 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  Asal Negara
+                  {t('countryOfOrigin.label')}
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Contoh: Indonesia"
+                    placeholder={t('countryOfOrigin.placeholder')}
                     {...field}
                     className="h-11"
                   />
                 </FormControl>
-                <FormDescription>
-                  Negara asal sesuai kewarganegaraan
-                </FormDescription>
+                <FormDescription>{t('countryOfOrigin.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -92,11 +84,11 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <CreditCard className="h-4 w-4" />
-                  Nomor Paspor
+                  {t('passportNumber.label')}
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Masukkan nomor paspor"
+                    placeholder={t('passportNumber.placeholder')}
                     {...field}
                     className="h-11"
                     style={{ textTransform: 'uppercase' }}
@@ -105,9 +97,7 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
                     }}
                   />
                 </FormControl>
-                <FormDescription>
-                  Nomor paspor akan digunakan untuk check-in
-                </FormDescription>
+                <FormDescription>{t('passportNumber.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -123,12 +113,10 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
               <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="space-y-1">
-              <h4 className="font-medium text-blue-900 dark:text-blue-100">
-                Informasi Penting
-              </h4>
+              <h4 className="font-medium text-blue-900 dark:text-blue-100">{t('info.title')}</h4>
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                Pastikan semua data yang dimasukkan sesuai dengan dokumen resmi Anda. 
-                Data ini akan digunakan untuk proses check-in di hostel.
+                {t('info.lines.0')}
+                {t('info.lines.1')}
               </p>
             </div>
           </div>

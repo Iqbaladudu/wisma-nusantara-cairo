@@ -3,6 +3,7 @@
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Phone, MessageCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { PhoneFormField, PHONE_CONFIGS } from '@/components/ui/phone-form-field'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,23 +14,43 @@ interface AuditoriumContactInfoStepProps {
 }
 
 export function AuditoriumContactInfoStep({ form }: AuditoriumContactInfoStepProps) {
+  const t = useTranslations('auditorium.contact')
+  const tCards = useTranslations('auditorium.contact.cards')
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Phone className="h-5 w-5" />
-            Informasi Kontak
+            {t('title')}
           </CardTitle>
-          <CardDescription>Masukkan nomor telepon untuk konfirmasi dan komunikasi</CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <PhoneFormField
             control={form.control}
             name="contactInfo.egyptPhoneNumber"
-            label="Nomor Telepon (Egypt)"
-            description="Nomor telepon Egypt yang aktif untuk konfirmasi booking"
-            placeholder="Pilih negara dan masukkan nomor"
+            label={(() => {
+              try {
+                return t('egyptPhone.label')
+              } catch {
+                return ''
+              }
+            })()}
+            description={(() => {
+              try {
+                return t('egyptPhone.desc')
+              } catch {
+                return ''
+              }
+            })()}
+            placeholder={(() => {
+              try {
+                return t('egyptPhone.placeholder')
+              } catch {
+                return ''
+              }
+            })()}
             icon={<Phone className="h-4 w-4" />}
             {...PHONE_CONFIGS.EGYPT_FOCUSED}
           />
@@ -37,9 +58,27 @@ export function AuditoriumContactInfoStep({ form }: AuditoriumContactInfoStepPro
           <PhoneFormField
             control={form.control}
             name="contactInfo.whatsappNumber"
-            label="Nomor WhatsApp"
-            description="Nomor WhatsApp aktif untuk komunikasi dan update booking"
-            placeholder="Pilih negara dan masukkan nomor"
+            label={(() => {
+              try {
+                return t('whatsapp.label')
+              } catch {
+                return ''
+              }
+            })()}
+            description={(() => {
+              try {
+                return t('whatsapp.desc')
+              } catch {
+                return ''
+              }
+            })()}
+            placeholder={(() => {
+              try {
+                return t('whatsapp.placeholder')
+              } catch {
+                return ''
+              }
+            })()}
             icon={<MessageCircle className="h-4 w-4" />}
             {...PHONE_CONFIGS.ALL_COUNTRIES}
           />
@@ -51,11 +90,25 @@ export function AuditoriumContactInfoStep({ form }: AuditoriumContactInfoStepPro
           <div className="flex items-start gap-3">
             <Phone className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-green-700 dark:text-green-300">
-              <p className="font-medium mb-1">Nomor Telepon Egypt</p>
+              <p className="font-medium mb-1">
+                {(() => {
+                  try {
+                    return tCards('egypt.title')
+                  } catch {
+                    return ''
+                  }
+                })()}
+              </p>
               <ul className="space-y-1 text-xs">
-                <li>• Dropdown modern dengan search</li>
-                <li>• Egypt diprioritaskan di atas</li>
-                <li>• Untuk konfirmasi langsung</li>
+                {(() => {
+                  try {
+                    return (tCards.raw('egypt.lines') as string[]).map((l, i) => (
+                      <li key={i}>• {l}</li>
+                    ))
+                  } catch {
+                    return null
+                  }
+                })()}
               </ul>
             </div>
           </div>
@@ -65,11 +118,25 @@ export function AuditoriumContactInfoStep({ form }: AuditoriumContactInfoStepPro
           <div className="flex items-start gap-3">
             <MessageCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-blue-700 dark:text-blue-300">
-              <p className="font-medium mb-1">WhatsApp</p>
+              <p className="font-medium mb-1">
+                {(() => {
+                  try {
+                    return tCards('wa.title')
+                  } catch {
+                    return 'WhatsApp'
+                  }
+                })()}
+              </p>
               <ul className="space-y-1 text-xs">
-                <li>• Semua negara tersedia</li>
-                <li>• Search dengan nama negara</li>
-                <li>• Untuk update dan komunikasi</li>
+                {(() => {
+                  try {
+                    return (tCards.raw('wa.lines') as string[]).map((l, i) => (
+                      <li key={i}>• {l}</li>
+                    ))
+                  } catch {
+                    return null
+                  }
+                })()}
               </ul>
             </div>
           </div>
@@ -82,12 +149,25 @@ export function AuditoriumContactInfoStep({ form }: AuditoriumContactInfoStepPro
             <span className="text-white text-xs font-bold">i</span>
           </div>
           <div className="text-sm text-purple-700 dark:text-purple-300">
-            <p className="font-medium mb-1">Informasi Kontak:</p>
+            <p className="font-medium mb-1">
+              {(() => {
+                try {
+                  return tCards('info.title')
+                } catch {
+                  return ''
+                }
+              })()}
+            </p>
             <ul className="space-y-1 text-xs">
-              <li>• Kedua nomor akan digunakan untuk konfirmasi booking</li>
-              <li>• Pastikan nomor aktif dan dapat dihubungi</li>
-              <li>• Konfirmasi ketersediaan akan dikirim dalam 24 jam</li>
-              <li>• Update status pembayaran akan dikirim via WhatsApp</li>
+              {(() => {
+                try {
+                  return (tCards.raw('info.lines') as string[]).map((l, i) => (
+                    <li key={i}>• {l}</li>
+                  ))
+                } catch {
+                  return null
+                }
+              })()}
             </ul>
           </div>
         </div>

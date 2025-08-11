@@ -16,6 +16,8 @@ import {
   auditoriumDefaultValues,
 } from '@/lib/schemas'
 import { submitAuditoriumBooking } from '@/lib/api'
+import { useTranslations } from 'next-intl'
+import type { Resolver } from 'react-hook-form'
 
 // Step components (will be created separately)
 import { AuditoriumPersonalInfoStep } from './steps/auditorium-personal-info-step'
@@ -25,45 +27,7 @@ import { AuditoriumExcludeServicesStep } from './steps/auditorium-exclude-servic
 import { AuditoriumAdditionalInfoStep } from './steps/auditorium-additional-info-step'
 import { AuditoriumBookingSummaryStep } from './steps/auditorium-booking-summary-step'
 
-// Define steps
-const steps = [
-  {
-    id: 'personal-info',
-    title: 'Informasi Personal',
-    description: 'Masukkan data pribadi Anda',
-    icon: <User className="h-4 w-4" />,
-  },
-  {
-    id: 'event-details',
-    title: 'Detail Acara',
-    description: 'Informasi tentang acara Anda',
-    icon: <Calendar className="h-4 w-4" />,
-  },
-  {
-    id: 'contact-info',
-    title: 'Informasi Kontak',
-    description: 'Masukkan nomor telepon dan WhatsApp',
-    icon: <Phone className="h-4 w-4" />,
-  },
-  {
-    id: 'exclude-services',
-    title: 'Layanan Tambahan',
-    description: 'Pilih layanan tambahan yang dibutuhkan',
-    icon: <Settings className="h-4 w-4" />,
-  },
-  {
-    id: 'additional-info',
-    title: 'Informasi Tambahan',
-    description: 'Coupon code dan catatan (opsional)',
-    icon: <FileText className="h-4 w-4" />,
-  },
-  {
-    id: 'summary',
-    title: 'Ringkasan Booking',
-    description: 'Periksa kembali detail booking Anda',
-    icon: <FileCheck className="h-4 w-4" />,
-  },
-]
+// Steps will be created with translations inside the component
 
 interface MultistepAuditoriumFormProps {
   onSuccess?: (data: AuditoriumBookingFormData) => void
@@ -81,10 +45,15 @@ export function MultistepAuditoriumForm({
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const tSteps = useTranslations('auditorium.steps')
+  const tToasts = useTranslations('auditorium.toasts')
+  const totalSteps = 6
 
   // Initialize form with default values and any initial data
   const form = useForm<AuditoriumBookingFormData>({
-    resolver: zodResolver(auditoriumBookingSchema),
+    resolver: zodResolver(
+      auditoriumBookingSchema,
+    ) as unknown as Resolver<AuditoriumBookingFormData>,
     defaultValues: {
       ...auditoriumDefaultValues,
       ...initialData,
@@ -103,7 +72,7 @@ export function MultistepAuditoriumForm({
     try {
       await currentStepSchema.parseAsync(formData)
       return true
-    } catch (error) {
+    } catch (_error) {
       // The form will show the validation errors automatically
       return false
     }
@@ -112,7 +81,8 @@ export function MultistepAuditoriumForm({
   // Handle next step
   const handleNext = async () => {
     const isValid = await validateCurrentStep()
-    if (isValid && currentStep < steps.length) {
+    console.log(isValid)
+    if (isValid && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -137,8 +107,8 @@ export function MultistepAuditoriumForm({
       const result = await submitAuditoriumBooking(validatedData)
 
       // Success
-      toast.success('Booking auditorium berhasil dikirim!', {
-        description: 'Anda akan menerima konfirmasi melalui email dan WhatsApp.',
+      toast.success(tToasts('successTitle'), {
+        description: tToasts('successDesc'),
       })
 
       // Handle redirect or callback
@@ -152,12 +122,12 @@ export function MultistepAuditoriumForm({
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('Gagal mengirim booking', {
+        toast.error(tToasts('errorTitle'), {
           description: error.message,
         })
       } else {
-        toast.error('Terjadi kesalahan', {
-          description: 'Silakan coba lagi atau hubungi customer service.',
+        toast.error(tToasts('errorGeneric'), {
+          description: tToasts('errorGenericDesc'),
         })
       }
     } finally {
@@ -189,23 +159,67 @@ export function MultistepAuditoriumForm({
     <div className={className}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(() => {})}>
-          <MultiStepForm
-            steps={steps}
-            currentStep={currentStep}
-            onStepChange={setCurrentStep}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            onSubmit={handleSubmit}
-            isLoading={isSubmitting}
-            variant="card"
-            nextButtonText="Lanjut"
-            previousButtonText="Kembali"
-            submitButtonText="Kirim Booking"
-            showProgress={true}
-            className="max-w-4xl mx-auto"
-          >
-            {renderStepContent()}
-          </MultiStepForm>
+          {(() => {
+            const steps: {
+              id: string
+              title: string
+              description?: string
+              icon: React.ReactNode
+            }[] = [
+              {
+                id: 'personal-info',
+                title: tSteps('personalInfo.title'),
+                description: tSteps('personalInfo.description'),
+                icon: <User className="h-4 w-4" />,
+              },
+              {
+                id: 'event-details',
+                title: tSteps('eventDetails.title'),
+                description: tSteps('eventDetails.description'),
+                icon: <Calendar className="h-4 w-4" />,
+              },
+              {
+                id: 'contact-info',
+                title: tSteps('contactInfo.title'),
+                description: tSteps('contactInfo.description'),
+                icon: <Phone className="h-4 w-4" />,
+              },
+              {
+                id: 'exclude-services',
+                title: tSteps('excludeServices.title'),
+                description: tSteps('excludeServices.description'),
+                icon: <Settings className="h-4 w-4" />,
+              },
+              {
+                id: 'additional-info',
+                title: tSteps('additionalInfo.title'),
+                description: tSteps('additionalInfo.description'),
+                icon: <FileText className="h-4 w-4" />,
+              },
+              {
+                id: 'summary',
+                title: tSteps('summary.title'),
+                description: tSteps('summary.description'),
+                icon: <FileCheck className="h-4 w-4" />,
+              },
+            ]
+            return (
+              <MultiStepForm
+                steps={steps}
+                currentStep={currentStep}
+                onStepChange={setCurrentStep}
+                onNext={handleNext}
+                onPrevious={handlePrevious}
+                onSubmit={handleSubmit}
+                isLoading={isSubmitting}
+                variant="card"
+                showProgress={true}
+                className="max-w-4xl mx-auto"
+              >
+                {renderStepContent()}
+              </MultiStepForm>
+            )
+          })()}
         </form>
       </Form>
     </div>

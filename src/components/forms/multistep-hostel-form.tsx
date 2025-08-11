@@ -24,46 +24,10 @@ import { StayDurationStep } from './steps/stay-duration-step'
 import { ContactInfoStep } from './steps/contact-info-step'
 import { AdditionalServicesStep } from './steps/additional-services-step'
 import { BookingSummaryStep } from './steps/booking-summary-step'
+import { useTranslations } from 'next-intl'
+import type { Resolver } from 'react-hook-form'
 
-// Define steps
-const steps = [
-  {
-    id: 'personal-info',
-    title: 'Informasi Personal',
-    description: 'Masukkan data pribadi Anda',
-    icon: <User className="h-4 w-4" />,
-  },
-  {
-    id: 'room-selection',
-    title: 'Pilih Kamar',
-    description: 'Tentukan jenis dan jumlah kamar',
-    icon: <Bed className="h-4 w-4" />,
-  },
-  {
-    id: 'stay-duration',
-    title: 'Durasi Menginap',
-    description: 'Pilih tanggal check-in dan check-out',
-    icon: <Calendar className="h-4 w-4" />,
-  },
-  {
-    id: 'contact-info',
-    title: 'Informasi Kontak',
-    description: 'Masukkan nomor telepon dan WhatsApp',
-    icon: <Phone className="h-4 w-4" />,
-  },
-  {
-    id: 'additional-services',
-    title: 'Layanan Tambahan',
-    description: 'Pilih layanan tambahan (opsional)',
-    icon: <Settings className="h-4 w-4" />,
-  },
-  {
-    id: 'summary',
-    title: 'Ringkasan Booking',
-    description: 'Periksa kembali detail booking Anda',
-    icon: <FileCheck className="h-4 w-4" />,
-  },
-]
+// Steps will be created using translations in the component body
 
 interface MultistepHostelFormProps {
   onSuccess?: (data: HostelBookingFormData) => void
@@ -81,10 +45,13 @@ export function MultistepHostelForm({
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const tSteps = useTranslations('hostel.steps')
+  const tToasts = useTranslations('hostel.toasts')
+  const totalSteps = 6
 
   // Initialize form with default values and any initial data
   const form = useForm<HostelBookingFormData>({
-    resolver: zodResolver(hostelBookingSchema) as any,
+    resolver: zodResolver(hostelBookingSchema) as unknown as Resolver<HostelBookingFormData>,
     defaultValues: {
       ...defaultValues,
       ...initialData,
@@ -129,7 +96,7 @@ export function MultistepHostelForm({
   // Handle next step
   const handleNext = async () => {
     const isValid = await validateCurrentStep()
-    if (isValid && currentStep < steps.length) {
+    if (isValid && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -154,8 +121,8 @@ export function MultistepHostelForm({
       const result = await submitHostelBooking(validatedData)
 
       // Success
-      toast.success('Booking berhasil dikirim!', {
-        description: 'Anda akan menerima konfirmasi melalui email dan WhatsApp.',
+      toast.success(tToasts('successTitle'), {
+        description: tToasts('successDesc'),
       })
 
       // Handle redirect or callback
@@ -169,12 +136,12 @@ export function MultistepHostelForm({
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('Gagal mengirim booking', {
+        toast.error(tToasts('errorTitle'), {
           description: error.message,
         })
       } else {
-        toast.error('Terjadi kesalahan', {
-          description: 'Silakan coba lagi atau hubungi customer service.',
+        toast.error(tToasts('errorGeneric'), {
+          description: tToasts('errorGenericDesc'),
         })
       }
     } finally {
@@ -206,23 +173,72 @@ export function MultistepHostelForm({
     <div className={className}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(() => {})}>
-          <MultiStepForm
-            steps={steps}
-            currentStep={currentStep}
-            onStepChange={setCurrentStep}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            onSubmit={handleSubmit}
-            isLoading={isSubmitting}
-            variant="card"
-            nextButtonText="Lanjut"
-            previousButtonText="Kembali"
-            submitButtonText="Kirim Booking"
-            showProgress={true}
-            className="max-w-4xl mx-auto"
-          >
-            {renderStepContent()}
-          </MultiStepForm>
+          {/** Build steps with translations here to keep titles reactive to locale */}
+          {(() => {
+            // Create translated steps
+            const steps: {
+              id: string
+              title: string
+              description?: string
+              icon: React.ReactNode
+            }[] = [
+              {
+                id: 'personal-info',
+                title: tSteps('personalInfo.title'),
+                description: tSteps('personalInfo.description'),
+                icon: <User className="h-4 w-4" />,
+              },
+              {
+                id: 'room-selection',
+                title: tSteps('roomSelection.title'),
+                description: tSteps('roomSelection.description'),
+                icon: <Bed className="h-4 w-4" />,
+              },
+              {
+                id: 'stay-duration',
+                title: tSteps('stayDuration.title'),
+                description: tSteps('stayDuration.description'),
+                icon: <Calendar className="h-4 w-4" />,
+              },
+              {
+                id: 'contact-info',
+                title: tSteps('contactInfo.title'),
+                description: tSteps('contactInfo.description'),
+                icon: <Phone className="h-4 w-4" />,
+              },
+              {
+                id: 'additional-services',
+                title: tSteps('additionalServices.title'),
+                description: tSteps('additionalServices.description'),
+                icon: <Settings className="h-4 w-4" />,
+              },
+              {
+                id: 'summary',
+                title: tSteps('summary.title'),
+                description: tSteps('summary.description'),
+                icon: <FileCheck className="h-4 w-4" />,
+              },
+            ] as const
+            return (
+              <MultiStepForm
+                steps={steps}
+                currentStep={currentStep}
+                onStepChange={setCurrentStep}
+                onNext={handleNext}
+                onPrevious={handlePrevious}
+                onSubmit={handleSubmit}
+                isLoading={isSubmitting}
+                variant="card"
+                nextButtonText={undefined}
+                previousButtonText={undefined}
+                submitButtonText={undefined}
+                showProgress={true}
+                className="max-w-4xl mx-auto"
+              >
+                {renderStepContent()}
+              </MultiStepForm>
+            )
+          })()}
         </form>
       </Form>
     </div>

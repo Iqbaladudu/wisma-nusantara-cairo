@@ -4,7 +4,7 @@ import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Calendar as CalendarIcon, Clock } from 'lucide-react'
 import { format } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { id as dfnsID, ar as dfnsAR, enUS as dfnsEN } from 'date-fns/locale'
 
 import {
   FormControl,
@@ -22,18 +22,25 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { HostelBookingFormData } from '@/lib/schemas'
 import { calculateBookingPrice } from '@/lib/api'
+import { useTranslations, useLocale } from 'next-intl'
 
 interface StayDurationStepProps {
   form: UseFormReturn<HostelBookingFormData>
 }
 
 export function StayDurationStep({ form }: StayDurationStepProps) {
+  const t = useTranslations('hostel.stay')
+  const tDur = useTranslations('hostel.stay.duration')
+  const tPricing = useTranslations('hostel.stay.pricing')
+  const tInfo = useTranslations('hostel.stay.info')
+  const locale = useLocale()
+  const dfnsLocale = locale === 'id' ? dfnsID : locale === 'ar' ? dfnsAR : dfnsEN
   const watchedValues = form.watch()
-  
+
   // Calculate nights and pricing
   const checkInDate = watchedValues.stayDuration?.checkInDate
   const checkOutDate = watchedValues.stayDuration?.checkOutDate
-  
+
   let nights = 1
   if (checkInDate && checkOutDate) {
     const timeDiff = checkOutDate.getTime() - checkInDate.getTime()
@@ -48,11 +55,9 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <CalendarIcon className="h-5 w-5 text-primary" />
-            Durasi Menginap
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Pilih tanggal check-in dan check-out Anda
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Check-in Date */}
@@ -63,7 +68,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
               <FormItem className="flex flex-col">
                 <FormLabel className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4" />
-                  Tanggal Check-in
+                  {t('checkIn.label')}
                 </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -72,13 +77,13 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
                         variant="outline"
                         className={cn(
                           'w-full pl-3 text-left font-normal h-11',
-                          !field.value && 'text-muted-foreground'
+                          !field.value && 'text-muted-foreground',
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'PPP', { locale: id })
+                          format(field.value, 'PPP', { locale: dfnsLocale })
                         ) : (
-                          <span>Pilih tanggal check-in</span>
+                          <span>{t('checkIn.placeholder')}</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -98,9 +103,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Check-in tersedia mulai pukul 14:00
-                </FormDescription>
+                <FormDescription>{t('checkIn.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -114,7 +117,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
               <FormItem className="flex flex-col">
                 <FormLabel className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4" />
-                  Tanggal Check-out
+                  {t('checkOut.label')}
                 </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -123,13 +126,13 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
                         variant="outline"
                         className={cn(
                           'w-full pl-3 text-left font-normal h-11',
-                          !field.value && 'text-muted-foreground'
+                          !field.value && 'text-muted-foreground',
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'PPP', { locale: id })
+                          format(field.value, 'PPP', { locale: dfnsLocale })
                         ) : (
-                          <span>Pilih tanggal check-out</span>
+                          <span>{t('checkOut.placeholder')}</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -149,9 +152,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Check-out sebelum pukul 12:00
-                </FormDescription>
+                <FormDescription>{t('checkOut.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -168,16 +169,14 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
                 <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h4 className="font-medium text-blue-900 dark:text-blue-100">
-                  Durasi Menginap
-                </h4>
+                <h4 className="font-medium text-blue-900 dark:text-blue-100">{tDur('title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  {nights} malam
+                  {tDur('nights', { count: nights })}
                 </p>
               </div>
             </div>
             <Badge variant="secondary" className="text-lg px-3 py-1">
-              {nights} {nights === 1 ? 'malam' : 'malam'}
+              {nights} {tDur('nightWord')}
             </Badge>
           </div>
         </CardContent>
@@ -188,14 +187,17 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
         <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg text-green-900 dark:text-green-100">
-              Estimasi Biaya Kamar
+              {tPricing('title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {pricing.breakdown.singleBedCost > 0 && (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-green-700 dark:text-green-300">
-                  Single Bed ({watchedValues.roomSelection?.singleBed} kamar × {nights} malam)
+                  {tPricing('single', {
+                    rooms: watchedValues.roomSelection?.singleBed || 0,
+                    nights,
+                  })}
                 </span>
                 <span className="font-medium text-green-900 dark:text-green-100">
                   ${pricing.breakdown.singleBedCost}
@@ -205,7 +207,10 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
             {pricing.breakdown.doubleBedCost > 0 && (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-green-700 dark:text-green-300">
-                  Double Bed ({watchedValues.roomSelection?.doubleBed} kamar × {nights} malam)
+                  {tPricing('double', {
+                    rooms: watchedValues.roomSelection?.doubleBed || 0,
+                    nights,
+                  })}
                 </span>
                 <span className="font-medium text-green-900 dark:text-green-100">
                   ${pricing.breakdown.doubleBedCost}
@@ -215,7 +220,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
             {pricing.breakdown.extraBedCost > 0 && (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-green-700 dark:text-green-300">
-                  Extra Bed ({watchedValues.roomSelection?.extraBed} bed × {nights} malam)
+                  {tPricing('extra', { beds: watchedValues.roomSelection?.extraBed || 0, nights })}
                 </span>
                 <span className="font-medium text-green-900 dark:text-green-100">
                   ${pricing.breakdown.extraBedCost}
@@ -225,7 +230,7 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
             <div className="border-t border-green-200 dark:border-green-800 pt-3">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-green-900 dark:text-green-100">
-                  Total Biaya Kamar
+                  {tPricing('total')}
                 </span>
                 <span className="text-xl font-bold text-green-900 dark:text-green-100">
                   ${pricing.roomCost}
@@ -244,14 +249,11 @@ export function StayDurationStep({ form }: StayDurationStepProps) {
               <CalendarIcon className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
             </div>
             <div className="space-y-1">
-              <h4 className="font-medium text-yellow-900 dark:text-yellow-100">
-                Informasi Check-in & Check-out
-              </h4>
+              <h4 className="font-medium text-yellow-900 dark:text-yellow-100">{tInfo('title')}</h4>
               <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
-                <li>• Check-in: 14:00 - 23:00</li>
-                <li>• Check-out: 07:00 - 12:00</li>
-                <li>• Late check-in tersedia dengan pemberitahuan sebelumnya</li>
-                <li>• Early check-in tergantung ketersediaan kamar</li>
+                {tInfo.raw('lines').map((line: string, i: number) => (
+                  <li key={i}>• {line}</li>
+                ))}
               </ul>
             </div>
           </div>

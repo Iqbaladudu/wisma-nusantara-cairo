@@ -1,0 +1,785 @@
+{
+  "common": {
+    "next": "Lanjut",
+    "back": "Kembali",
+    "submit": "Kirim Booking",
+    "submitting": "Mengirim...",
+    "step": "Langkah {current} dari {total}",
+    "complete": "Selesai {percent}%",
+    "optional": "Opsional",
+    "languageSwitcher": {
+      "button": "Bahasa",
+      "title": "Pilih Bahasa",
+      "desc": "Ini akan mengubah bahasa halaman ini",
+      "current": "Aktif",
+      "id": "Indonesia",
+      "en": "Inggris",
+      "ar": "Arab"
+    }
+  },
+  "hostel": {
+    "steps": {
+      "personalInfo": {
+        "title": "Informasi Personal",
+        "description": "Masukkan data pribadi Anda"
+      },
+      "roomSelection": { "title": "Pilih Kamar", "description": "Tentukan jenis dan jumlah kamar" },
+      "stayDuration": {
+        "title": "Durasi Menginap",
+        "description": "Pilih tanggal check-in dan check-out"
+      },
+      "contactInfo": {
+        "title": "Informasi Kontak",
+        "description": "Masukkan nomor telepon dan WhatsApp"
+      },
+      "additionalServices": {
+        "title": "Layanan Tambahan",
+        "description": "Pilih layanan tambahan (opsional)"
+      },
+      "summary": {
+        "title": "Ringkasan Booking",
+        "description": "Periksa kembali detail booking Anda"
+      }
+    },
+    "toasts": {
+      "successTitle": "Booking berhasil dikirim!",
+      "successDesc": "Anda akan menerima konfirmasi melalui email dan WhatsApp.",
+      "errorTitle": "Gagal mengirim booking",
+      "errorGeneric": "Terjadi kesalahan",
+      "errorGenericDesc": "Silakan coba lagi atau hubungi customer service."
+    },
+    "personal": {
+      "title": "Informasi Personal",
+      "description": "Masukkan data pribadi Anda sesuai dengan dokumen resmi",
+      "fullName": {
+        "label": "Nama Lengkap",
+        "placeholder": "Masukkan nama lengkap sesuai paspor",
+        "description": "Nama harus sama dengan yang tertera di paspor"
+      },
+      "countryOfOrigin": {
+        "label": "Asal Negara",
+        "placeholder": "Contoh: Indonesia",
+        "description": "Negara asal sesuai kewarganegaraan"
+      },
+      "passportNumber": {
+        "label": "Nomor Paspor",
+        "placeholder": "Masukkan nomor paspor",
+        "description": "Nomor paspor akan digunakan untuk check-in"
+      },
+      "info": {
+        "title": "Informasi Penting",
+        "lines": [
+          "Pastikan semua data yang dimasukkan sesuai dengan dokumen resmi Anda.",
+          "Data ini akan digunakan untuk proses check-in di hostel."
+        ]
+      }
+    },
+    "room": {
+      "title": "Pilih Jenis Kamar",
+      "description": "Tentukan jenis dan jumlah kamar yang Anda butuhkan",
+      "single": {
+        "title": "Single Bed Room",
+        "price": "$30/malam",
+        "desc": "Kamar dengan 1 tempat tidur single"
+      },
+      "double": {
+        "title": "Double Bed Room",
+        "price": "$35/malam",
+        "desc": "Kamar dengan 1 tempat tidur double"
+      },
+      "extra": {
+        "title": "Extra Bed",
+        "price": "$10/malam",
+        "desc": "Tempat tidur tambahan di kamar yang sudah ada"
+      },
+      "guests": {
+        "title": "Detail Tamu",
+        "description": "Tentukan jumlah tamu yang akan menginap",
+        "adults": { "label": "Orang Dewasa", "desc": "Usia 18 tahun ke atas" },
+        "children": { "label": "Anak-anak", "desc": "Usia di bawah 18 tahun" }
+      },
+      "summary": {
+        "rooms": "Kamar",
+        "beds": "Tempat Tidur",
+        "guests": "Tamu",
+        "warning": "⚠️ Jumlah tempat tidur tidak mencukupi untuk semua tamu"
+      }
+    },
+    "stay": {
+      "title": "Durasi Menginap",
+      "description": "Pilih tanggal check-in dan check-out Anda",
+      "checkIn": {
+        "label": "Tanggal Check-in",
+        "placeholder": "Pilih tanggal check-in",
+        "desc": "Check-in tersedia mulai pukul 14:00"
+      },
+      "checkOut": {
+        "label": "Tanggal Check-out",
+        "placeholder": "Pilih tanggal check-out",
+        "desc": "Check-out sebelum pukul 12:00"
+      },
+      "duration": { "title": "Durasi Menginap", "nights": "{count} malam", "nightWord": "malam" },
+      "pricing": {
+        "title": "Estimasi Biaya Kamar",
+        "single": "Single Bed ({rooms} kamar × {nights} malam)",
+        "double": "Double Bed ({rooms} kamar × {nights} malam)",
+        "extra": "Extra Bed ({beds} bed × {nights} malam)",
+        "total": "Total Biaya Kamar"
+      },
+      "info": {
+        "title": "Informasi Check-in & Check-out",
+        "lines": [
+          "Check-in: 14:00 - 23:00",
+          "Check-out: 07:00 - 12:00",
+          "Late check-in tersedia dengan pemberitahuan sebelumnya",
+          "Early check-in tergantung ketersediaan kamar"
+        ]
+      }
+    },
+    "contact": {
+      "title": "Informasi Kontak",
+      "description": "Masukkan nomor telepon dan WhatsApp untuk komunikasi booking",
+      "whatsapp": {
+        "label": "Nomor WhatsApp",
+        "desc": "Nomor WhatsApp aktif untuk konfirmasi booking dan komunikasi",
+        "placeholder": "Pilih negara dan masukkan nomor"
+      },
+      "phone": {
+        "label": "Nomor Telepon",
+        "desc": "Nomor telepon yang dapat dihubungi (bisa sama dengan WhatsApp)",
+        "placeholder": "Pilih negara dan masukkan nomor"
+      },
+      "cards": {
+        "whatsapp": {
+          "title": "WhatsApp",
+          "lines": ["Konfirmasi booking dan update status akan dikirim melalui WhatsApp"]
+        },
+        "phone": {
+          "title": "Telepon",
+          "lines": ["Untuk komunikasi darurat dan koordinasi check-in"]
+        },
+        "important": {
+          "title": "Penting untuk Diperhatikan",
+          "lines": [
+            "Pastikan nomor yang dimasukkan aktif dan dapat dihubungi",
+            "Konfirmasi booking akan dikirim dalam 24 jam",
+            "Jika tidak ada konfirmasi, silakan hubungi customer service",
+            "Nomor WhatsApp akan digunakan untuk koordinasi check-in"
+          ]
+        },
+        "guide": {
+          "title": "Cara Menggunakan Input Nomor Telepon",
+          "features": {
+            "title": "Fitur Modern:",
+            "lines": [
+              "Dropdown dengan bendera semua negara",
+              "Search negara dengan nama atau kode",
+              "Auto-format nomor saat mengetik",
+              "Validasi format internasional"
+            ]
+          },
+          "how": {
+            "title": "Cara Penggunaan:",
+            "lines": [
+              "Klik dropdown untuk pilih negara",
+              "Ketik nama negara untuk search cepat",
+              "Masukkan nomor tanpa kode negara",
+              "Format otomatis ke standar internasional"
+            ]
+          }
+        }
+      }
+    },
+    "services": {
+      "coupon": {
+        "title": "Kode Kupon (Opsional)",
+        "desc": "Masukkan kode kupon jika Anda memilikinya untuk mendapatkan diskon",
+        "placeholder": "Masukkan kode kupon",
+        "validate": "Validasi",
+        "validating": "Validating...",
+        "error": "Error validating coupon",
+        "validDiscount": "Valid - Diskon {discount}%"
+      },
+      "pickup": {
+        "title": "Penjemputan Bandara (Opsional)",
+        "desc": "Pilih layanan penjemputan dari bandara Cairo",
+        "none": {
+          "label": "Tidak Perlu Penjemputan",
+          "desc": "Saya akan datang sendiri ke hostel",
+          "price": "Gratis"
+        },
+        "medium": {
+          "label": "Medium Private Vehicle",
+          "desc": "Untuk 2-4 penumpang dengan bagasi",
+          "price": "$35 USD"
+        },
+        "hiace": {
+          "label": "Hiace Van",
+          "desc": "Untuk hingga 10 penumpang dengan bagasi besar",
+          "price": "$50 USD"
+        },
+        "details": {
+          "title": "Detail Penjemputan",
+          "date": { "label": "Tanggal Keberangkatan", "placeholder": "Pilih tanggal" },
+          "time": {
+            "label": "Waktu Keberangkatan",
+            "placeholder": "HH:MM (contoh: 14:30)",
+            "desc": "Format 24 jam (contoh: 14:30)"
+          }
+        }
+      },
+      "meals": {
+        "title": "Paket Makanan Indonesia (Opsional)",
+        "desc": "Pesan makanan Indonesia untuk masa menginap Anda",
+        "breakfast": { "title": "Sarapan", "placeholder": "Pilih menu sarapan" },
+        "lunch": { "title": "Makan Siang", "placeholder": "Pilih menu makan siang" },
+        "dinner": { "title": "Makan Malam", "placeholder": "Pilih menu makan malam" },
+        "options": {
+          "none": "Tidak Pesan",
+          "nasi_goreng": "Nasi Goreng",
+          "ayam_goreng": "Ayam Goreng",
+          "nasi_kuning": "Nasi Kuning",
+          "prices": {
+            "nasi_goreng": "100 EGP/porsi",
+            "ayam_goreng": "120 EGP/porsi",
+            "nasi_kuning": "130 EGP/porsi"
+          }
+        },
+        "portions": "Jumlah Porsi",
+        "frequency": {
+          "label": "Frekuensi",
+          "placeholder": "Pilih frekuensi",
+          "checkin_only": "Hari Check-in Saja",
+          "during_stay": "Selama Menginap",
+          "checkout_only": "Hari Check-out Saja"
+        },
+        "info": {
+          "title": "Informasi Paket Makanan",
+          "lines": [
+            "Makanan disiapkan dengan resep Indonesia asli",
+            "Minimum order 4 porsi untuk Nasi Goreng dan Ayam Goreng",
+            "Minimum order 10 porsi untuk Nasi Kuning",
+            "Pesanan harus dikonfirmasi H-1 sebelum tanggal yang diinginkan",
+            "Harga sudah termasuk nasi, lauk, dan sayuran"
+          ]
+        }
+      }
+    },
+    "summary": {
+      "header": {
+        "title": "Ringkasan Booking",
+        "desc": "Periksa kembali semua detail booking Anda sebelum mengirim"
+      },
+      "sections": {
+        "personal": "Informasi Personal",
+        "roomGuests": "Kamar & Tamu",
+        "stayDuration": "Durasi Menginap",
+        "contact": "Informasi Kontak",
+        "services": "Layanan Tambahan",
+        "coupon": "Kode Kupon",
+        "airportPickup": "Penjemputan Bandara",
+        "mealPackage": "Paket Makanan",
+        "noMeals": "Tidak ada paket makanan yang dipilih"
+      },
+      "labels": {
+        "fullName": "Nama Lengkap",
+        "country": "Asal Negara",
+        "passport": "Nomor Paspor",
+        "singleRoom": "Single Bed Room",
+        "doubleRoom": "Double Bed Room",
+        "extraBed": "Extra Bed",
+        "rooms": "kamar",
+        "beds": "bed",
+        "adults": "Orang Dewasa",
+        "children": "Anak-anak",
+        "people": "orang",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "duration": "Durasi",
+        "whatsapp": "WhatsApp",
+        "phone": "Telepon"
+      },
+      "pricing": {
+        "summary": "Ringkasan Biaya",
+        "room": "Biaya Kamar",
+        "subtotalRoom": "Subtotal Kamar",
+        "services": "Layanan Tambahan",
+        "subtotalServices": "Subtotal Layanan",
+        "total": "Total Biaya"
+      },
+      "terms": {
+        "title": "Syarat dan Ketentuan / Terms and Conditions",
+        "checkInTime": {
+          "id": [
+            "Waktu check-in adalah mulai pukul 13.00 s/d 22.00.",
+            "Melakukan check-in pada pukul 08.00 – 12.00 siang (early check-in) akan dikenakan biaya tambahan sebesar USD 5.",
+            "Melakukan check-in pada pukul 22.00 – 06.00 akan dikenakan biaya penuh + biaya tambahan sebesar USD 5.",
+            "Melakukan check-in pada pukul 06.00 – 08.00 akan dikenakan biaya sebesar USD 15."
+          ],
+          "en": [
+            "Check-in time is from 1:00 PM to 10:00 PM.",
+            "Early check-in from 8:00 AM to 12:00 PM incurs an additional fee of USD 5.",
+            "Check-in from 10:00 PM to 6:00 AM incurs the full payment plus an additional fee of USD 5.",
+            "Check-in from 6:00 AM to 8:00 AM incurs a fee of USD 15."
+          ]
+        },
+        "checkOutTime": {
+          "id": [
+            "Batas maksmimal check-out adalah pukul 12.00 siang.",
+            "Melakukan check-out pada pukul 13.00 – 16.00 dikenakan biaya tambahan sebesar USD 5",
+            "Melakukan check-out pada pukul 16.00 – 18.00 dikenakan biaya tambahan sebesar USD 15",
+            "Melakukan check-out pada pukul 18.00 – 12.00 siang di hari setelahnya dikenakan biaya penuh"
+          ],
+          "en": [
+            "The maximum check-out time is 12:00 PM noon.",
+            "Late check-out from 1:00 PM to 4:00 PM incurs an additional fee of USD 5.",
+            "Late check-out from 4:00 PM to 6:00 PM incurs an additional fee of USD 15.",
+            "Check-out from 6:00 PM to 12:00 PM the following day incurs the full payment."
+          ]
+        },
+        "cancellation": {
+          "id": [
+            "Pembatalan yang dilakukan pada H-3 hingga Hari-H tanggal kedatangan, akan dikenakan biaya pembatalan seharga biaya 1 malam menginap dari jumlah kamar yang dipesan."
+          ],
+          "en": [
+            "Cancellations made from 3 days prior to arrival until the arrival date (H-3 to D-Day) will incur a cancellation fee equivalent to the cost of 1 night's stay per reserved room."
+          ]
+        },
+        "smoking": {
+          "id": [
+            "Seluruh area Wisma Nusantara & semua kamar adalah area dilarang merokok.",
+            "Bersedia membayar Biaya tambahan sebesar 100 USD untuk tamu yang melanggar kebijakan merokok."
+          ],
+          "en": [
+            "All areas of Wisma Nusantara & all rooms are designated as non-smoking areas.",
+            "Guests agree to pay an additional fee of 100 USD for violating the smoking policy."
+          ]
+        },
+        "damage": {
+          "id": [
+            "Tamu bersedia bertanggung jawab atas segala kerusakan yang disebabkan pada kamar atau properti hotel selama menginap."
+          ],
+          "en": [
+            "Guests agree to be responsible for any damage caused to the room or hotel property during their stay."
+          ]
+        },
+        "forceMajeure": {
+          "id": [
+            "Wisma Nusantara tidak bertanggung jawab atas kegagalan memenuhi kewajibannya jika terjadi keadaan tak terduga di luar kendali."
+          ],
+          "en": [
+            "Wisma Nusantara shall not be held responsible for failure to fulfill its obligations in the event of unforeseen circumstances beyond its control."
+          ]
+        },
+        "amendment": {
+          "id": [
+            "Wisma Nusantara berhak untuk mengubah syarat dan ketentuan ini tanpa pemberitahuan sebelumnya."
+          ],
+          "en": [
+            "Wisma Nusantara reserves the right to modify these terms and conditions without prior notice."
+          ]
+        },
+        "additional": [
+          "Konfirmasi booking akan dikirim melalui WhatsApp dalam 24 jam",
+          "Pembayaran dapat dilakukan setelah konfirmasi booking",
+          "Bawa paspor asli untuk proses check-in"
+        ],
+        "agree": {
+          "title": "Persetujuan Syarat dan Ketentuan",
+          "label": "Saya telah membaca dan menyetujui semua syarat dan ketentuan di atas"
+        }
+      }
+    }
+  },
+  "auditorium": {
+    "steps": {
+      "personalInfo": {
+        "title": "Informasi Personal",
+        "description": "Masukkan informasi pribadi Anda untuk booking auditorium"
+      },
+      "eventDetails": {
+        "title": "Detail Acara",
+        "description": "Masukkan informasi detail tentang acara yang akan diselenggarakan"
+      },
+      "contactInfo": {
+        "title": "Informasi Kontak",
+        "description": "Masukkan nomor telepon untuk konfirmasi dan komunikasi"
+      },
+      "excludeServices": {
+        "title": "Layanan Tambahan",
+        "description": "Pilih layanan tambahan yang Anda butuhkan untuk acara Anda"
+      },
+      "additionalInfo": {
+        "title": "Informasi Tambahan",
+        "description": "Informasi opsional untuk melengkapi booking Anda"
+      },
+      "summary": {
+        "title": "Ringkasan Booking Auditorium",
+        "description": "Periksa kembali semua informasi sebelum mengirim booking"
+      }
+    },
+    "toasts": {
+      "successTitle": "Booking auditorium berhasil dikirim!",
+      "successDesc": "Anda akan menerima konfirmasi melalui email dan WhatsApp.",
+      "errorTitle": "Gagal mengirim booking",
+      "errorGeneric": "Terjadi kesalahan",
+      "errorGenericDesc": "Silakan coba lagi atau hubungi customer service."
+    },
+    "personal": {
+      "title": "Informasi Personal",
+      "description": "Masukkan informasi pribadi Anda untuk booking auditorium",
+      "fullName": {
+        "label": "Nama Lengkap",
+        "placeholder": "Masukkan nama lengkap Anda",
+        "description": "Nama lengkap sesuai dengan dokumen identitas"
+      },
+      "countryOfOrigin": {
+        "label": "Asal Negara",
+        "placeholder": "Contoh: Indonesia, Malaysia, Egypt",
+        "description": "Negara asal atau kewarganegaraan Anda"
+      },
+      "info": {
+        "title": "Informasi Penting:",
+        "lines": [
+          "Pastikan nama lengkap sesuai dengan dokumen identitas",
+          "Informasi ini akan digunakan untuk konfirmasi booking",
+          "Data pribadi Anda akan dijaga kerahasiaannya"
+        ]
+      }
+    },
+    "event": {
+      "title": "Detail Acara",
+      "description": "Masukkan informasi detail tentang acara yang akan diselenggarakan",
+      "eventName": {
+        "label": "Nama Acara",
+        "placeholder": "Contoh: Seminar Teknologi, Workshop Bisnis, Konferensi",
+        "description": "Nama atau judul acara yang akan diselenggarakan"
+      },
+      "eventDate": {
+        "label": "Tanggal Acara",
+        "placeholder": "Pilih tanggal acara",
+        "description": "Pilih tanggal pelaksanaan acara (tidak boleh di masa lalu)"
+      },
+      "eventTime": {
+        "label": "Waktu Mulai",
+        "placeholder": "Contoh: 09:00",
+        "description": "Waktu mulai acara (format 24 jam: HH:MM)"
+      },
+      "eventEndTime": {
+        "label": "Waktu Selesai",
+        "placeholder": "Contoh: 17:00",
+        "description": "Waktu selesai acara (format 24 jam: HH:MM)"
+      },
+      "pricing": {
+        "title": "Estimasi Biaya Sewa",
+        "duration": "Durasi Acara",
+        "total": "Total Biaya",
+        "avgPerHour": "Rata-rata per Jam",
+        "breakdownTitle": "Rincian Paket:",
+        "packagesTitle": "Paket Tersedia:",
+        "packages": [
+          "1 Jam: 115 EGP",
+          "4 Jam: 420 EGP",
+          "9 Jam: 900 EGP",
+          "12 Jam: 1100 EGP",
+          "14 Jam: 1250 EGP"
+        ]
+      },
+      "notes": {
+        "title": "Catatan Penting:",
+        "lines": [
+          "Auditorium tersedia dari pukul 08:00 - 22:00",
+          "Booking minimal H-1 dari tanggal acara",
+          "Konfirmasi ketersediaan akan dikirim via WhatsApp",
+          "Durasi maksimal penggunaan adalah 8 jam per hari"
+        ]
+      }
+    },
+    "contact": {
+      "title": "Informasi Kontak",
+      "description": "Masukkan nomor telepon untuk konfirmasi dan komunikasi",
+      "egyptPhone": {
+        "label": "Nomor Telepon (Egypt)",
+        "desc": "Nomor telepon Egypt yang aktif untuk konfirmasi booking",
+        "placeholder": "Pilih negara dan masukkan nomor"
+      },
+      "whatsapp": {
+        "label": "Nomor WhatsApp",
+        "desc": "Nomor WhatsApp aktif untuk komunikasi dan update booking",
+        "placeholder": "Pilih negara dan masukkan nomor"
+      },
+      "cards": {
+        "egypt": {
+          "title": "Nomor Telepon Egypt",
+          "lines": [
+            "Dropdown modern dengan search",
+            "Egypt diprioritaskan di atas",
+            "Untuk konfirmasi langsung"
+          ]
+        },
+        "wa": {
+          "title": "WhatsApp",
+          "lines": [
+            "Semua negara tersedia",
+            "Search dengan nama negara",
+            "Untuk update dan komunikasi"
+          ]
+        },
+        "info": {
+          "title": "Informasi Kontak:",
+          "lines": [
+            "Kedua nomor akan digunakan untuk konfirmasi booking",
+            "Pastikan nomor aktif dan dapat dihubungi",
+            "Konfirmasi ketersediaan akan dikirim dalam 24 jam",
+            "Update status pembayaran akan dikirim via WhatsApp"
+          ]
+        }
+      }
+    },
+    "exclude": {
+      "title": "Layanan Tambahan",
+      "description": "Pilih layanan tambahan yang Anda butuhkan untuk acara Anda",
+      "notice": "Catatan Penting: Penyewaan layanan tambahan hanya tersedia dalam paket yang disebutkan, tidak tersedia dalam satuan.",
+      "ac": {
+        "label": "Air Conditioner (AC)",
+        "placeholder": "Pilih paket AC",
+        "desc": "Pilih paket AC sesuai dengan durasi acara Anda",
+        "options": {
+          "none": "Tidak menggunakan AC",
+          "4-6_hours": "4 - 6 Jam: 100 EGP",
+          "7-9_hours": "7 - 9 Jam: 150 EGP",
+          "9-12_hours": "9 - 12 Jam: 250 EGP",
+          "12-14_hours": "12 - 14 Jam: 300 EGP"
+        }
+      },
+      "chairs": {
+        "label": "Kursi Ekstra",
+        "placeholder": "Pilih jumlah kursi",
+        "desc": "Tambahan kursi untuk tamu ekstra",
+        "options": {
+          "none": "Tidak membutuhkan",
+          "3_chairs": "3 kursi: 75 EGP",
+          "5_chairs": "5 kursi: 120 EGP",
+          "7_chairs": "7 kursi: 160 EGP",
+          "10_chairs": "10 kursi: 210 EGP",
+          "15_chairs": "15 kursi: 300 EGP",
+          "20_chairs": "20 kursi: 380 EGP",
+          "30_chairs": "30 kursi: 540 EGP",
+          "40_chairs": "40 kursi: 680 EGP"
+        }
+      },
+      "projector": {
+        "label": "Proyektor",
+        "placeholder": "Pilih paket proyektor",
+        "desc": "BenQ GV30: Resolusi tinggi 720p, desain portable, koneksi kabel & nirkabel, speaker terintegrasi",
+        "options": {
+          "none": "Tidak membutuhkan proyektor",
+          "projector_only": "Proyektor saja: 250 EGP",
+          "screen_only": "Layar saja: 75 EGP",
+          "projector_and_screen": "Proyektor dan Layar: 275 EGP"
+        }
+      },
+      "tables": {
+        "label": "Meja Tambahan",
+        "placeholder": "Pilih jumlah meja",
+        "desc": "Meja tambahan untuk keperluan acara",
+        "options": {
+          "none": "Tidak membutuhkan meja",
+          "3_tables": "3 meja: 140 EGP",
+          "6_tables": "6 meja: 240 EGP",
+          "9_tables": "9 meja: 300 EGP",
+          "more_than_9": "Lebih dari 9 meja: Tanya ketersediaan"
+        }
+      },
+      "plates": {
+        "label": "Piring",
+        "placeholder": "Pilih jumlah piring",
+        "desc": "Piring untuk keperluan makan",
+        "options": {
+          "none": "Tidak membutuhkan",
+          "6_plates": "6 piring: 60 EGP",
+          "12_plates": "12 piring: 110 EGP",
+          "18_plates": "18 piring: 160 EGP",
+          "24_plates": "24 piring: 200 EGP"
+        }
+      },
+      "glasses": {
+        "label": "Gelas",
+        "placeholder": "Pilih jumlah gelas",
+        "desc": "Gelas untuk keperluan minum",
+        "options": {
+          "none": "Tidak membutuhkan gelas",
+          "3_glasses": "3 gelas: 20 EGP",
+          "6_glasses": "6 gelas: 35 EGP",
+          "12_glasses": "12 gelas: 60 EGP"
+        }
+      },
+      "total": {
+        "title": "Total Layanan Tambahan",
+        "desc": "Total Biaya Layanan Tambahan",
+        "breakdown": "Rincian Layanan:"
+      }
+    },
+    "additional": {
+      "title": "Informasi Tambahan",
+      "description": "Informasi opsional untuk melengkapi booking Anda",
+      "coupon": {
+        "label": "Kode Coupon (Opsional)",
+        "placeholder": "Masukkan kode coupon jika ada",
+        "validate": "Validasi",
+        "valid": "Valid - Diskon {discount}%",
+        "invalid": "Gagal memvalidasi coupon",
+        "enterFirst": "Masukkan kode coupon terlebih dahulu"
+      },
+      "notes": {
+        "label": "Catatan Acara (Opsional)",
+        "placeholder": "Tambahkan catatan khusus tentang acara Anda, kebutuhan teknis, atau permintaan khusus lainnya...",
+        "desc": "Catatan tambahan tentang acara, kebutuhan khusus, atau permintaan lainnya"
+      },
+      "tips": {
+        "title": "Tips Catatan Acara:",
+        "lines": [
+          "Sebutkan jumlah peserta yang diperkirakan",
+          "Kebutuhan teknis (proyektor, sound system, dll.)",
+          "Tata letak kursi yang diinginkan",
+          "Kebutuhan catering atau refreshment",
+          "Waktu setup dan breakdown yang diperlukan"
+        ]
+      }
+    },
+    "summary": {
+      "header": {
+        "title": "Ringkasan Booking Auditorium",
+        "desc": "Periksa kembali semua informasi sebelum mengirim booking"
+      },
+      "edit": "Ubah",
+      "sections": {
+        "personal": "Informasi Personal",
+        "event": "Detail Acara",
+        "contact": "Informasi Kontak",
+        "additional": "Informasi Tambahan",
+        "priceInfo": "Informasi Harga",
+        "agree": "Persetujuan Syarat dan Ketentuan"
+      },
+      "labels": {
+        "fullName": "Nama Lengkap",
+        "country": "Asal Negara",
+        "eventName": "Nama Acara",
+        "eventDate": "Tanggal Acara",
+        "startTime": "Waktu Mulai",
+        "endTime": "Waktu Selesai",
+        "egyptPhone": "Nomor Telepon (Egypt)",
+        "whatsapp": "Nomor WhatsApp",
+        "coupon": "Kode Coupon",
+        "notes": "Catatan Acara",
+        "none": "Tidak ada",
+        "noNotes": "Tidak ada catatan khusus"
+      },
+      "pricing": {
+        "duration": "Durasi Acara",
+        "base": "Biaya Dasar",
+        "extra": "Layanan Tambahan",
+        "total": "Total Biaya",
+        "auditoriumPackagesTitle": "Paket Auditorium Tersedia:",
+        "auditoriumPackages": [
+          "1 Jam: 115 EGP",
+          "4 Jam: 420 EGP",
+          "9 Jam: 900 EGP",
+          "12 Jam: 1100 EGP",
+          "14 Jam: 1250 EGP"
+        ],
+        "fillTimesInfo": {
+          "title": "Informasi Harga:",
+          "lines": [
+            "Lengkapi waktu mulai dan selesai untuk melihat estimasi harga",
+            "Perhitungan berdasarkan paket durasi yang tersedia",
+            "Diskon coupon akan diterapkan jika kode valid",
+            "Invoice akan dikirim melalui WhatsApp"
+          ]
+        }
+      },
+      "terms": {
+        "title": "Syarat dan Ketentuan / Terms and Conditions",
+        "opsHours": {
+          "id": "Jam operasional kami dari pukul 08.00 - 22.00, penyewaan diluar jam operasional akan dikenakan biaya tambahan sebesar 125 EGP (diluar biaya sewa)",
+          "en": "Operating hours are from 08:00 to 22:00. There is an additional charge of 125 EGP (plus rental fees) for rentals outside these hours."
+        },
+        "cancel": {
+          "id": [
+            "Jika melakukan pembatalan, akan dikenakan biaya pembatalan dari waktu yang akan disewakan, berikut rinciannya:",
+            "H - 1: 40% dari waktu yang akan digunakan",
+            "Hari H: 50% dari waktu yang akan digunakan"
+          ],
+          "en": [
+            "In case of cancellation, a cancellation fee will be imposed depending on the time to be used as follows:",
+            "One day prior: 40% of the intended time",
+            "Day of or after: 50% of the intended time"
+          ]
+        },
+        "clean": {
+          "id": [
+            "Bersedia menjaga kebersihan auditorium wisma nusantara dan sekitarnya.",
+            "Akan dikenakan biaya kebersihan sebesar 150 EGP jika meninggalkan area wisma nusantara dalam keadaan kotor."
+          ],
+          "en": [
+            "Willing to maintain the cleanliness of the Wisma Nusantara auditorium and its surroundings.",
+            "A cleaning fee of 150 EGP will be charged if leaving the Auditorium area dirty."
+          ]
+        },
+        "walls": {
+          "id": [
+            "Tidak menempel/memasang sesuatu pada dinding auditorium, seperti solatip, lakban, lem, paku dan aksesoris lain TANPA SEIZIN staff, dan bersedia dikenakan denda jika melanggar."
+          ],
+          "en": [
+            "Not to attach/install anything on the auditorium walls such as adhesive tape, masking tape, glue, nails, and other accessories without staff permission, and willing to be fined if violated."
+          ]
+        },
+        "smoking": {
+          "id": [
+            "Kebijakan Merokok:",
+            "Seluruh area Wisma Nusantara adalah area dilarang merokok.",
+            "Bersedia membayar Biaya tambahan sebesar EGP 100/ Orang untuk tamu yang melanggar kebijakan merokok."
+          ],
+          "en": [
+            "Smoking Policy:",
+            "Smoking is prohibited in all areas of Wisma Nusantara.",
+            "Guests who violate the smoking policy are subject to an additional fee of EGP 100 per person."
+          ]
+        },
+        "damage": {
+          "id": ["Bersedia ganti rugi jika merusak/menghilangkan fasilitas wisma nusantara."],
+          "en": ["Willing to compensate for any damage/loss of Wisma Nusantara facilities."]
+        },
+        "forceMajeure": {
+          "id": [
+            "Jika terjadi keadaan tak terduga di luar kendali, Wisma Nusantara tidak bertanggung jawab atas kegagalan memenuhi kewajibannya."
+          ],
+          "en": [
+            "Wisma Nusantara is not responsible for failing to meet its obligations in the event of unforeseen circumstances beyond its control."
+          ]
+        },
+        "amendment": {
+          "id": [
+            "Wisma Nusantara berhak untuk mengubah syarat dan ketentuan ini tanpa pemberitahuan sebelumnya."
+          ],
+          "en": [
+            "Wisma Nusantara reserves the right to change these terms and conditions without prior notice."
+          ]
+        },
+        "additional": [
+          "Booking akan dikonfirmasi dalam waktu maksimal 24 jam setelah pengajuan",
+          "Pembayaran dilakukan setelah konfirmasi ketersediaan auditorium",
+          "Fasilitas teknis tersedia sesuai kebutuhan dan ketersediaan"
+        ],
+        "agree": {
+          "title": "Persetujuan Syarat dan Ketentuan",
+          "label": "Saya telah membaca dan menyetujui semua syarat dan ketentuan di atas"
+        },
+        "ready": {
+          "title": "Siap untuk mengirim booking?",
+          "desc": "Pastikan semua informasi sudah benar. Setelah dikirim, Anda akan menerima konfirmasi melalui WhatsApp dalam waktu 24 jam."
+        }
+      }
+    }
+  }
+}

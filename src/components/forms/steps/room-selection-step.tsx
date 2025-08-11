@@ -4,42 +4,34 @@ import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Bed, Users, Plus, Minus } from 'lucide-react'
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { HostelBookingFormData } from '@/lib/schemas'
+import { useTranslations } from 'next-intl'
 
 interface RoomSelectionStepProps {
   form: UseFormReturn<HostelBookingFormData>
 }
 
 export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
+  const tRoom = useTranslations('hostel.room')
+  const tGuests = useTranslations('hostel.room.guests')
+  const tSummary = useTranslations('hostel.room.summary')
   const watchedValues = form.watch()
-  
+
   // Calculate totals
-  const totalRooms = (watchedValues.roomSelection?.singleBed || 0) + 
-                    (watchedValues.roomSelection?.doubleBed || 0)
+  const totalRooms =
+    (watchedValues.roomSelection?.singleBed || 0) + (watchedValues.roomSelection?.doubleBed || 0)
   const totalBeds = totalRooms + (watchedValues.roomSelection?.extraBed || 0)
-  const totalGuests = (watchedValues.guestDetails?.adults || 0) + 
-                     (watchedValues.guestDetails?.children || 0)
+  const totalGuests =
+    (watchedValues.guestDetails?.adults || 0) + (watchedValues.guestDetails?.children || 0)
 
   // Helper function to update room count
-  const updateRoomCount = (
-    field: 'singleBed' | 'doubleBed' | 'extraBed',
-    increment: boolean
-  ) => {
+  const updateRoomCount = (field: 'singleBed' | 'doubleBed' | 'extraBed', increment: boolean) => {
     const currentValue = watchedValues.roomSelection?.[field] || 0
     const newValue = increment ? currentValue + 1 : Math.max(0, currentValue - 1)
-    
+
     form.setValue(`roomSelection.${field}`, newValue, {
       shouldValidate: true,
       shouldDirty: true,
@@ -47,19 +39,16 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
   }
 
   // Helper function to update guest count
-  const updateGuestCount = (
-    field: 'adults' | 'children',
-    increment: boolean
-  ) => {
+  const updateGuestCount = (field: 'adults' | 'children', increment: boolean) => {
     const currentValue = watchedValues.guestDetails?.[field] || 0
     let newValue: number
-    
+
     if (field === 'adults') {
       newValue = increment ? Math.min(20, currentValue + 1) : Math.max(1, currentValue - 1)
     } else {
       newValue = increment ? Math.min(7, currentValue + 1) : Math.max(0, currentValue - 1)
     }
-    
+
     form.setValue(`guestDetails.${field}`, newValue, {
       shouldValidate: true,
       shouldDirty: true,
@@ -73,11 +62,9 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Bed className="h-5 w-5 text-primary" />
-            Pilih Jenis Kamar
+            {tRoom('title')}
           </CardTitle>
-          <CardDescription>
-            Tentukan jenis dan jumlah kamar yang Anda butuhkan
-          </CardDescription>
+          <CardDescription>{tRoom('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Single Bed Rooms */}
@@ -85,12 +72,10 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <Bed className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Single Bed Room</span>
-                <Badge variant="secondary">$30/malam</Badge>
+                <span className="font-medium">{tRoom('single.title')}</span>
+                <Badge variant="secondary">{tRoom('single.price')}</Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Kamar dengan 1 tempat tidur single
-              </p>
+              <p className="text-sm text-muted-foreground">{tRoom('single.desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -121,12 +106,10 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <Bed className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Double Bed Room</span>
-                <Badge variant="secondary">$35/malam</Badge>
+                <span className="font-medium">{tRoom('double.title')}</span>
+                <Badge variant="secondary">{tRoom('double.price')}</Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Kamar dengan 1 tempat tidur double
-              </p>
+              <p className="text-sm text-muted-foreground">{tRoom('double.desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -157,12 +140,10 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <Bed className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Extra Bed</span>
-                <Badge variant="secondary">$10/malam</Badge>
+                <span className="font-medium">{tRoom('extra.title')}</span>
+                <Badge variant="secondary">{tRoom('extra.price')}</Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Tempat tidur tambahan di kamar yang sudah ada
-              </p>
+              <p className="text-sm text-muted-foreground">{tRoom('extra.desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -195,18 +176,16 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Users className="h-5 w-5 text-blue-500" />
-            Detail Tamu
+            {tGuests('title')}
           </CardTitle>
-          <CardDescription>
-            Tentukan jumlah tamu yang akan menginap
-          </CardDescription>
+          <CardDescription>{tGuests('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Adults */}
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div className="flex-1">
-              <span className="font-medium">Orang Dewasa</span>
-              <p className="text-sm text-muted-foreground">Usia 18 tahun ke atas</p>
+              <span className="font-medium">{tGuests('adults.label')}</span>
+              <p className="text-sm text-muted-foreground">{tGuests('adults.desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -236,8 +215,8 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
           {/* Children */}
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div className="flex-1">
-              <span className="font-medium">Anak-anak</span>
-              <p className="text-sm text-muted-foreground">Usia di bawah 18 tahun</p>
+              <span className="font-medium">{tGuests('children.label')}</span>
+              <p className="text-sm text-muted-foreground">{tGuests('children.desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -267,26 +246,28 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
       </Card>
 
       {/* Summary */}
-      <Card className={`${totalBeds < totalGuests ? 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800' : 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800'}`}>
+      <Card
+        className={`${totalBeds < totalGuests ? 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800' : 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800'}`}
+      >
         <CardContent className="pt-6">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold">{totalRooms}</div>
-              <div className="text-sm text-muted-foreground">Kamar</div>
+              <div className="text-sm text-muted-foreground">{tSummary('rooms')}</div>
             </div>
             <div>
               <div className="text-2xl font-bold">{totalBeds}</div>
-              <div className="text-sm text-muted-foreground">Tempat Tidur</div>
+              <div className="text-sm text-muted-foreground">{tSummary('beds')}</div>
             </div>
             <div>
               <div className="text-2xl font-bold">{totalGuests}</div>
-              <div className="text-sm text-muted-foreground">Tamu</div>
+              <div className="text-sm text-muted-foreground">{tSummary('guests')}</div>
             </div>
           </div>
           {totalBeds < totalGuests && (
             <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg dark:bg-red-900 dark:border-red-800">
               <p className="text-sm text-red-700 dark:text-red-300 text-center">
-                ⚠️ Jumlah tempat tidur tidak mencukupi untuk semua tamu
+                {tSummary('warning')}
               </p>
             </div>
           )}

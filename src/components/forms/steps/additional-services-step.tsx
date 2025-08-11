@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Car, UtensilsCrossed, Tag, Calendar, Clock, Plus, Minus } from 'lucide-react'
 import { format } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { id as dfnsID, ar as dfnsAR, enUS as dfnsEN } from 'date-fns/locale'
 
 import {
   FormControl,
@@ -32,12 +32,18 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { HostelBookingFormData } from '@/lib/schemas'
 import { validateCoupon } from '@/lib/api'
+import { useTranslations, useLocale } from 'next-intl'
 
 interface AdditionalServicesStepProps {
   form: UseFormReturn<HostelBookingFormData>
 }
 
 export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
+  const tCoupon = useTranslations('hostel.services.coupon')
+  const tPickup = useTranslations('hostel.services.pickup')
+  const tMeals = useTranslations('hostel.services.meals')
+  const locale = useLocale()
+  const dfnsLocale = locale === 'id' ? dfnsID : locale === 'ar' ? dfnsAR : dfnsEN
   const [couponValidating, setCouponValidating] = useState(false)
   const [couponStatus, setCouponStatus] = useState<{
     valid: boolean
@@ -60,8 +66,16 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
     setCouponValidating(true)
     try {
       const result = await validateCoupon(couponCode.trim())
-      setCouponStatus(result)
-    } catch (error) {
+      setCouponStatus({
+        valid: result.valid,
+        discount: result.discount,
+        message:
+          result.message ??
+          (result.valid
+            ? tCoupon('validDiscount', { discount: result.discount ?? 0 })
+            : tCoupon('error')),
+      })
+    } catch (_error) {
       setCouponStatus({
         valid: false,
         message: 'Error validating coupon',
@@ -92,11 +106,9 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Tag className="h-5 w-5 text-primary" />
-            Kode Kupon (Opsional)
+            {tCoupon('title')}
           </CardTitle>
-          <CardDescription>
-            Masukkan kode kupon jika Anda memilikinya untuk mendapatkan diskon
-          </CardDescription>
+          <CardDescription>{tCoupon('desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2">
@@ -107,7 +119,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                 <FormItem className="flex-1">
                   <FormControl>
                     <Input
-                      placeholder="Masukkan kode kupon"
+                      placeholder={tCoupon('placeholder')}
                       {...field}
                       className="h-11"
                       onChange={(e) => {
@@ -127,7 +139,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
               disabled={couponValidating || !watchedValues.couponCode?.trim()}
               className="h-11"
             >
-              {couponValidating ? 'Validating...' : 'Validasi'}
+              {couponValidating ? tCoupon('validating') : tCoupon('validate')}
             </Button>
           </div>
 
@@ -146,10 +158,9 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                     : 'text-red-700 dark:text-red-300'
                 }`}
               >
-                {couponStatus.message}
-                {couponStatus.valid && couponStatus.discount && (
-                  <span className="font-medium"> - Diskon {couponStatus.discount}%</span>
-                )}
+                {couponStatus.valid
+                  ? tCoupon('validDiscount', { discount: couponStatus.discount ?? 0 })
+                  : tCoupon('error')}
               </p>
             </div>
           )}
@@ -161,9 +172,9 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Car className="h-5 w-5 text-blue-500" />
-            Penjemputan Bandara (Opsional)
+            {tPickup('title')}
           </CardTitle>
-          <CardDescription>Pilih layanan penjemputan dari bandara Cairo</CardDescription>
+          <CardDescription>{tPickup('desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <FormField
@@ -181,39 +192,33 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                       <RadioGroupItem value="none" id="none" />
                       <div className="flex-1">
                         <label htmlFor="none" className="font-medium cursor-pointer">
-                          Tidak Perlu Penjemputan
+                          {tPickup('none.label')}
                         </label>
-                        <p className="text-sm text-muted-foreground">
-                          Saya akan datang sendiri ke hostel
-                        </p>
+                        <p className="text-sm text-muted-foreground">{tPickup('none.desc')}</p>
                       </div>
-                      <Badge variant="secondary">Gratis</Badge>
+                      <Badge variant="secondary">{tPickup('none.price')}</Badge>
                     </div>
 
                     <div className="flex items-center space-x-3 p-4 border rounded-lg">
                       <RadioGroupItem value="medium_vehicle" id="medium" />
                       <div className="flex-1">
                         <label htmlFor="medium" className="font-medium cursor-pointer">
-                          Medium Private Vehicle
+                          {tPickup('medium.label')}
                         </label>
-                        <p className="text-sm text-muted-foreground">
-                          Untuk 2-4 penumpang dengan bagasi
-                        </p>
+                        <p className="text-sm text-muted-foreground">{tPickup('medium.desc')}</p>
                       </div>
-                      <Badge variant="secondary">$35 USD</Badge>
+                      <Badge variant="secondary">{tPickup('medium.price')}</Badge>
                     </div>
 
                     <div className="flex items-center space-x-3 p-4 border rounded-lg">
                       <RadioGroupItem value="hiace" id="hiace" />
                       <div className="flex-1">
                         <label htmlFor="hiace" className="font-medium cursor-pointer">
-                          Hiace Van
+                          {tPickup('hiace.label')}
                         </label>
-                        <p className="text-sm text-muted-foreground">
-                          Untuk hingga 10 penumpang dengan bagasi besar
-                        </p>
+                        <p className="text-sm text-muted-foreground">{tPickup('hiace.desc')}</p>
                       </div>
-                      <Badge variant="secondary">$50 USD</Badge>
+                      <Badge variant="secondary">{tPickup('hiace.price')}</Badge>
                     </div>
                   </RadioGroup>
                 </FormControl>
@@ -225,7 +230,9 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
           {/* Departure Date & Time (conditional) */}
           {showDepartureFields && (
             <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-950 dark:border-blue-800">
-              <h4 className="font-medium text-blue-900 dark:text-blue-100">Detail Penjemputan</h4>
+              <h4 className="font-medium text-blue-900 dark:text-blue-100">
+                {tPickup('details.title')}
+              </h4>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField
@@ -235,7 +242,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                     <FormItem className="flex flex-col">
                       <FormLabel className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        Tanggal Keberangkatan
+                        {tPickup('details.date.label')}
                       </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -248,9 +255,9 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                               )}
                             >
                               {field.value ? (
-                                format(field.value, 'PPP', { locale: id })
+                                format(field.value, 'PPP', { locale: dfnsLocale })
                               ) : (
-                                <span>Pilih tanggal</span>
+                                <span>{tPickup('details.date.placeholder')}</span>
                               )}
                               <Calendar className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -282,12 +289,16 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
-                        Waktu Keberangkatan
+                        {tPickup('details.time.label')}
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="HH:MM (contoh: 14:30)" {...field} className="h-11" />
+                        <Input
+                          placeholder={tPickup('details.time.placeholder')}
+                          {...field}
+                          className="h-11"
+                        />
                       </FormControl>
-                      <FormDescription>Format 24 jam (contoh: 14:30)</FormDescription>
+                      <FormDescription>{tPickup('details.time.desc')}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -303,16 +314,16 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <UtensilsCrossed className="h-5 w-5 text-orange-500" />
-            Paket Makanan Indonesia (Opsional)
+            {tMeals('title')}
           </CardTitle>
-          <CardDescription>Pesan makanan Indonesia untuk masa menginap Anda</CardDescription>
+          <CardDescription>{tMeals('desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Breakfast */}
           <div className="space-y-4">
             <h4 className="font-medium flex items-center gap-2">
               <UtensilsCrossed className="h-4 w-4" />
-              Sarapan
+              {tMeals('breakfast.title')}
             </h4>
 
             <FormField
@@ -323,31 +334,31 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="h-11">
-                        <SelectValue placeholder="Pilih menu sarapan" />
+                        <SelectValue placeholder={tMeals('breakfast.placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">Tidak Pesan</SelectItem>
+                        <SelectItem value="none">{tMeals('options.none')}</SelectItem>
                         <SelectItem value="nasi_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Goreng</span>
+                            <span>{tMeals('options.nasi_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              100 EGP/porsi
+                              {tMeals('options.prices.nasi_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="ayam_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Ayam Goreng</span>
+                            <span>{tMeals('options.ayam_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              120 EGP/porsi
+                              {tMeals('options.prices.ayam_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="nasi_kuning">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Kuning</span>
+                            <span>{tMeals('options.nasi_kuning')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              130 EGP/porsi
+                              {tMeals('options.prices.nasi_kuning')}
                             </Badge>
                           </div>
                         </SelectItem>
@@ -362,7 +373,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
             {watchedValues.mealOptions?.breakfastOption !== 'none' && (
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Jumlah Porsi</label>
+                  <label className="text-sm font-medium">{tMeals('portions')}</label>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
@@ -392,16 +403,22 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   name="mealOptions.breakfastFrequency"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Frekuensi</FormLabel>
+                      <FormLabel>{tMeals('frequency.label')}</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Pilih frekuensi" />
+                            <SelectValue placeholder={tMeals('frequency.placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="checkin_only">Hari Check-in Saja</SelectItem>
-                            <SelectItem value="during_stay">Selama Menginap</SelectItem>
-                            <SelectItem value="checkout_only">Hari Check-out Saja</SelectItem>
+                            <SelectItem value="checkin_only">
+                              {tMeals('frequency.checkin_only')}
+                            </SelectItem>
+                            <SelectItem value="during_stay">
+                              {tMeals('frequency.during_stay')}
+                            </SelectItem>
+                            <SelectItem value="checkout_only">
+                              {tMeals('frequency.checkout_only')}
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -419,7 +436,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
           <div className="space-y-4">
             <h4 className="font-medium flex items-center gap-2">
               <UtensilsCrossed className="h-4 w-4" />
-              Makan Siang
+              {tMeals('lunch.title')}
             </h4>
 
             <FormField
@@ -430,31 +447,31 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="h-11">
-                        <SelectValue placeholder="Pilih menu makan siang" />
+                        <SelectValue placeholder={tMeals('lunch.placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">Tidak Pesan</SelectItem>
+                        <SelectItem value="none">{tMeals('options.none')}</SelectItem>
                         <SelectItem value="nasi_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Goreng</span>
+                            <span>{tMeals('options.nasi_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              100 EGP/porsi
+                              {tMeals('options.prices.nasi_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="ayam_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Ayam Goreng</span>
+                            <span>{tMeals('options.ayam_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              120 EGP/porsi
+                              {tMeals('options.prices.ayam_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="nasi_kuning">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Kuning</span>
+                            <span>{tMeals('options.nasi_kuning')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              130 EGP/porsi
+                              {tMeals('options.prices.nasi_kuning')}
                             </Badge>
                           </div>
                         </SelectItem>
@@ -469,7 +486,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
             {watchedValues.mealOptions?.lunchOption !== 'none' && (
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Jumlah Porsi</label>
+                  <label className="text-sm font-medium">{tMeals('portions')}</label>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
@@ -499,16 +516,22 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   name="mealOptions.lunchFrequency"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Frekuensi</FormLabel>
+                      <FormLabel>{tMeals('frequency.label')}</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Pilih frekuensi" />
+                            <SelectValue placeholder={tMeals('frequency.placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="checkin_only">Hari Check-in Saja</SelectItem>
-                            <SelectItem value="during_stay">Selama Menginap</SelectItem>
-                            <SelectItem value="checkout_only">Hari Check-out Saja</SelectItem>
+                            <SelectItem value="checkin_only">
+                              {tMeals('frequency.checkin_only')}
+                            </SelectItem>
+                            <SelectItem value="during_stay">
+                              {tMeals('frequency.during_stay')}
+                            </SelectItem>
+                            <SelectItem value="checkout_only">
+                              {tMeals('frequency.checkout_only')}
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -526,7 +549,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
           <div className="space-y-4">
             <h4 className="font-medium flex items-center gap-2">
               <UtensilsCrossed className="h-4 w-4" />
-              Makan Malam
+              {tMeals('dinner.title')}
             </h4>
 
             <FormField
@@ -537,31 +560,31 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="h-11">
-                        <SelectValue placeholder="Pilih menu makan malam" />
+                        <SelectValue placeholder={tMeals('dinner.placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">Tidak Pesan</SelectItem>
+                        <SelectItem value="none">{tMeals('options.none')}</SelectItem>
                         <SelectItem value="nasi_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Goreng</span>
+                            <span>{tMeals('options.nasi_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              100 EGP/porsi
+                              {tMeals('options.prices.nasi_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="ayam_goreng">
                           <div className="flex justify-between items-center w-full">
-                            <span>Ayam Goreng</span>
+                            <span>{tMeals('options.ayam_goreng')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              120 EGP/porsi
+                              {tMeals('options.prices.ayam_goreng')}
                             </Badge>
                           </div>
                         </SelectItem>
                         <SelectItem value="nasi_kuning">
                           <div className="flex justify-between items-center w-full">
-                            <span>Nasi Kuning</span>
+                            <span>{tMeals('options.nasi_kuning')}</span>
                             <Badge variant="secondary" className="ml-2">
-                              130 EGP/porsi
+                              {tMeals('options.prices.nasi_kuning')}
                             </Badge>
                           </div>
                         </SelectItem>
@@ -576,7 +599,7 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
             {watchedValues.mealOptions?.dinnerOption !== 'none' && (
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Jumlah Porsi</label>
+                  <label className="text-sm font-medium">{tMeals('portions')}</label>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
@@ -606,16 +629,22 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
                   name="mealOptions.dinnerFrequency"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Frekuensi</FormLabel>
+                      <FormLabel>{tMeals('frequency.label')}</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Pilih frekuensi" />
+                            <SelectValue placeholder={tMeals('frequency.placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="checkin_only">Hari Check-in Saja</SelectItem>
-                            <SelectItem value="during_stay">Selama Menginap</SelectItem>
-                            <SelectItem value="checkout_only">Hari Check-out Saja</SelectItem>
+                            <SelectItem value="checkin_only">
+                              {tMeals('frequency.checkin_only')}
+                            </SelectItem>
+                            <SelectItem value="during_stay">
+                              {tMeals('frequency.during_stay')}
+                            </SelectItem>
+                            <SelectItem value="checkout_only">
+                              {tMeals('frequency.checkout_only')}
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -638,14 +667,12 @@ export function AdditionalServicesStep({ form }: AdditionalServicesStepProps) {
             </div>
             <div className="space-y-2">
               <h4 className="font-medium text-orange-900 dark:text-orange-100">
-                Informasi Paket Makanan
+                {tMeals('info.title')}
               </h4>
               <ul className="text-sm text-orange-700 dark:text-orange-300 space-y-1">
-                <li>• Makanan disiapkan dengan resep Indonesia asli</li>
-                <li>• Minimum order 4 porsi untuk Nasi Goreng dan Ayam Goreng</li>
-                <li>• Minimum order 10 porsi untuk Nasi Kuning</li>
-                <li>• Pesanan harus dikonfirmasi H-1 sebelum tanggal yang diinginkan</li>
-                <li>• Harga sudah termasuk nasi, lauk, dan sayuran</li>
+                {tMeals.raw('info.lines').map((line: string, i: number) => (
+                  <li key={i}>• {line}</li>
+                ))}
               </ul>
             </div>
           </div>

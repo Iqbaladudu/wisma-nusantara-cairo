@@ -15,23 +15,23 @@ import {
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AuditoriumBookingFormData } from '@/lib/schemas'
+import { useTranslations } from 'next-intl'
 
 interface AuditoriumPersonalInfoStepProps {
   form: UseFormReturn<AuditoriumBookingFormData>
 }
 
 export function AuditoriumPersonalInfoStep({ form }: AuditoriumPersonalInfoStepProps) {
+  const t = useTranslations('auditorium.personal')
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-5 w-5" />
-            Informasi Personal
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Masukkan informasi pribadi Anda untuk booking auditorium
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
@@ -41,18 +41,12 @@ export function AuditoriumPersonalInfoStep({ form }: AuditoriumPersonalInfoStepP
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <User className="h-4 w-4" />
-                  Nama Lengkap
+                  {t('fullName.label')}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Masukkan nama lengkap Anda"
-                    {...field}
-                    className="h-12"
-                  />
+                  <Input placeholder={t('fullName.placeholder')} {...field} className="h-12" />
                 </FormControl>
-                <FormDescription>
-                  Nama lengkap sesuai dengan dokumen identitas
-                </FormDescription>
+                <FormDescription>{t('fullName.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -65,18 +59,16 @@ export function AuditoriumPersonalInfoStep({ form }: AuditoriumPersonalInfoStepP
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Globe className="h-4 w-4" />
-                  Asal Negara
+                  {t('countryOfOrigin.label')}
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Contoh: Indonesia, Malaysia, Egypt"
+                    placeholder={t('countryOfOrigin.placeholder')}
                     {...field}
                     className="h-12"
                   />
                 </FormControl>
-                <FormDescription>
-                  Negara asal atau kewarganegaraan Anda
-                </FormDescription>
+                <FormDescription>{t('countryOfOrigin.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -90,11 +82,11 @@ export function AuditoriumPersonalInfoStep({ form }: AuditoriumPersonalInfoStepP
             <span className="text-white text-xs font-bold">i</span>
           </div>
           <div className="text-sm text-blue-700 dark:text-blue-300">
-            <p className="font-medium mb-1">Informasi Penting:</p>
+            <p className="font-medium mb-1">{t('info.title')}</p>
             <ul className="space-y-1 text-xs">
-              <li>• Pastikan nama lengkap sesuai dengan dokumen identitas</li>
-              <li>• Informasi ini akan digunakan untuk konfirmasi booking</li>
-              <li>• Data pribadi Anda akan dijaga kerahasiaannya</li>
+              <li>• {t('info.lines.0')}</li>
+              <li>• {t('info.lines.1')}</li>
+              <li>• {t('info.lines.2')}</li>
             </ul>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Tag, FileText, Check, X, Loader2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import {
   FormControl,
@@ -25,6 +26,7 @@ interface AuditoriumAdditionalInfoStepProps {
 }
 
 export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoStepProps) {
+  const t = useTranslations('auditorium.additional')
   const [couponStatus, setCouponStatus] = useState<{
     isValidating: boolean
     isValid: boolean | null
@@ -42,12 +44,12 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
       setCouponStatus({
         isValidating: false,
         isValid: false,
-        message: 'Masukkan kode coupon terlebih dahulu',
+        message: t('coupon.enterFirst'),
       })
       return
     }
 
-    setCouponStatus(prev => ({ ...prev, isValidating: true }))
+    setCouponStatus((prev) => ({ ...prev, isValidating: true }))
 
     try {
       const result = await validateCoupon(couponCode.trim())
@@ -57,11 +59,11 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
         message: result.message || '',
         discount: result.discount,
       })
-    } catch (error) {
+    } catch (_error) {
       setCouponStatus({
         isValidating: false,
         isValid: false,
-        message: 'Gagal memvalidasi coupon',
+        message: t('coupon.invalid'),
       })
     }
   }
@@ -72,11 +74,9 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Informasi Tambahan
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Informasi opsional untuk melengkapi booking Anda
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
@@ -86,12 +86,12 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Tag className="h-4 w-4" />
-                  Kode Coupon (Opsional)
+                  {t('coupon.label')}
                 </FormLabel>
                 <div className="flex gap-2">
                   <FormControl>
                     <Input
-                      placeholder="Masukkan kode coupon jika ada"
+                      placeholder={t('coupon.placeholder')}
                       {...field}
                       className="h-12"
                       onChange={(e) => {
@@ -115,19 +115,22 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
                     {couponStatus.isValidating ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      'Validasi'
+                      t('coupon.validate')
                     )}
                   </Button>
                 </div>
-                
+
                 {/* Coupon Status */}
                 {couponStatus.message && (
                   <div className="flex items-center gap-2 mt-2">
                     {couponStatus.isValid === true && (
                       <>
                         <Check className="h-4 w-4 text-green-600" />
-                        <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                          Valid - Diskon {couponStatus.discount}%
+                        <Badge
+                          variant="secondary"
+                          className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        >
+                          {t('coupon.valid', { discount: couponStatus.discount ?? 0 })}
                         </Badge>
                       </>
                     )}
@@ -135,16 +138,14 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
                       <>
                         <X className="h-4 w-4 text-red-600" />
                         <Badge variant="destructive">
-                          {couponStatus.message}
+                          {couponStatus.message || t('coupon.invalidDefault')}
                         </Badge>
                       </>
                     )}
                   </div>
                 )}
-                
-                <FormDescription>
-                  Masukkan kode coupon untuk mendapatkan diskon (jika ada)
-                </FormDescription>
+
+                {/* No extra coupon description in catalog */}
                 <FormMessage />
               </FormItem>
             )}
@@ -157,18 +158,16 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  Catatan Acara (Opsional)
+                  {t('notes.label')}
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Tambahkan catatan khusus tentang acara Anda, kebutuhan teknis, atau permintaan khusus lainnya..."
+                    placeholder={t('notes.placeholder')}
                     className="min-h-[120px] resize-none"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>
-                  Catatan tambahan tentang acara, kebutuhan khusus, atau permintaan lainnya
-                </FormDescription>
+                <FormDescription>{t('notes.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,13 +181,11 @@ export function AuditoriumAdditionalInfoStep({ form }: AuditoriumAdditionalInfoS
             <span className="text-white text-xs font-bold">?</span>
           </div>
           <div className="text-sm text-indigo-700 dark:text-indigo-300">
-            <p className="font-medium mb-1">Tips Catatan Acara:</p>
+            <p className="font-medium mb-1">{t('tips.title')}</p>
             <ul className="space-y-1 text-xs">
-              <li>• Sebutkan jumlah peserta yang diperkirakan</li>
-              <li>• Kebutuhan teknis (proyektor, sound system, dll.)</li>
-              <li>• Tata letak kursi yang diinginkan</li>
-              <li>• Kebutuhan catering atau refreshment</li>
-              <li>• Waktu setup dan breakdown yang diperlukan</li>
+              {(t.raw('tips.lines') as string[]).map((line, idx) => (
+                <li key={idx}>• {line}</li>
+              ))}
             </ul>
           </div>
         </div>

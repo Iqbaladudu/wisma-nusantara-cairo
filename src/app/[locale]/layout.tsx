@@ -1,9 +1,14 @@
 import React from 'react'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { FloatingNav } from '@/components/ui/floating-nav'
 import { DevIndicator } from '@/components/ui/dev-indicator'
+import { notFound } from 'next/navigation'
+import { routing } from '@/i18n/routing'
+
 import './styles.css'
 
 // Configure Jakarta Sans Pro font
@@ -29,23 +34,41 @@ export const metadata = {
   },
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const isSupported = (l: string): l is (typeof routing.locales)[number] =>
+    (routing.locales as readonly string[]).includes(l)
+  if (!isSupported(locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const dir = locale === 'ar' ? 'rtl' : 'ltr'
+  const messages = await getMessages()
 
   return (
-    <html lang="id" className={jakartaSans.variable}>
+    <html lang={locale} dir={dir} className={jakartaSans.variable}>
       <body className={jakartaSans.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main>{children}</main>
-          <FloatingNav />
-          <DevIndicator />
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main>{children}</main>
+            <FloatingNav />
+            <DevIndicator />
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

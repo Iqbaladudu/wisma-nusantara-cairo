@@ -2,16 +2,8 @@
 
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { 
-  Settings, 
-  AirVent, 
-  Armchair, 
-  Monitor, 
-  Table, 
-  Utensils, 
-  Coffee,
-  Info
-} from 'lucide-react'
+import { Settings, AirVent, Armchair, Monitor, Table, Utensils, Coffee, Info } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import {
   FormControl,
@@ -21,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -40,7 +32,8 @@ interface AuditoriumExcludeServicesStepProps {
 
 export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeServicesStepProps) {
   const watchedValues = form.watch()
-  
+  const t = useTranslations('auditorium.exclude')
+
   // Calculate exclude services pricing
   const excludeServicesPricing = calculateExcludeServicesPrice(watchedValues.excludeServices)
 
@@ -50,19 +43,15 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5" />
-            Layanan Tambahan
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Pilih layanan tambahan yang Anda butuhkan untuk acara Anda
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Important Notice */}
           <Alert>
             <Info className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Catatan Penting:</strong> Penyewaan layanan tambahan hanya tersedia dalam paket yang disebutkan, tidak tersedia dalam satuan.
-            </AlertDescription>
+            <AlertDescription>{t('notice')}</AlertDescription>
           </Alert>
 
           {/* Air Conditioner */}
@@ -73,25 +62,23 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <AirVent className="h-4 w-4" />
-                  Air Conditioner (AC)
+                  {t('ac.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih paket AC" />
+                      <SelectValue placeholder={t('ac.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak menggunakan AC</SelectItem>
-                    <SelectItem value="4-6_hours">4 - 6 Jam: 100 EGP</SelectItem>
-                    <SelectItem value="7-9_hours">7 - 9 Jam: 150 EGP</SelectItem>
-                    <SelectItem value="9-12_hours">9 - 12 Jam: 250 EGP</SelectItem>
-                    <SelectItem value="12-14_hours">12 - 14 Jam: 300 EGP</SelectItem>
+                    <SelectItem value="none">{t('ac.options.none')}</SelectItem>
+                    <SelectItem value="4-6_hours">{t('ac.options.4-6_hours')}</SelectItem>
+                    <SelectItem value="7-9_hours">{t('ac.options.7-9_hours')}</SelectItem>
+                    <SelectItem value="9-12_hours">{t('ac.options.9-12_hours')}</SelectItem>
+                    <SelectItem value="12-14_hours">{t('ac.options.12-14_hours')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Pilih paket AC sesuai dengan durasi acara Anda
-                </FormDescription>
+                <FormDescription>{t('ac.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -105,29 +92,27 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Armchair className="h-4 w-4" />
-                  Kursi Ekstra
+                  {t('chairs.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih jumlah kursi" />
+                      <SelectValue placeholder={t('chairs.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak membutuhkan</SelectItem>
-                    <SelectItem value="3_chairs">3 kursi: 75 EGP</SelectItem>
-                    <SelectItem value="5_chairs">5 kursi: 120 EGP</SelectItem>
-                    <SelectItem value="7_chairs">7 kursi: 160 EGP</SelectItem>
-                    <SelectItem value="10_chairs">10 kursi: 210 EGP</SelectItem>
-                    <SelectItem value="15_chairs">15 kursi: 300 EGP</SelectItem>
-                    <SelectItem value="20_chairs">20 kursi: 380 EGP</SelectItem>
-                    <SelectItem value="30_chairs">30 kursi: 540 EGP</SelectItem>
-                    <SelectItem value="40_chairs">40 kursi: 680 EGP</SelectItem>
+                    <SelectItem value="none">{t('chairs.options.none')}</SelectItem>
+                    <SelectItem value="3_chairs">{t('chairs.options.3_chairs')}</SelectItem>
+                    <SelectItem value="5_chairs">{t('chairs.options.5_chairs')}</SelectItem>
+                    <SelectItem value="7_chairs">{t('chairs.options.7_chairs')}</SelectItem>
+                    <SelectItem value="10_chairs">{t('chairs.options.10_chairs')}</SelectItem>
+                    <SelectItem value="15_chairs">{t('chairs.options.15_chairs')}</SelectItem>
+                    <SelectItem value="20_chairs">{t('chairs.options.20_chairs')}</SelectItem>
+                    <SelectItem value="30_chairs">{t('chairs.options.30_chairs')}</SelectItem>
+                    <SelectItem value="40_chairs">{t('chairs.options.40_chairs')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Tambahan kursi untuk tamu ekstra
-                </FormDescription>
+                <FormDescription>{t('chairs.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -141,24 +126,28 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Monitor className="h-4 w-4" />
-                  Proyektor
+                  {t('projector.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih paket proyektor" />
+                      <SelectValue placeholder={t('projector.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak membutuhkan proyektor</SelectItem>
-                    <SelectItem value="projector_only">Proyektor saja: 250 EGP</SelectItem>
-                    <SelectItem value="screen_only">Layar saja: 75 EGP</SelectItem>
-                    <SelectItem value="projector_and_screen">Proyektor dan Layar: 275 EGP</SelectItem>
+                    <SelectItem value="none">{t('projector.options.none')}</SelectItem>
+                    <SelectItem value="projector_only">
+                      {t('projector.options.projector_only')}
+                    </SelectItem>
+                    <SelectItem value="screen_only">
+                      {t('projector.options.screen_only')}
+                    </SelectItem>
+                    <SelectItem value="projector_and_screen">
+                      {t('projector.options.projector_and_screen')}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  <strong>BenQ GV30:</strong> Resolusi tinggi 720p, desain portable, koneksi kabel & nirkabel, speaker terintegrasi
-                </FormDescription>
+                <FormDescription>{t('projector.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -172,25 +161,23 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Table className="h-4 w-4" />
-                  Meja Tambahan
+                  {t('tables.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih jumlah meja" />
+                      <SelectValue placeholder={t('tables.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak membutuhkan meja</SelectItem>
-                    <SelectItem value="3_tables">3 meja: 140 EGP</SelectItem>
-                    <SelectItem value="6_tables">6 meja: 240 EGP</SelectItem>
-                    <SelectItem value="9_tables">9 meja: 300 EGP</SelectItem>
-                    <SelectItem value="more_than_9">Lebih dari 9 meja: Tanya ketersediaan</SelectItem>
+                    <SelectItem value="none">{t('tables.options.none')}</SelectItem>
+                    <SelectItem value="3_tables">{t('tables.options.3_tables')}</SelectItem>
+                    <SelectItem value="6_tables">{t('tables.options.6_tables')}</SelectItem>
+                    <SelectItem value="9_tables">{t('tables.options.9_tables')}</SelectItem>
+                    <SelectItem value="more_than_9">{t('tables.options.more_than_9')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Meja tambahan untuk keperluan acara
-                </FormDescription>
+                <FormDescription>{t('tables.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -204,25 +191,23 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Utensils className="h-4 w-4" />
-                  Piring
+                  {t('plates.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih jumlah piring" />
+                      <SelectValue placeholder={t('plates.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak membutuhkan</SelectItem>
-                    <SelectItem value="6_plates">6 piring: 60 EGP</SelectItem>
-                    <SelectItem value="12_plates">12 piring: 110 EGP</SelectItem>
-                    <SelectItem value="18_plates">18 piring: 160 EGP</SelectItem>
-                    <SelectItem value="24_plates">24 piring: 200 EGP</SelectItem>
+                    <SelectItem value="none">{t('plates.options.none')}</SelectItem>
+                    <SelectItem value="6_plates">{t('plates.options.6_plates')}</SelectItem>
+                    <SelectItem value="12_plates">{t('plates.options.12_plates')}</SelectItem>
+                    <SelectItem value="18_plates">{t('plates.options.18_plates')}</SelectItem>
+                    <SelectItem value="24_plates">{t('plates.options.24_plates')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Piring untuk keperluan makan
-                </FormDescription>
+                <FormDescription>{t('plates.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -236,24 +221,22 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <Coffee className="h-4 w-4" />
-                  Gelas
+                  {t('glasses.label')}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Pilih jumlah gelas" />
+                      <SelectValue placeholder={t('glasses.placeholder')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="none">Tidak membutuhkan gelas</SelectItem>
-                    <SelectItem value="3_glasses">3 gelas: 20 EGP</SelectItem>
-                    <SelectItem value="6_glasses">6 gelas: 35 EGP</SelectItem>
-                    <SelectItem value="12_glasses">12 gelas: 60 EGP</SelectItem>
+                    <SelectItem value="none">{t('glasses.options.none')}</SelectItem>
+                    <SelectItem value="3_glasses">{t('glasses.options.3_glasses')}</SelectItem>
+                    <SelectItem value="6_glasses">{t('glasses.options.6_glasses')}</SelectItem>
+                    <SelectItem value="12_glasses">{t('glasses.options.12_glasses')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Gelas untuk keperluan minum
-                </FormDescription>
+                <FormDescription>{t('glasses.desc')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -267,7 +250,7 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
           <CardHeader className="pb-4">
             <CardTitle className="text-lg text-blue-900 dark:text-blue-100 flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              Total Layanan Tambahan
+              {t('total.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -275,11 +258,13 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
               <Badge variant="outline" className="mb-2 text-xl px-4 py-2 border-blue-300">
                 {excludeServicesPricing.totalPrice} EGP
               </Badge>
-              <p className="text-sm text-blue-700 dark:text-blue-300">Total Biaya Layanan Tambahan</p>
+              <p className="text-sm text-blue-700 dark:text-blue-300">{t('total.desc')}</p>
             </div>
-            
+
             <div className="bg-white dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
-              <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">Rincian Layanan:</h4>
+              <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                {t('total.breakdown')}
+              </h4>
               <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
                 {excludeServicesPricing.breakdown.map((item, index) => (
                   <li key={index}>• {item}</li>

@@ -4,7 +4,8 @@ import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Calendar, Clock, FileText, Calculator } from 'lucide-react'
 import { format } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { ar as dfnsAR, enUS as dfnsEN, id as dfnsID } from 'date-fns/locale'
+import { useLocale, useTranslations } from 'next-intl'
 
 import {
   FormControl,
@@ -29,6 +30,11 @@ interface AuditoriumEventDetailsStepProps {
 }
 
 export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepProps) {
+  const locale = useLocale()
+  const tEvent = useTranslations('auditorium.event')
+  const tPricing = useTranslations('auditorium.event.pricing')
+  const tNotes = useTranslations('auditorium.event.notes')
+  const dfnsLocale = locale === 'id' ? dfnsID : locale === 'ar' ? dfnsAR : dfnsEN
   const watchedValues = form.watch()
 
   // Calculate pricing based on start and end time
@@ -42,11 +48,9 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Detail Acara
+            {tEvent('title')}
           </CardTitle>
-          <CardDescription>
-            Masukkan informasi detail tentang acara yang akan diselenggarakan
-          </CardDescription>
+          <CardDescription>{tEvent('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
@@ -56,16 +60,16 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
               <FormItem>
                 <FormLabel className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  Nama Acara
+                  {tEvent('eventName.label')}
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Contoh: Seminar Teknologi, Workshop Bisnis, Konferensi"
+                    placeholder={tEvent('eventName.placeholder')}
                     {...field}
                     className="h-12"
                   />
                 </FormControl>
-                <FormDescription>Nama atau judul acara yang akan diselenggarakan</FormDescription>
+                <FormDescription>{tEvent('eventName.description')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -79,7 +83,7 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
                 <FormItem className="flex flex-col">
                   <FormLabel className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    Tanggal Acara
+                    {tEvent('eventDate.label')}
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -92,9 +96,9 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
                           )}
                         >
                           {field.value ? (
-                            format(field.value, 'PPP', { locale: id })
+                            format(field.value, 'PPP', { locale: dfnsLocale })
                           ) : (
-                            <span>Pilih tanggal acara</span>
+                            <span>{tEvent('eventDate.placeholder')}</span>
                           )}
                           <Calendar className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -110,13 +114,11 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
                           today.setHours(0, 0, 0, 0)
                           return date < today
                         }}
-                        locale={id}
+                        locale={dfnsLocale}
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    Pilih tanggal pelaksanaan acara (tidak boleh di masa lalu)
-                  </FormDescription>
+                  <FormDescription>{tEvent('eventDate.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -129,12 +131,17 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    Waktu Mulai
+                    {tEvent('eventTime.label')}
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Contoh: 09:00" {...field} className="h-12" type="time" />
+                    <Input
+                      placeholder={tEvent('eventTime.placeholder')}
+                      {...field}
+                      className="h-12"
+                      type="time"
+                    />
                   </FormControl>
-                  <FormDescription>Waktu mulai acara (format 24 jam: HH:MM)</FormDescription>
+                  <FormDescription>{tEvent('eventTime.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -147,12 +154,17 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    Waktu Selesai
+                    {tEvent('eventEndTime.label')}
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Contoh: 17:00" {...field} className="h-12" type="time" />
+                    <Input
+                      placeholder={tEvent('eventEndTime.placeholder')}
+                      {...field}
+                      className="h-12"
+                      type="time"
+                    />
                   </FormControl>
-                  <FormDescription>Waktu selesai acara (format 24 jam: HH:MM)</FormDescription>
+                  <FormDescription>{tEvent('eventEndTime.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -167,48 +179,53 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
           <CardHeader className="pb-4">
             <CardTitle className="text-lg text-green-900 dark:text-green-100 flex items-center gap-2">
               <Calculator className="h-5 w-5" />
-              Estimasi Biaya Sewa
+              {tPricing('title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
                 <Badge variant="secondary" className="mb-2 text-lg px-3 py-1">
-                  {pricing.totalHours} Jam
+                  {pricing.totalHours}
                 </Badge>
-                <p className="text-sm text-green-700 dark:text-green-300">Durasi Acara</p>
+                <p className="text-sm text-green-700 dark:text-green-300">{tPricing('duration')}</p>
               </div>
               <div className="text-center">
                 <Badge variant="outline" className="mb-2 text-lg px-3 py-1 border-green-300">
                   {pricing.totalPrice} EGP
                 </Badge>
-                <p className="text-sm text-green-700 dark:text-green-300">Total Biaya</p>
+                <p className="text-sm text-green-700 dark:text-green-300">{tPricing('total')}</p>
               </div>
               <div className="text-center">
                 <Badge variant="secondary" className="mb-2 text-sm px-2 py-1">
-                  {Math.round(pricing.totalPrice / pricing.totalHours)} EGP/jam
+                  {Math.round(pricing.totalPrice / pricing.totalHours)} EGP
                 </Badge>
-                <p className="text-sm text-green-700 dark:text-green-300">Rata-rata per Jam</p>
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  {tPricing('avgPerHour')}
+                </p>
               </div>
             </div>
 
             <div className="bg-white dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-700">
               <h4 className="font-medium text-green-900 dark:text-green-100 mb-2">
-                Rincian Paket:
+                {tPricing('breakdownTitle')}
               </h4>
               <p className="text-sm text-green-700 dark:text-green-300">{pricing.priceBreakdown}</p>
             </div>
 
             <div className="text-xs text-green-600 dark:text-green-400 space-y-1">
               <p>
-                <strong>Paket Tersedia:</strong>
+                <strong>{tPricing('packagesTitle')}</strong>
               </p>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
-                <span>• 1 Jam: 115 EGP</span>
-                <span>• 4 Jam: 420 EGP</span>
-                <span>• 9 Jam: 900 EGP</span>
-                <span>• 12 Jam: 1100 EGP</span>
-                <span>• 14 Jam: 1250 EGP</span>
+                {(() => {
+                  try {
+                    const items = tPricing.raw('packages') as string[]
+                    return items.map((item, idx) => <span key={idx}>• {item}</span>)
+                  } catch {
+                    return null
+                  }
+                })()}
               </div>
             </div>
           </CardContent>
@@ -221,12 +238,16 @@ export function AuditoriumEventDetailsStep({ form }: AuditoriumEventDetailsStepP
             <span className="text-white text-xs font-bold">!</span>
           </div>
           <div className="text-sm text-amber-700 dark:text-amber-300">
-            <p className="font-medium mb-1">Catatan Penting:</p>
+            <p className="font-medium mb-1">{tNotes('title')}</p>
             <ul className="space-y-1 text-xs">
-              <li>• Auditorium tersedia dari pukul 08:00 - 22:00</li>
-              <li>• Booking minimal H-1 dari tanggal acara</li>
-              <li>• Konfirmasi ketersediaan akan dikirim via WhatsApp</li>
-              <li>• Durasi maksimal penggunaan adalah 8 jam per hari</li>
+              {(() => {
+                try {
+                  const lines = tNotes.raw('lines') as string[]
+                  return lines.map((line, idx) => <li key={idx}>• {line}</li>)
+                } catch {
+                  return null
+                }
+              })()}
             </ul>
           </div>
         </div>

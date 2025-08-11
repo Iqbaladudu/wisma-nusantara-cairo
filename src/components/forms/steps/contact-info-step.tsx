@@ -7,32 +7,32 @@ import { Phone, MessageCircle, AlertCircle } from 'lucide-react'
 import { PhoneFormField, PHONE_CONFIGS } from '@/components/ui/phone-form-field'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { HostelBookingFormData } from '@/lib/schemas'
+import { useTranslations } from 'next-intl'
 
 interface ContactInfoStepProps {
   form: UseFormReturn<HostelBookingFormData>
 }
 
 export function ContactInfoStep({ form }: ContactInfoStepProps) {
+  const t = useTranslations('hostel.contact')
   return (
     <div className="space-y-6">
       <Card className="border-l-4 border-l-primary">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Phone className="h-5 w-5 text-primary" />
-            Informasi Kontak
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Masukkan nomor telepon dan WhatsApp untuk komunikasi booking
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* WhatsApp Number */}
           <PhoneFormField
             control={form.control}
             name="contactInfo.whatsappNumber"
-            label="Nomor WhatsApp"
-            description="Nomor WhatsApp aktif untuk konfirmasi booking dan komunikasi"
-            placeholder="Pilih negara dan masukkan nomor"
+            label={t('whatsapp.label')}
+            description={t('whatsapp.desc')}
+            placeholder={t('whatsapp.placeholder')}
             icon={<MessageCircle className="h-4 w-4" />}
             {...PHONE_CONFIGS.ALL_COUNTRIES}
           />
@@ -41,9 +41,9 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
           <PhoneFormField
             control={form.control}
             name="contactInfo.phoneNumber"
-            label="Nomor Telepon"
-            description="Nomor telepon yang dapat dihubungi (bisa sama dengan WhatsApp)"
-            placeholder="Pilih negara dan masukkan nomor"
+            label={t('phone.label')}
+            description={t('phone.desc')}
+            placeholder={t('phone.placeholder')}
             icon={<Phone className="h-4 w-4" />}
             {...PHONE_CONFIGS.ALL_COUNTRIES}
           />
@@ -60,9 +60,11 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
                 <MessageCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
               </div>
               <div className="space-y-1">
-                <h4 className="font-medium text-green-900 dark:text-green-100">WhatsApp</h4>
+                <h4 className="font-medium text-green-900 dark:text-green-100">
+                  {t('cards.whatsapp.title')}
+                </h4>
                 <p className="text-sm text-green-700 dark:text-green-300">
-                  Konfirmasi booking dan update status akan dikirim melalui WhatsApp
+                  {t('cards.whatsapp.lines.0')}
                 </p>
               </div>
             </div>
@@ -77,9 +79,11 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
                 <Phone className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="space-y-1">
-                <h4 className="font-medium text-blue-900 dark:text-blue-100">Telepon</h4>
+                <h4 className="font-medium text-blue-900 dark:text-blue-100">
+                  {t('cards.phone.title')}
+                </h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  Untuk komunikasi darurat dan koordinasi check-in
+                  {t('cards.phone.lines.0')}
                 </p>
               </div>
             </div>
@@ -96,13 +100,12 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
             </div>
             <div className="space-y-2">
               <h4 className="font-medium text-yellow-900 dark:text-yellow-100">
-                Penting untuk Diperhatikan
+                {t('cards.important.title')}
               </h4>
               <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
-                <li>• Pastikan nomor yang dimasukkan aktif dan dapat dihubungi</li>
-                <li>• Konfirmasi booking akan dikirim dalam 24 jam</li>
-                <li>• Jika tidak ada konfirmasi, silakan hubungi customer service</li>
-                <li>• Nomor WhatsApp akan digunakan untuk koordinasi check-in</li>
+                {t.raw('cards.important.lines').map((line: string, i: number) => (
+                  <li key={i}>• {line}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -112,26 +115,24 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
       {/* Contact Format Guide */}
       <Card className="bg-gray-50 border-gray-200 dark:bg-gray-950 dark:border-gray-800">
         <CardHeader className="pb-4">
-          <CardTitle className="text-lg">Cara Menggunakan Input Nomor Telepon</CardTitle>
+          <CardTitle className="text-lg">{t('cards.guide.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 md:grid-cols-2">
             <div>
-              <h5 className="font-medium mb-2">Fitur Modern:</h5>
+              <h5 className="font-medium mb-2">{t('cards.guide.features.title')}</h5>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Dropdown dengan bendera semua negara</li>
-                <li>• Search negara dengan nama atau kode</li>
-                <li>• Auto-format nomor saat mengetik</li>
-                <li>• Validasi format internasional</li>
+                {t.raw('cards.guide.features.lines').map((line: string, i: number) => (
+                  <li key={i}>• {line}</li>
+                ))}
               </ul>
             </div>
             <div>
-              <h5 className="font-medium mb-2">Cara Penggunaan:</h5>
+              <h5 className="font-medium mb-2">{t('cards.guide.how.title')}</h5>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Klik dropdown untuk pilih negara</li>
-                <li>• Ketik nama negara untuk search cepat</li>
-                <li>• Masukkan nomor tanpa kode negara</li>
-                <li>• Format otomatis ke standar internasional</li>
+                {t.raw('cards.guide.how.lines').map((line: string, i: number) => (
+                  <li key={i}>• {line}</li>
+                ))}
               </ul>
             </div>
           </div>
