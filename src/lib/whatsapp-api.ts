@@ -155,6 +155,7 @@ export async function sendWhatsAppWithPDF(
   message: string,
   pdfBlob: Blob,
   filename: string,
+  chatType: 'group' | 'individual',
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     // Validate WhatsApp API configuration
@@ -177,7 +178,10 @@ export async function sendWhatsAppWithPDF(
     const basicAuth = 'Basic ' + btoa(`${WHATSAPP_API_USER}:${WHATSAPP_API_PASSWORD}`)
 
     const formData = new FormData()
-    formData.append('phone', `${formattedPhoneNumber}@s.whatsapp.net`)
+    formData.append(
+      'phone',
+      `${formattedPhoneNumber}@${chatType === 'group' ? 'g.us' : 's.whatsapp.net'}`,
+    )
     formData.append('caption', message)
     formData.append('file', pdfBlob, filename)
     formData.append('is_forwarded', 'false')
@@ -234,6 +238,14 @@ export async function sendHostelConfirmationWhatsApp(
     // Generate message
     const message = WHATSAPP_TEMPLATES.HOSTEL_CONFIRMATION.text(bookingData, bookingId)
 
+    const sendToGroup = await sendWhatsAppWithPDF(
+      '120363027743621417',
+      message,
+      pdfBlob,
+      filename,
+      'group',
+    )
+
     // Send via WhatsApp
     return await sendWhatsAppWithPDF(
       bookingData.contactInfo.whatsappNumber,
@@ -267,6 +279,14 @@ export async function sendAuditoriumConfirmationWhatsApp(
 
     // Generate message
     const message = WHATSAPP_TEMPLATES.AUDITORIUM_CONFIRMATION.text(bookingData, bookingId)
+
+    const sendToGroup = await sendWhatsAppWithPDF(
+      '120363027743621417',
+      message,
+      pdfBlob,
+      filename,
+      'group',
+    )
 
     // Send via WhatsApp
     return await sendWhatsAppWithPDF(

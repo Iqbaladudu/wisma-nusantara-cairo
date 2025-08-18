@@ -426,13 +426,7 @@ export const AuditoriumBookingPDF = ({
           <View style={styles.nextStepItem}>
             <Text style={styles.bullet}>•</Text>
             <Text style={styles.nextStepText}>
-              Anda akan menerima konfirmasi booking melalui email dalam 1-2 jam
-            </Text>
-          </View>
-          <View style={styles.nextStepItem}>
-            <Text style={styles.bullet}>•</Text>
-            <Text style={styles.nextStepText}>
-              Tim kami akan menghubungi Anda via WhatsApp dalam 24 jam untuk konfirmasi pembayaran
+              Anda akan menerima konfirmasi booking melalui email dalam 1-5 menit
             </Text>
           </View>
           <View style={styles.nextStepItem}>
@@ -446,9 +440,7 @@ export const AuditoriumBookingPDF = ({
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Butuh bantuan? Hubungi customer service kami</Text>
-          <Text style={styles.contact}>
-            WhatsApp: +20 123 456 7890 | Email: info@wismanusantara.com
-          </Text>
+          <Text style={styles.contact}>WhatsApp: +20 1555336481</Text>
           <Text style={styles.footerText}>Wisma Nusantara Cairo - Your Home Away From Home</Text>
         </View>
       </Page>

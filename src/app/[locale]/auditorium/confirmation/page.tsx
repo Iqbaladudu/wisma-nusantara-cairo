@@ -317,7 +317,83 @@ function AuditoriumConfirmationContent() {
                 </CardContent>
               </Card>
             )}
+          </div>
 
+          {/* Summary & Next Steps */}
+          <div className="space-y-6">
+            {/* Auditorium Information */}
+            <Card className="bg-purple-50 dark:bg-purple-950 border-purple-200 dark:border-purple-800">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
+                  <MapPin className="h-5 w-5" />
+                  Auditorium Wisma Nusantara
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div>
+                  <span className="font-medium">Kapasitas:</span> 150 orang
+                </div>
+                <div>
+                  <span className="font-medium">Fasilitas:</span> Proyektor, Sound System, AC, WiFi
+                </div>
+                <div>
+                  <span className="font-medium">Lokasi:</span> Wisma Nusantara, Cairo, Egypt
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment Information */}
+            {/* <Card className="bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+              <CardHeader>
+                <CardTitle className="text-amber-800 dark:text-amber-200">
+                  Status Pembayaran
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-300">
+                    Menunggu Invoice
+                  </Badge>
+                </div>
+                <p className="text-sm text-amber-700 dark:text-amber-300">
+                  Kamu akan menerima invoice dan detail
+                </p>
+              </CardContent>
+            </Card> */}
+
+            {/* Next Steps */}
+            <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+              <CardHeader>
+                <CardTitle className="text-blue-800 dark:text-blue-200">
+                  Langkah Selanjutnya
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <Mail className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <p>Anda akan menerima konfirmasi booking melalui Whatsapp dalam 1-5 menit</p>
+                </div>
+                {/* <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <p>Invoice akan dikirim setelah konfirmasi detail acara</p>
+                </div> */}
+                {/* <div className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <p>Koordinasi teknis akan dilakukan 1 minggu sebelum acara</p>
+                </div> */}
+              </CardContent>
+            </Card>
+
+            {/* Important Notes */}
+            <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
+              <CardHeader>
+                <CardTitle className="text-red-800 dark:text-red-200">Catatan Penting</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm text-red-700 dark:text-red-300">
+                <p>• Pembayaran dilakukan setelah acara</p>
+                <p>• Anda dapat menghubungi hotline kami jika membutuhkan layanan tambahan</p>
+              </CardContent>
+            </Card>
             {/* Pricing Summary */}
             <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950 border-green-200 dark:border-green-800">
               <CardHeader>
@@ -370,96 +446,6 @@ function AuditoriumConfirmationContent() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Summary & Next Steps */}
-          <div className="space-y-6">
-            {/* Auditorium Information */}
-            <Card className="bg-purple-50 dark:bg-purple-950 border-purple-200 dark:border-purple-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
-                  <MapPin className="h-5 w-5" />
-                  Auditorium Wisma Nusantara
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div>
-                  <span className="font-medium">Kapasitas:</span> 150 orang
-                </div>
-                <div>
-                  <span className="font-medium">Fasilitas:</span> Proyektor, Sound System, AC, WiFi
-                </div>
-                <div>
-                  <span className="font-medium">Lokasi:</span> Wisma Nusantara, Cairo, Egypt
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Payment Information */}
-            <Card className="bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-              <CardHeader>
-                <CardTitle className="text-amber-800 dark:text-amber-200">
-                  Status Pembayaran
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-300">
-                    Menunggu Invoice
-                  </Badge>
-                </div>
-                <p className="text-sm text-amber-700 dark:text-amber-300">
-                  Tim kami akan mengirimkan invoice dan detail pembayaran melalui email dalam 24
-                  jam.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Next Steps */}
-            <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-              <CardHeader>
-                <CardTitle className="text-blue-800 dark:text-blue-200">
-                  Langkah Selanjutnya
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div className="flex items-start gap-2">
-                  <Mail className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Anda akan menerima konfirmasi booking melalui email dalam 1-2 jam</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Phone className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>
-                    Tim kami akan menghubungi Anda via WhatsApp dalam 24 jam untuk konfirmasi detail
-                    acara
-                  </p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Invoice akan dikirim setelah konfirmasi detail acara</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Koordinasi teknis akan dilakukan 1 minggu sebelum acara</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Important Notes */}
-            <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
-              <CardHeader>
-                <CardTitle className="text-red-800 dark:text-red-200">Catatan Penting</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-sm text-red-700 dark:text-red-300">
-                <p>• Pembayaran harus dilakukan minimal 7 hari sebelum acara</p>
-                <p>• Perubahan jadwal dapat dilakukan maksimal 3 hari sebelum acara</p>
-                <p>
-                  • Pembatalan dengan pengembalian dana 50% jika dilakukan minimal 7 hari sebelum
-                  acara
-                </p>
-                <p>• Simpan halaman ini sebagai referensi booking Anda</p>
-              </CardContent>
-            </Card>
-          </div>
         </div>
 
         {/* Action Buttons */}
@@ -502,19 +488,12 @@ function AuditoriumConfirmationContent() {
           </p>
           <div className="flex justify-center gap-4">
             <a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/+201555336481"
               className="text-primary hover:underline font-medium"
               target="_blank"
               rel="noopener noreferrer"
             >
               WhatsApp
-            </a>
-            <span className="text-muted-foreground">•</span>
-            <a
-              href="mailto:info@wismanusantara.com"
-              className="text-primary hover:underline font-medium"
-            >
-              Email
             </a>
           </div>
         </div>

@@ -342,14 +342,7 @@ function HostelConfirmationContent() {
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-start gap-2">
                   <Mail className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Anda akan menerima konfirmasi booking melalui email dalam 1-2 jam</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Phone className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>
-                    Tim kami akan menghubungi Anda via WhatsApp dalam 24 jam untuk konfirmasi
-                    pembayaran
-                  </p>
+                  <p>Anda akan menerima konfirmasi booking melalui email dalam 1-5 menit</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
@@ -400,19 +393,12 @@ function HostelConfirmationContent() {
           </p>
           <div className="flex justify-center gap-4">
             <a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/+201555336481"
               className="text-primary hover:underline font-medium"
               target="_blank"
               rel="noopener noreferrer"
             >
               WhatsApp
-            </a>
-            <span className="text-muted-foreground">•</span>
-            <a
-              href="mailto:info@wismanusantara.com"
-              className="text-primary hover:underline font-medium"
-            >
-              Email
             </a>
           </div>
         </div>
