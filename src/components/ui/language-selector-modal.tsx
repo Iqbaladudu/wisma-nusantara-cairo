@@ -38,15 +38,25 @@ export function LanguageSelectorModal() {
 
   const onSelect = (code: 'id' | 'en' | 'ar') => {
     if (code === locale) return
-    // Remove existing locale prefix (e.g., /id, /en, /ar) before generating new path
-    const segments = pathname.split('/')
+
+    const segments = (pathname || '/').split('/')
     const first = segments[1]
     const withoutLocale = routing.locales.includes(first as (typeof routing.locales)[number])
       ? '/' + segments.slice(2).join('/')
-      : pathname
-    console.log(withoutLocale)
+      : pathname || '/'
+
+    // normalisasi tanpa trailing slash
+    const normalized = (withoutLocale || '/').replace(/\/+$/, '') || '/'
+    const adminBase = '/admin'
+
+    // Jika path admin, jangan tambahkan prefix locale — tetap /admin
+    if (normalized === adminBase || normalized.startsWith(adminBase + '/')) {
+      router.push(adminBase)
+      return
+    }
+
     const href = getPathname({ href: withoutLocale || '/', locale: code, forcePrefix: true })
-    router.push(process.env.NEXT_PUBLIC_URL + href)
+    router.push(href)
   }
 
   return (
