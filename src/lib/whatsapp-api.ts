@@ -71,8 +71,7 @@ ${bookingData.roomSelection?.extraBed ? `• Extra Bed: ${bookingData.roomSelect
 
 📄 File konfirmasi PDF terlampir di pesan ini.
 
-✅ *Status:* Menunggu konfirmasi pembayaran
-💰 Tim kami akan menghubungi Anda dalam 24 jam untuk proses pembayaran.
+✅ *Status:* Booking berhasil
 
 Terima kasih! 🙏
 *Tim Wisma Nusantara*
@@ -82,7 +81,7 @@ Terima kasih! 🙏
   AUDITORIUM_CONFIRMATION: {
     text: (bookingData: AuditoriumBookingFormData, bookingId?: string) =>
       `
-🎭 *Konfirmasi Booking Auditorium - Wisma Nusantara*
+ *Konfirmasi Booking Auditorium - Wisma Nusantara*
 
 Halo ${bookingData.fullName}! 👋
 
@@ -120,13 +119,11 @@ ${(() => {
     }
 
     priceInfo += `
-• *TOTAL BIAYA: ${totalPrice} EGP*
-• Status: Menunggu konfirmasi pembayaran`
+• *TOTAL BIAYA: ${totalPrice} EGP*`
 
     return priceInfo
   } else {
-    return `• Durasi: Belum ditentukan
-• Status: Menunggu konfirmasi pembayaran`
+    return `• Durasi: Belum ditentukan`
   }
 })()}
 
@@ -138,8 +135,7 @@ ${bookingData.eventNotes ? `📝 *Catatan:* ${bookingData.eventNotes}` : ''}
 
 📄 File konfirmasi PDF terlampir di pesan ini.
 
-✅ *Status:* Menunggu konfirmasi ketersediaan
-📞 Tim kami akan menghubungi Anda dalam 24 jam untuk konfirmasi.
+✅ *Status:* Booking berhasil dibuat
 
 Terima kasih! 🙏
 *Tim Wisma Nusantara*
@@ -252,6 +248,7 @@ export async function sendHostelConfirmationWhatsApp(
       message,
       pdfBlob,
       filename,
+      'individual',
     )
   } catch (error) {
     return {
@@ -294,6 +291,7 @@ export async function sendAuditoriumConfirmationWhatsApp(
       message,
       pdfBlob,
       filename,
+      'individual',
     )
   } catch (error) {
     return {
