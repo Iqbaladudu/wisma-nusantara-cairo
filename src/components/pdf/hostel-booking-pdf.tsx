@@ -188,13 +188,15 @@ interface HostelBookingPDFProps {
 export function HostelBookingPDF({ bookingData, bookingId, logoSrc }: HostelBookingPDFProps) {
   const pricing = calculateBookingPrice(bookingData)
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('ar-EG', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(date)
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
+    if (!(d instanceof Date) || isNaN(d.getTime())) return String(date)
+
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+
+    return `${day}/${month}/${year}`
   }
 
   const formatCurrency = (amount: number) => {

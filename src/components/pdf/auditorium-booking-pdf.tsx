@@ -199,13 +199,15 @@ export const AuditoriumBookingPDF = ({
   const excludeServicesPricing = calculateExcludeServicesPrice(bookingData.excludeServices)
   const totalCost = basePricing.totalPrice + excludeServicesPricing.totalPrice
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('ar-EG', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(date)
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
+    if (!(d instanceof Date) || isNaN(d.getTime())) return String(date)
+
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+
+    return `${day}/${month}/${year}`
   }
 
   const formatTime = (time: string) => {
@@ -213,9 +215,9 @@ export const AuditoriumBookingPDF = ({
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('ar-EG', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'EGP',
     }).format(amount)
   }
 
@@ -376,14 +378,12 @@ export const AuditoriumBookingPDF = ({
                   <Text style={styles.priceLabel}>
                     Biaya Dasar Auditorium ({basePricing.totalHours} jam):
                   </Text>
-                  <Text style={styles.priceValue}>{formatCurrency(basePricing.totalPrice)}</Text>
+                  <Text style={styles.priceValue}>{basePricing.totalPrice}</Text>
                 </View>
                 {excludeServicesPricing.totalPrice > 0 && (
                   <View style={styles.priceRow}>
                     <Text style={styles.priceLabel}>Layanan Tambahan:</Text>
-                    <Text style={styles.priceValue}>
-                      {formatCurrency(excludeServicesPricing.totalPrice)}
-                    </Text>
+                    <Text style={styles.priceValue}>{excludeServicesPricing.totalPrice} EGP</Text>
                   </View>
                 )}
                 <View style={styles.priceRow}>
@@ -394,7 +394,7 @@ export const AuditoriumBookingPDF = ({
                 </View>
                 <View style={styles.totalRow}>
                   <Text style={styles.totalLabel}>Total:</Text>
-                  <Text style={styles.totalValue}>{formatCurrency(totalCost)}</Text>
+                  <Text style={styles.totalValue}>{totalCost} EGP</Text>
                 </View>
               </View>
             </View>
