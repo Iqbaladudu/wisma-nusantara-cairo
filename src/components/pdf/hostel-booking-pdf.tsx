@@ -189,7 +189,7 @@ export function HostelBookingPDF({ bookingData, bookingId, logoSrc }: HostelBook
   const pricing = calculateBookingPrice(bookingData)
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('id-ID', {
+    return new Intl.DateTimeFormat('ar-EG', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
