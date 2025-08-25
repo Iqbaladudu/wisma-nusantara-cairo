@@ -44,9 +44,9 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
     let newValue: number
 
     if (field === 'adults') {
-      newValue = increment ? Math.min(20, currentValue + 1) : Math.max(1, currentValue - 1)
+      newValue = increment ? Math.min(40, currentValue + 1) : Math.max(1, currentValue - 1)
     } else {
-      newValue = increment ? Math.min(7, currentValue + 1) : Math.max(0, currentValue - 1)
+      newValue = increment ? Math.min(30, currentValue + 1) : Math.max(0, currentValue - 1)
     }
 
     form.setValue(`guestDetails.${field}`, newValue, {
