@@ -16,30 +16,17 @@ export const personalInfoSchema = z.object({
 })
 
 // Room Selection Schema
-export const roomSelectionSchema = z
-  .object({
-    roomSelection: z.object({
-      singleBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
-      doubleBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
-      extraBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
-    }),
-    guestDetails: z.object({
-      adults: z.number().min(1, 'Minimal 1 orang dewasa').max(40, 'Maksimal 40 orang'),
-      children: z.number().min(0, 'Jumlah tidak boleh negatif').max(40, 'Maksimal 40 anak'),
-    }),
-  })
-  .refine(
-    (data) => {
-      const totalRooms = data.roomSelection.singleBed + data.roomSelection.doubleBed
-      const totalBeds = totalRooms + data.roomSelection.extraBed
-      const totalGuests = data.guestDetails.adults + data.guestDetails.children
-      return totalBeds >= totalGuests
-    },
-    {
-      message: 'Jumlah tempat tidur harus mencukupi untuk semua tamu',
-      path: ['roomSelection'],
-    },
-  )
+export const roomSelectionSchema = z.object({
+  roomSelection: z.object({
+    singleBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
+    doubleBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
+    extraBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
+  }),
+  guestDetails: z.object({
+    adults: z.number().min(1, 'Minimal 1 orang dewasa').max(40, 'Maksimal 40 orang dewasa'),
+    children: z.number().min(0, 'Jumlah tidak boleh negatif').max(40, 'Maksimal 40 anak'),
+  }),
+})
 
 // Stay Duration Schema
 export const stayDurationSchema = z

@@ -205,7 +205,7 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => updateGuestCount('adults', true)}
-                disabled={(watchedValues.guestDetails?.adults || 0) >= 20}
+                disabled={(watchedValues.guestDetails?.adults || 0) >= 40}
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -236,7 +236,7 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => updateGuestCount('children', true)}
-                disabled={(watchedValues.guestDetails?.children || 0) >= 7}
+                disabled={(watchedValues.guestDetails?.children || 0) >= 40}
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -246,9 +246,7 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
       </Card>
 
       {/* Summary */}
-      <Card
-        className={`${totalBeds < totalGuests ? 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800' : 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800'}`}
-      >
+      <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
         <CardContent className="pt-6">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -264,13 +262,6 @@ export function RoomSelectionStep({ form }: RoomSelectionStepProps) {
               <div className="text-sm text-muted-foreground">{tSummary('guests')}</div>
             </div>
           </div>
-          {totalBeds < totalGuests && (
-            <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg dark:bg-red-900 dark:border-red-800">
-              <p className="text-sm text-red-700 dark:text-red-300 text-center">
-                {tSummary('warning')}
-              </p>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
