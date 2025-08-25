@@ -10,6 +10,15 @@ const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL || ''
 const WHATSAPP_API_USER = process.env.WHATSAPP_API_USER || ''
 const WHATSAPP_API_PASSWORD = process.env.WHATSAPP_API_PASSWORD || ''
 
+// Utility function to format date as YYYY-MM-DD in local timezone
+function formatDateForFilename(date: Date): string {
+  // Manual formatting to avoid timezone issues (stays in local timezone)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 // Validate WhatsApp API configuration
 function validateWhatsAppConfig(): void {
   if (!WHATSAPP_API_URL) {
@@ -25,7 +34,7 @@ function validateWhatsAppConfig(): void {
   // Validate URL format
   try {
     new URL(WHATSAPP_API_URL)
-  } catch (error) {
+  } catch (_error) {
     throw new WhatsAppAPIError(`Invalid WHATSAPP_API_URL format: ${WHATSAPP_API_URL}`)
   }
 }
@@ -35,7 +44,7 @@ export class WhatsAppAPIError extends Error {
   constructor(
     message: string,
     public status?: number,
-    public data?: any,
+    public data?: unknown,
   ) {
     super(message)
     this.name = 'WhatsAppAPIError'
@@ -226,20 +235,19 @@ export async function sendHostelConfirmationWhatsApp(
     // Generate PDF using server-side function
     const pdfBlob = await generateHostelBookingPDFBlobServer(bookingData, bookingId)
 
-    // Generate filename
-    const checkInDate = bookingData.stayDuration.checkInDate.toISOString().split('T')[0]
+    // Generate filename - use local date to avoid timezone issues
+    const checkInDate = formatDateForFilename(bookingData.stayDuration.checkInDate)
     const guestName = bookingData.fullName.replace(/\s+/g, '_').toLowerCase()
     const filename = `hostel_booking_${guestName}_${checkInDate}_${bookingId || 'confirmation'}.pdf`
 
     // Generate message
     const message = WHATSAPP_TEMPLATES.HOSTEL_CONFIRMATION.text(bookingData, bookingId)
 
-    const sendToGroup = await sendWhatsAppWithPDF(
-      '120363027743621417',
-      message,
-      pdfBlob,
-      filename,
-      'group',
+    // Send to group first (ignore result as it's not critical)
+    await sendWhatsAppWithPDF('120363027743621417', message, pdfBlob, filename, 'group').catch(
+      () => {
+        // Ignore group send errors
+      },
     )
 
     // Send via WhatsApp
@@ -269,20 +277,19 @@ export async function sendAuditoriumConfirmationWhatsApp(
     // Generate PDF using server-side function
     const pdfBlob = await generateAuditoriumBookingPDFBlobServer(bookingData, bookingId)
 
-    // Generate filename
-    const eventDate = bookingData.eventDetails.eventDate.toISOString().split('T')[0]
+    // Generate filename - use local date to avoid timezone issues
+    const eventDate = formatDateForFilename(bookingData.eventDetails.eventDate)
     const eventName = bookingData.eventDetails.eventName.replace(/\s+/g, '_').toLowerCase()
     const filename = `auditorium_booking_${eventName}_${eventDate}_${bookingId || 'confirmation'}.pdf`
 
     // Generate message
     const message = WHATSAPP_TEMPLATES.AUDITORIUM_CONFIRMATION.text(bookingData, bookingId)
 
-    const sendToGroup = await sendWhatsAppWithPDF(
-      '120363027743621417',
-      message,
-      pdfBlob,
-      filename,
-      'group',
+    // Send to group first (ignore result as it's not critical)
+    await sendWhatsAppWithPDF('120363027743621417', message, pdfBlob, filename, 'group').catch(
+      () => {
+        // Ignore group send errors
+      },
     )
 
     // Send via WhatsApp

@@ -5,6 +5,15 @@ import { HostelBookingPDF } from '@/components/pdf/hostel-booking-pdf'
 import { AuditoriumBookingPDF } from '@/components/pdf/auditorium-booking-pdf'
 import { HostelBookingFormData, AuditoriumBookingFormData } from '@/lib/schemas'
 
+// Utility function to format date as YYYY-MM-DD in local timezone
+function formatDateForFilename(date: Date): string {
+  // Manual formatting to avoid timezone issues (stays in local timezone)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 async function loadLogoDataUrl(): Promise<string | undefined> {
   try {
     const origin = typeof window !== 'undefined' ? window.location.origin : ''
@@ -37,8 +46,8 @@ export async function downloadHostelBookingPDF(
     const link = document.createElement('a')
     link.href = url
 
-    // Generate filename with booking details
-    const checkInDate = bookingData.stayDuration.checkInDate.toISOString().split('T')[0]
+    // Generate filename with booking details - use local date to avoid timezone issues
+    const checkInDate = formatDateForFilename(bookingData.stayDuration.checkInDate)
     const guestName = bookingData.fullName.replace(/\s+/g, '_').toLowerCase()
     const filename = `hostel_booking_${guestName}_${checkInDate}_${bookingId || 'confirmation'}.pdf`
 
@@ -75,8 +84,8 @@ export async function downloadAuditoriumBookingPDF(
     const link = document.createElement('a')
     link.href = url
 
-    // Generate filename with booking details
-    const eventDate = bookingData.eventDetails.eventDate.toISOString().split('T')[0]
+    // Generate filename with booking details - use local date to avoid timezone issues
+    const eventDate = formatDateForFilename(bookingData.eventDetails.eventDate)
     const eventName = bookingData.eventDetails.eventName.replace(/\s+/g, '_').toLowerCase()
     const filename = `auditorium_booking_${eventName}_${eventDate}_${bookingId || 'confirmation'}.pdf`
 
