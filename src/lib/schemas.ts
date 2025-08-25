@@ -24,8 +24,8 @@ export const roomSelectionSchema = z
       extraBed: z.number().min(0, 'Jumlah tidak boleh negatif'),
     }),
     guestDetails: z.object({
-      adults: z.number().min(1, 'Minimal 1 orang dewasa').max(20, 'Maksimal 20 orang'),
-      children: z.number().min(0, 'Jumlah tidak boleh negatif').max(7, 'Maksimal 7 anak'),
+      adults: z.number().min(1, 'Minimal 1 orang dewasa').max(40, 'Maksimal 40 orang'),
+      children: z.number().min(0, 'Jumlah tidak boleh negatif').max(40, 'Maksimal 40 anak'),
     }),
   })
   .refine(
