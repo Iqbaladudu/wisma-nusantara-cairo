@@ -6,36 +6,50 @@ import {
 } from '@/lib/whatsapp-api'
 import config from '@/payload.config'
 
-// Initialize Payload
-let payload
-
-try {
-  payload = getPayload({ config })
-} catch (e) {
-  // This can happen in environments where the singleton is not yet initialized
-  console.warn('Payload singleton not found, initializing...')
-  payload = getPayload({ config })
-}
+const payload = getPayload({ config })
 
 export async function POST(req: Request) {
-  const { collectionSlug, docId } = await req.json()
+  const { bookingId, collectionSlug } = await req.json()
 
-  if (!collectionSlug || !docId) {
-    return NextResponse.json({ success: false, error: 'Missing parameters' }, { status: 400 })
+  if (!bookingId) {
+    return NextResponse.json({ success: false, error: 'Missing bookingId' }, { status: 400 })
   }
 
+  if (!collectionSlug) {
+    return NextResponse.json({ success: false, error: 'Missing collectionSlug' }, { status: 400 })
+  }
+
+  // Validate that collectionSlug is one of the expected values
+  const validCollections = ['auditorium-bookings', 'hostel-bookings']
+  if (!validCollections.includes(collectionSlug)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Invalid collectionSlug. Expected one of: ${validCollections.join(', ')}`,
+      },
+      { status: 400 },
+    )
+  }
+
+  let doc = null
+
   try {
-    const doc = await (
+    // Get the document from the specified collection
+    doc = await (
       await payload
     ).findByID({
       collection: collectionSlug,
-      id: docId,
+      id: bookingId,
     })
 
     if (!doc) {
-      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 })
+      return NextResponse.json(
+        { success: false, error: `Booking not found in ${collectionSlug} collection` },
+        { status: 404 },
+      )
     }
 
+    // Process based on collection type
     let result: { success: boolean; error?: string }
 
     if (collectionSlug === 'auditorium-bookings') {
@@ -79,7 +93,10 @@ export async function POST(req: Request) {
       }
       result = await sendHostelConfirmationWhatsApp(bookingData, doc.id)
     } else {
-      return NextResponse.json({ success: false, error: 'Invalid collection' }, { status: 400 })
+      return NextResponse.json(
+        { success: false, error: 'Invalid collection type' },
+        { status: 400 },
+      )
     }
 
     if (result.success) {

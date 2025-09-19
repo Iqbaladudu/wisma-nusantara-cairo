@@ -1,10 +1,18 @@
 import type { CollectionConfig } from 'payload'
+import SendWaCell from '../app/(payload)/admin/components/SendWaCell'
 
 export const AuditoriumBooking: CollectionConfig = {
   slug: 'auditorium-bookings',
   admin: {
     useAsTitle: 'fullName',
-    defaultColumns: ['fullName', 'eventDate', 'eventTime', 'paymentStatus', 'createdAt'],
+    defaultColumns: [
+      'fullName',
+      'eventDate',
+      'eventTime',
+      'paymentStatus',
+      'resendConfirmation',
+      'createdAt',
+    ],
     group: 'Bookings',
   },
   access: {
@@ -14,6 +22,16 @@ export const AuditoriumBooking: CollectionConfig = {
     delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
+    {
+      name: 'resendConfirmation',
+      label: 'Kirim Ulang WA',
+      type: 'ui',
+      admin: {
+        components: {
+          Cell: 'src/app/(payload)/admin/components/SendWaCell.tsx',
+        },
+      },
+    },
     {
       name: 'fullName',
       type: 'text',
@@ -376,53 +394,66 @@ export const AuditoriumBooking: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, operation }) => {
+      async ({ doc, operation, req }) => {
         if (operation === 'create') {
           try {
-            // Import WhatsApp API function
-            const { sendAuditoriumConfirmationWhatsApp } = await import('../lib/whatsapp-api')
+            // Fetch settings to check if we should send a WhatsApp message
+            const settings = await req.payload.findGlobal({
+              slug: 'settings',
+            })
 
-            // Convert PayloadCMS doc to form data format
-            const bookingData = {
-              fullName: doc.fullName,
-              countryOfOrigin: doc.countryOfOrigin,
-              eventDetails: {
-                eventName: doc.eventDetails.eventName,
-                eventDate: new Date(doc.eventDetails.eventDate),
-                eventTime: doc.eventDetails.eventTime,
-                eventEndTime: doc.eventDetails.eventEndTime,
-              },
-              contactInfo: {
-                egyptPhoneNumber: doc.contactInfo.egyptPhoneNumber,
-                whatsappNumber: doc.contactInfo.whatsappNumber,
-              },
-              excludeServices: doc.excludeServices || {
-                airConditioner: 'none',
-                extraChairs: 'none',
-                projector: 'none',
-                extraTables: 'none',
-                plates: 'none',
-                glasses: 'none',
-              },
-              couponCode: doc.couponCode || '',
-              eventNotes: doc.eventNotes || '',
-              acceptTerms: doc.acceptTerms || false,
-            }
+            // Only send if the setting is enabled
+            if (settings?.whatsapp?.sendConfirmation) {
+              // Import WhatsApp API function
+              const { sendAuditoriumConfirmationWhatsApp } = await import('../lib/whatsapp-api')
 
-            console.log('Booking data', bookingData)
+              // Convert PayloadCMS doc to form data format
+              const bookingData = {
+                fullName: doc.fullName,
+                countryOfOrigin: doc.countryOfOrigin,
+                eventDetails: {
+                  eventName: doc.eventDetails.eventName,
+                  eventDate: new Date(doc.eventDetails.eventDate),
+                  eventTime: doc.eventDetails.eventTime,
+                  eventEndTime: doc.eventDetails.eventEndTime,
+                },
+                contactInfo: {
+                  egyptPhoneNumber: doc.contactInfo.egyptPhoneNumber,
+                  whatsappNumber: doc.contactInfo.whatsappNumber,
+                },
+                excludeServices: doc.excludeServices || {
+                  airConditioner: 'none',
+                  extraChairs: 'none',
+                  projector: 'none',
+                  extraTables: 'none',
+                  plates: 'none',
+                  glasses: 'none',
+                },
+                couponCode: doc.couponCode || '',
+                eventNotes: doc.eventNotes || '',
+                acceptTerms: doc.acceptTerms || false,
+              }
 
-            // Send WhatsApp confirmation with PDF
-            console.log(`Sending WhatsApp confirmation for auditorium booking ${doc.id}`)
-            const result = await sendAuditoriumConfirmationWhatsApp(bookingData, doc.id)
+              console.log('Booking data', bookingData)
 
-            if (result.success) {
-              console.log(`✅ WhatsApp confirmation sent successfully for booking ${doc.id}`)
+              // Send WhatsApp confirmation with PDF
+              console.log(`Sending WhatsApp confirmation for auditorium booking ${doc.id}`)
+              const result = await sendAuditoriumConfirmationWhatsApp(bookingData, doc.id)
+
+              if (result.success) {
+                console.log(`✅ WhatsApp confirmation sent successfully for booking ${doc.id}`)
+              } else {
+                console.error(
+                  `❌ WhatsApp confirmation failed for booking ${doc.id}:`,
+                  result.error,
+                )
+              }
             } else {
-              console.error(`❌ WhatsApp confirmation failed for booking ${doc.id}:`, result.error)
+              console.log(`WhatsApp confirmation skipped for booking ${doc.id} due to settings.`)
             }
           } catch (error) {
-            // Silently handle WhatsApp errors to not break booking creation
-            console.error(`❌ WhatsApp confirmation error for booking ${doc.id}:`, error)
+            // Silently handle errors to not break booking creation
+            console.error(`❌ Error in afterChange hook for booking ${doc.id}:`, error)
           }
         }
       },

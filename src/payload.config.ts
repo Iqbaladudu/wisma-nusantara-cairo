@@ -13,6 +13,7 @@ import { HostelBookings } from './collections/HostelBookings'
 import { AuditoriumBooking } from './collections/AuditoriumBooking'
 import { PricingConfig } from './collections/PricingConfig'
 import { CouponSystem } from './collections/CouponSystem'
+import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,6 +26,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, HostelBookings, AuditoriumBooking, PricingConfig, CouponSystem],
+  globals: [Settings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

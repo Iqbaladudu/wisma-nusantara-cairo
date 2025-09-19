@@ -4,7 +4,14 @@ export const HostelBookings: CollectionConfig = {
   slug: 'hostel-bookings',
   admin: {
     useAsTitle: 'fullName',
-    defaultColumns: ['fullName', 'checkInDate', 'checkOutDate', 'paymentStatus', 'createdAt'],
+    defaultColumns: [
+      'fullName',
+      'checkInDate',
+      'checkOutDate',
+      'paymentStatus',
+      'resendConfirmation',
+      'createdAt',
+    ],
     group: 'Bookings',
   },
   access: {
@@ -14,6 +21,16 @@ export const HostelBookings: CollectionConfig = {
     delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
+    {
+      name: 'resendConfirmation',
+      label: 'Kirim Ulang WA',
+      type: 'ui',
+      admin: {
+        components: {
+          Cell: 'src/app/(payload)/admin/components/SendWaCell.tsx',
+        },
+      },
+    },
     {
       name: 'fullName',
       type: 'text',
@@ -497,46 +514,59 @@ export const HostelBookings: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, operation }) => {
+      async ({ doc, operation, req }) => {
         if (operation === 'create') {
           try {
-            // Import WhatsApp API function
-            const { sendHostelConfirmationWhatsApp } = await import('../lib/whatsapp-api')
+            // Fetch settings to check if we should send a WhatsApp message
+            const settings = await req.payload.findGlobal({
+              slug: 'settings',
+            })
 
-            // Convert PayloadCMS doc to form data format
-            const bookingData = {
-              fullName: doc.fullName,
-              countryOfOrigin: doc.countryOfOrigin,
-              passportNumber: doc.passportNumber,
-              roomSelection: {
-                singleBed: doc.roomSelection?.singleBed || 0,
-                doubleBed: doc.roomSelection?.doubleBed || 0,
-                extraBed: doc.roomSelection?.extraBed || 0,
-              },
-              guestDetails: {
-                adults: doc.guestDetails?.adults || 1,
-                children: doc.guestDetails?.children || 0,
-              },
-              stayDuration: {
-                checkInDate: new Date(doc.stayDuration.checkInDate),
-                checkOutDate: new Date(doc.stayDuration.checkOutDate),
-              },
-              contactInfo: {
-                whatsappNumber: doc.contactInfo.whatsappNumber,
-                phoneNumber: doc.contactInfo.phoneNumber,
-              },
-              couponCode: doc.couponCode || '',
-              airportPickup: doc.airportPickup || 'none',
-              departureDateTime: doc.departureDateTime || {},
-              mealOptions: doc.mealOptions || {},
-              additionalServices: doc.additionalServices || {},
-              acceptTerms: doc.acceptTerms || false,
+            // Only send if the setting is enabled
+            if (settings?.whatsapp?.sendConfirmation) {
+              // Import WhatsApp API function
+              const { sendHostelConfirmationWhatsApp } = await import('../lib/whatsapp-api')
+
+              // Convert PayloadCMS doc to form data format
+              const bookingData = {
+                fullName: doc.fullName,
+                countryOfOrigin: doc.countryOfOrigin,
+                passportNumber: doc.passportNumber,
+                roomSelection: {
+                  singleBed: doc.roomSelection?.singleBed || 0,
+                  doubleBed: doc.roomSelection?.doubleBed || 0,
+                  extraBed: doc.roomSelection?.extraBed || 0,
+                },
+                guestDetails: {
+                  adults: doc.guestDetails?.adults || 1,
+                  children: doc.guestDetails?.children || 0,
+                },
+                stayDuration: {
+                  checkInDate: new Date(doc.stayDuration.checkInDate),
+                  checkOutDate: new Date(doc.stayDuration.checkOutDate),
+                },
+                contactInfo: {
+                  whatsappNumber: doc.contactInfo.whatsappNumber,
+                  phoneNumber: doc.contactInfo.phoneNumber,
+                },
+                couponCode: doc.couponCode || '',
+                airportPickup: doc.airportPickup || 'none',
+                departureDateTime: doc.departureDateTime || {},
+                mealOptions: doc.mealOptions || {},
+                additionalServices: doc.additionalServices || {},
+                acceptTerms: doc.acceptTerms || false,
+              }
+
+              // Send WhatsApp confirmation with PDF
+              console.log(`Sending WhatsApp confirmation for hostel booking ${doc.id}`)
+              await sendHostelConfirmationWhatsApp(bookingData, doc.id)
+              console.log(`✅ WhatsApp confirmation sent successfully for booking ${doc.id}`)
+            } else {
+              console.log(`WhatsApp confirmation skipped for booking ${doc.id} due to settings.`)
             }
-
-            // Send WhatsApp confirmation with PDF
-            await sendHostelConfirmationWhatsApp(bookingData, doc.id)
           } catch (error) {
             // Silently handle WhatsApp errors to not break booking creation
+            console.error(`❌ WhatsApp confirmation error for booking ${doc.id}:`, error)
           }
         }
       },
