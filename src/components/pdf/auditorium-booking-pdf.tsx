@@ -214,6 +214,8 @@ export const AuditoriumBookingPDF = ({
     return time
   }
 
+  console.log('formatDate:', formatTime(bookingData.eventDetails.eventTime))
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ar-EG', {
       style: 'currency',

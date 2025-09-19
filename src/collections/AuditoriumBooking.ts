@@ -409,6 +409,8 @@ export const AuditoriumBooking: CollectionConfig = {
               acceptTerms: doc.acceptTerms || false,
             }
 
+            console.log('Booking data', bookingData)
+
             // Send WhatsApp confirmation with PDF
             console.log(`Sending WhatsApp confirmation for auditorium booking ${doc.id}`)
             const result = await sendAuditoriumConfirmationWhatsApp(bookingData, doc.id)

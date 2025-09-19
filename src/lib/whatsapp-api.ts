@@ -278,7 +278,8 @@ export async function sendAuditoriumConfirmationWhatsApp(
     const pdfBlob = await generateAuditoriumBookingPDFBlobServer(bookingData, bookingId)
 
     // Generate filename - use local date to avoid timezone issues
-    const eventDate = formatDateForFilename(bookingData.eventDetails.eventDate)
+    const eventDate = bookingData.eventDetails.eventDate
+    console.log('Event date', eventDate)
     const eventName = bookingData.eventDetails.eventName.replace(/\s+/g, '_').toLowerCase()
     const filename = `auditorium_booking_${eventName}_${eventDate}_${bookingId || 'confirmation'}.pdf`
 
@@ -304,61 +305,6 @@ export async function sendAuditoriumConfirmationWhatsApp(
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send confirmation',
-    }
-  }
-}
-
-/**
- * Send simple WhatsApp text message
- */
-export async function sendWhatsAppMessage(
-  phoneNumber: string,
-  message: string,
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  try {
-    // Validate WhatsApp API configuration
-    validateWhatsAppConfig()
-
-    const cleanPhoneNumber = phoneNumber.replace(/[\s\-\(\)]/g, '')
-    const formattedPhoneNumber = cleanPhoneNumber.startsWith('+')
-      ? cleanPhoneNumber
-      : `+${cleanPhoneNumber}`
-
-    const basicAuth = 'Basic ' + btoa(`${WHATSAPP_API_USER}:${WHATSAPP_API_PASSWORD}`)
-
-    const formData = new FormData()
-    formData.append('phone', `${formattedPhoneNumber}@s.whatsapp.net`)
-    formData.append('message', message)
-    formData.append('is_forwarded', 'false')
-
-    const response = await fetch(`${WHATSAPP_API_URL}/send/message`, {
-      method: 'POST',
-      headers: {
-        Authorization: basicAuth,
-        // Don't set Content-Type for FormData, let browser set it with boundary
-      },
-      body: formData,
-    })
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new WhatsAppAPIError(
-        `WhatsApp API error: ${response.status}`,
-        response.status,
-        errorData,
-      )
-    }
-
-    const result = await response.json()
-
-    return {
-      success: true,
-      messageId: result.id || result.messageId,
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send message',
     }
   }
 }

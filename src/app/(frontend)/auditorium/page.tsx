@@ -5,7 +5,7 @@ import { Building2 } from 'lucide-react'
 
 import { FullAuditoriumBookingWidget } from '@/components/forms/auditorium-booking-widget'
 // Removed unused Card/Badge imports
-import { LanguageSelectorModal } from '@/components/ui/language-selector-modal'
+// import { LanguageSelectorModal } from '@/components/ui/language-selector-modal'
 
 export default function AuditoriumBookingPage() {
   return (
@@ -13,9 +13,9 @@ export default function AuditoriumBookingPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <div className="flex justify-end mb-4">
+          {/* <div className="flex justify-end mb-4">
             <LanguageSelectorModal />
-          </div>
+          </div> */}
           <div className="flex items-center justify-center gap-3 mb-4">
             <Building2 className="h-8 w-8 text-blue-600" />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Booking Auditorium</h1>
