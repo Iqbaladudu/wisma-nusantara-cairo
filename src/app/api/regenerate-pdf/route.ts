@@ -58,7 +58,11 @@ export async function POST(req: Request) {
         countryOfOrigin: doc.countryOfOrigin,
         eventDetails: {
           eventName: doc.eventDetails.eventName,
-          eventDate: doc.eventDetails.eventDate,
+          eventDate: (() => {
+            const d = new Date(doc.eventDetails.eventDate)
+            d.setDate(d.getDate() + 1)
+            return d
+          })(),
           eventTime: doc.eventDetails.eventTime,
           eventEndTime: doc.eventDetails.eventEndTime,
         },
