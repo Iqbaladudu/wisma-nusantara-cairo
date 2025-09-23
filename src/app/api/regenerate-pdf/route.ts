@@ -84,8 +84,16 @@ export async function POST(req: Request) {
         roomSelection: doc.roomSelection,
         guestDetails: doc.guestDetails,
         stayDuration: {
-          checkInDate: new Date(doc.stayDuration.checkInDate),
-          checkOutDate: new Date(doc.stayDuration.checkOutDate),
+          checkInDate: (() => {
+            const d = new Date(doc.stayDuration.checkInDate)
+            d.setDate(d.getDate() + 1)
+            return d
+          })(),
+          checkOutDate: (() => {
+            const d = new Date(doc.stayDuration.checkOutDate)
+            d.setDate(d.getDate() + 1)
+            return d
+          })(),
         },
         contactInfo: doc.contactInfo,
         couponCode: doc.couponCode,
