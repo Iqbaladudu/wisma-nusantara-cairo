@@ -410,7 +410,12 @@ export const AuditoriumBooking: CollectionConfig = {
 
             const isDouble = existingBookings.docs.length > 1
 
-            const formattedDate = new Date(doc.eventDetails.eventDate)
+            const formattedDate = new Date(doc.eventDetails.eventDate).toLocaleDateString('id-ID', {
+              timeZone: 'Africa/Cairo',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
 
             const notificationMessage = `Ada yang mengisi form di tanggal ${formattedDate}, segera dicek.${isDouble ? ' (Double)' : ''}`
 

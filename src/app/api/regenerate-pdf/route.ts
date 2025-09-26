@@ -58,11 +58,9 @@ export async function POST(req: Request) {
         countryOfOrigin: doc.countryOfOrigin,
         eventDetails: {
           eventName: doc.eventDetails.eventName,
-          eventDate: (() => {
-            const d = new Date(doc.eventDetails.eventDate)
-            d.setDate(d.getDate() + 1)
-            return d
-          })(),
+          eventDate: new Date(doc.eventDetails.eventDate).toLocaleString('en-US', {
+            timeZone: 'Africa/Cairo',
+          }),
           eventTime: doc.eventDetails.eventTime,
           eventEndTime: doc.eventDetails.eventEndTime,
         },
@@ -84,16 +82,12 @@ export async function POST(req: Request) {
         roomSelection: doc.roomSelection,
         guestDetails: doc.guestDetails,
         stayDuration: {
-          checkInDate: (() => {
-            const d = new Date(doc.stayDuration.checkInDate)
-            d.setDate(d.getDate() + 1)
-            return d
-          })(),
-          checkOutDate: (() => {
-            const d = new Date(doc.stayDuration.checkOutDate)
-            d.setDate(d.getDate() + 1)
-            return d
-          })(),
+          checkInDate: new Date(doc.stayDuration.checkInDate).toLocaleString('en-US', {
+            timeZone: 'Africa/Cairo',
+          }),
+          checkOutDate: new Date(doc.stayDuration.checkOutDate).toLocaleString('en-US', {
+            timeZone: 'Africa/Cairo',
+          }),
         },
         contactInfo: doc.contactInfo,
         couponCode: doc.couponCode,
