@@ -228,7 +228,7 @@ export async function sendWhatsAppWithPDF(
  * Send hostel booking confirmation via WhatsApp
  */
 export async function sendHostelConfirmationWhatsApp(
-  bookingData: HostelBookingFormData,
+  bookingData: any,
   bookingId?: string,
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
@@ -270,7 +270,7 @@ export async function sendHostelConfirmationWhatsApp(
  * Send auditorium booking confirmation via WhatsApp
  */
 export async function sendAuditoriumConfirmationWhatsApp(
-  bookingData: AuditoriumBookingFormData,
+  bookingData: any,
   bookingId?: string,
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
@@ -278,7 +278,8 @@ export async function sendAuditoriumConfirmationWhatsApp(
     const pdfBlob = await generateAuditoriumBookingPDFBlobServer(bookingData, bookingId)
 
     // Generate filename - use local date to avoid timezone issues
-    const eventDate = formatDateForFilename(bookingData.eventDetails.eventDate)
+    const eventDate = bookingData.eventDetails.eventDate
+    console.log('Event date', eventDate)
     const eventName = bookingData.eventDetails.eventName.replace(/\s+/g, '_').toLowerCase()
     const filename = `auditorium_booking_${eventName}_${eventDate}_${bookingId || 'confirmation'}.pdf`
 

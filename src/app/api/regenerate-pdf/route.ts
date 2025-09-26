@@ -53,12 +53,21 @@ export async function POST(req: Request) {
     let result: { success: boolean; error?: string }
 
     if (collectionSlug === 'auditorium-bookings') {
+      const formattedDate = new Date(doc.eventDetails.eventDate)
+        .toLocaleDateString('id-ID', {
+          timeZone: 'Africa/Cairo',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+        .toString()
+
       const bookingData = {
         fullName: doc.fullName,
         countryOfOrigin: doc.countryOfOrigin,
         eventDetails: {
           eventName: doc.eventDetails.eventName,
-          eventDate: new Date(doc.eventDetails.eventDate),
+          eventDate: formattedDate,
           eventTime: doc.eventDetails.eventTime,
           eventEndTime: doc.eventDetails.eventEndTime,
         },
@@ -73,6 +82,25 @@ export async function POST(req: Request) {
       }
       result = await sendAuditoriumConfirmationWhatsApp(bookingData, doc.id)
     } else if (collectionSlug === 'hostel-bookings') {
+      const formattedDateCheckIn = new Date(doc.stayDuration.checkInDate).toLocaleDateString(
+        'id-ID',
+        {
+          timeZone: 'Africa/Cairo',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        },
+      )
+      const formattedDateCheckOut = new Date(doc.stayDuration.checkOutDate).toLocaleDateString(
+        'id-ID',
+        {
+          timeZone: 'Africa/Cairo',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        },
+      )
+
       const bookingData = {
         fullName: doc.fullName,
         countryOfOrigin: doc.countryOfOrigin,
@@ -80,8 +108,8 @@ export async function POST(req: Request) {
         roomSelection: doc.roomSelection,
         guestDetails: doc.guestDetails,
         stayDuration: {
-          checkInDate: new Date(doc.stayDuration.checkInDate),
-          checkOutDate: new Date(doc.stayDuration.checkOutDate),
+          checkInDate: formattedDateCheckIn,
+          checkOutDate: formattedDateCheckOut,
         },
         contactInfo: doc.contactInfo,
         couponCode: doc.couponCode,
