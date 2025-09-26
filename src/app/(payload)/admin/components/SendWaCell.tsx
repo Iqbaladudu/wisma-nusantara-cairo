@@ -8,7 +8,7 @@ type SendStatus = 'idle' | 'sending' | 'success' | 'error'
 function SendWaCell(props: { rowData?: { id?: string }; collectionSlug: string }) {
   const { rowData, collectionSlug } = props
   const [sendStatus, setSendStatus] = useState<SendStatus>('idle')
-  const [message, setMessage] = useState<string>('Kirim Ulang PDF')
+  const [message, setMessage] = useState<string>('Kirim PDF')
 
   const handleSendWA = async () => {
     if (!rowData?.id) {
@@ -46,7 +46,7 @@ function SendWaCell(props: { rowData?: { id?: string }; collectionSlug: string }
     } finally {
       setTimeout(() => {
         setSendStatus('idle')
-        setMessage('Kirim Ulang PDF')
+        setMessage('Kirim PDF')
       }, 3000)
     }
   }

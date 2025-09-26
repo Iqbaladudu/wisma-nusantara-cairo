@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import SendWaCell from '../app/(payload)/admin/components/SendWaCell'
+import { sendWhatsAppMessage } from '../lib/whatsapp-api'
 
 export const AuditoriumBooking: CollectionConfig = {
   slug: 'auditorium-bookings',
@@ -396,6 +397,41 @@ export const AuditoriumBooking: CollectionConfig = {
     afterChange: [
       async ({ doc, operation, req }) => {
         if (operation === 'create') {
+          // Send notification to group
+          try {
+            const existingBookings = await req.payload.find({
+              collection: 'auditorium-bookings',
+              where: {
+                'eventDetails.eventDate': {
+                  equals: doc.eventDetails.eventDate,
+                },
+              },
+            })
+
+            const isDouble = existingBookings.docs.length > 1
+
+            const formattedDate = new Date(doc.eventDetails.eventDate)
+
+            const notificationMessage = `Ada yang mengisi form di tanggal ${formattedDate}, segera dicek.${isDouble ? ' (Double)' : ''}`
+
+            const groupResult = await sendWhatsAppMessage(
+              '120363027743621417',
+              notificationMessage,
+              'group',
+            )
+
+            if (groupResult.success) {
+              console.log(`✅ Group notification sent for booking ${doc.id}`)
+            } else {
+              console.error(
+                `❌ Group notification failed for booking ${doc.id}:`,
+                groupResult.error,
+              )
+            }
+          } catch (error) {
+            console.error(`❌ Error sending group notification for booking ${doc.id}:`, error)
+          }
+
           try {
             // Fetch settings to check if we should send a WhatsApp message
             const settings = await req.payload.findGlobal({

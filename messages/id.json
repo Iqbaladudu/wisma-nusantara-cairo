@@ -162,8 +162,7 @@
           "title": "Penting untuk Diperhatikan",
           "lines": [
             "Pastikan nomor yang dimasukkan aktif dan dapat dihubungi",
-            "Konfirmasi booking akan dikirim dalam 24 jam",
-            "Jika tidak ada konfirmasi, silakan hubungi customer service",
+            "Segera konfirmasi booking Anda melalui WhatsApp kepada admin Wisma Nusantara",
             "Nomor WhatsApp akan digunakan untuk koordinasi check-in"
           ]
         },
@@ -767,7 +766,7 @@
           ]
         },
         "additional": [
-          "Booking akan dikonfirmasi dalam waktu maksimal 24 jam setelah pengajuan",
+          "Segera lakukan konfirmasi ke admin Wisma Nusantara setelah melakukan submit",
           "Pembayaran dilakukan setelah konfirmasi ketersediaan auditorium",
           "Fasilitas teknis tersedia sesuai kebutuhan dan ketersediaan"
         ],
@@ -777,7 +776,7 @@
         },
         "ready": {
           "title": "Siap untuk mengirim booking?",
-          "desc": "Pastikan semua informasi sudah benar. Setelah dikirim, Anda akan menerima konfirmasi melalui WhatsApp dalam waktu 24 jam."
+          "desc": "Pastikan semua informasi sudah benar. Setelah dikirim, harap menghubungi admin Wisma Nusantara untuk konfirmasi."
         }
       }
     }

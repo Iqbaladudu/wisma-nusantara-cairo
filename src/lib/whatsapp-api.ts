@@ -308,3 +308,72 @@ export async function sendAuditoriumConfirmationWhatsApp(
     }
   }
 }
+
+/**
+ * Send WhatsApp message without attachment
+ */
+export async function sendWhatsAppMessage(
+  phoneNumber: string,
+  message: string,
+  chatType: 'group' | 'individual' = 'individual',
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    // Validate WhatsApp API configuration
+    validateWhatsAppConfig()
+
+    // Validate inputs
+    if (!phoneNumber || !message) {
+      throw new WhatsAppAPIError('Missing required parameters')
+    }
+
+    // Clean phone number (remove spaces, dashes, etc.)
+    const cleanPhoneNumber = phoneNumber.replace(/[\s\-\(\)]/g, '')
+
+    // Ensure phone number starts with +
+    const formattedPhoneNumber = cleanPhoneNumber.startsWith('+')
+      ? cleanPhoneNumber
+      : `+${cleanPhoneNumber}`
+
+    // Prepare WhatsApp API request
+    const basicAuth = 'Basic ' + btoa(`${WHATSAPP_API_USER}:${WHATSAPP_API_PASSWORD}`)
+
+    const formData = new FormData()
+    formData.append(
+      'phone',
+      `${formattedPhoneNumber}@${chatType === 'group' ? 'g.us' : 's.whatsapp.net'}`,
+    )
+    formData.append('message', message)
+    formData.append('is_forwarded', 'false')
+
+    // Send to WhatsApp API
+    const response = await fetch(`${WHATSAPP_API_URL}/send/message`, {
+      method: 'POST',
+      headers: {
+        Authorization: basicAuth,
+        // Don't set Content-Type for FormData, let browser set it with boundary
+      },
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new WhatsAppAPIError(
+        `WhatsApp API error: ${response.status}`,
+        response.status,
+        errorData,
+      )
+    }
+
+    const result = await response.json()
+
+    return {
+      success: true,
+      messageId: result.id || result.messageId,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    }
+  }
+}

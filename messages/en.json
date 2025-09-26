@@ -352,7 +352,7 @@
           ]
         },
         "additional": [
-          "Booking confirmation will be sent via WhatsApp within 24 hours",
+          "Immediately confirm with the Wisma Nusantara admin after submitting.",
           "Payment can be made after booking confirmation",
           "Bring original passport for check-in"
         ],
@@ -711,7 +711,7 @@
           ]
         },
         "additional": [
-          "Booking will be confirmed within 24 hours after submission",
+          "Immediately confirm with the Wisma Nusantara admin after submitting.",
           "Payment is made after availability confirmation",
           "Technical facilities available based on needs and availability"
         ],
@@ -721,7 +721,7 @@
         },
         "ready": {
           "title": "Ready to submit your booking?",
-          "desc": "Ensure all information is correct. You'll receive confirmation via WhatsApp within 24 hours."
+          "desc": "Make sure all information is correct. After submitting, please contact the Wisma Nusantara admin for confirmation"
         }
       }
     }

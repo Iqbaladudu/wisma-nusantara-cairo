@@ -181,6 +181,7 @@ function AuditoriumConfirmationContent() {
           </h1>
           <p className="text-lg text-muted-foreground mb-4">
             Terima kasih, {bookingData.fullName}. Booking auditorium Anda telah berhasil dikirim.
+            Harap segera hubungi admin Wisma Nusantara untuk konfirmasi.
           </p>
           {bookingId && (
             <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border">
@@ -371,16 +372,8 @@ function AuditoriumConfirmationContent() {
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-start gap-2">
                   <Mail className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Anda akan menerima konfirmasi booking melalui Whatsapp dalam 1-5 menit</p>
+                  <p>Harap konfirmasi booking Anda melalui Whatsapp kepada admin Wisma Nusantara</p>
                 </div>
-                {/* <div className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Invoice akan dikirim setelah konfirmasi detail acara</p>
-                </div> */}
-                {/* <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p>Koordinasi teknis akan dilakukan 1 minggu sebelum acara</p>
-                </div> */}
               </CardContent>
             </Card>
 
