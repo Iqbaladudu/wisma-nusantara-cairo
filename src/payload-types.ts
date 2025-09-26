@@ -200,7 +200,9 @@ export interface HostelBooking {
   };
   stayDuration: {
     checkInDate: string;
+    checkInDate_tz: SupportedTimezones;
     checkOutDate: string;
+    checkOutDate_tz: SupportedTimezones;
   };
   contactInfo: {
     whatsappNumber: string;
@@ -259,6 +261,7 @@ export interface AuditoriumBooking {
   eventDetails: {
     eventName: string;
     eventDate: string;
+    eventDate_tz: SupportedTimezones;
     eventTime: string;
     eventEndTime: string;
   };
@@ -633,7 +636,9 @@ export interface HostelBookingsSelect<T extends boolean = true> {
     | T
     | {
         checkInDate?: T;
+        checkInDate_tz?: T;
         checkOutDate?: T;
+        checkOutDate_tz?: T;
       };
   contactInfo?:
     | T
@@ -681,6 +686,7 @@ export interface AuditoriumBookingsSelect<T extends boolean = true> {
     | {
         eventName?: T;
         eventDate?: T;
+        eventDate_tz?: T;
         eventTime?: T;
         eventEndTime?: T;
       };

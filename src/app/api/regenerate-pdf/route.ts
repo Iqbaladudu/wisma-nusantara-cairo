@@ -58,9 +58,7 @@ export async function POST(req: Request) {
         countryOfOrigin: doc.countryOfOrigin,
         eventDetails: {
           eventName: doc.eventDetails.eventName,
-          eventDate: new Date(doc.eventDetails.eventDate).toLocaleString('en-US', {
-            timeZone: 'Africa/Cairo',
-          }),
+          eventDate: new Date(doc.eventDetails.eventDate),
           eventTime: doc.eventDetails.eventTime,
           eventEndTime: doc.eventDetails.eventEndTime,
         },
@@ -82,12 +80,8 @@ export async function POST(req: Request) {
         roomSelection: doc.roomSelection,
         guestDetails: doc.guestDetails,
         stayDuration: {
-          checkInDate: new Date(doc.stayDuration.checkInDate).toLocaleString('en-US', {
-            timeZone: 'Africa/Cairo',
-          }),
-          checkOutDate: new Date(doc.stayDuration.checkOutDate).toLocaleString('en-US', {
-            timeZone: 'Africa/Cairo',
-          }),
+          checkInDate: new Date(doc.stayDuration.checkInDate),
+          checkOutDate: new Date(doc.stayDuration.checkOutDate),
         },
         contactInfo: doc.contactInfo,
         couponCode: doc.couponCode,

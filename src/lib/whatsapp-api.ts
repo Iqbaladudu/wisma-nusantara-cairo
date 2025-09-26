@@ -278,8 +278,7 @@ export async function sendAuditoriumConfirmationWhatsApp(
     const pdfBlob = await generateAuditoriumBookingPDFBlobServer(bookingData, bookingId)
 
     // Generate filename - use local date to avoid timezone issues
-    const eventDate = bookingData.eventDetails.eventDate
-    console.log('Event date', eventDate)
+    const eventDate = formatDateForFilename(bookingData.eventDetails.eventDate)
     const eventName = bookingData.eventDetails.eventName.replace(/\s+/g, '_').toLowerCase()
     const filename = `auditorium_booking_${eventName}_${eventDate}_${bookingId || 'confirmation'}.pdf`
 

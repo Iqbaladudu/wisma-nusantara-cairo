@@ -129,6 +129,7 @@ export const HostelBookings: CollectionConfig = {
           name: 'checkInDate',
           type: 'date',
           required: true,
+          timezone: true,
           label: 'Tanggal Check-in',
           validate: (val: any) => {
             if (!val) return true
@@ -143,6 +144,7 @@ export const HostelBookings: CollectionConfig = {
         {
           name: 'checkOutDate',
           type: 'date',
+          timezone: true,
           required: true,
           label: 'Tanggal Check-out',
           validate: (val: any, { data }: any) => {

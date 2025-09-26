@@ -60,6 +60,7 @@ export const AuditoriumBooking: CollectionConfig = {
           name: 'eventDate',
           type: 'date',
           required: true,
+          timezone: true,
           label: 'Tanggal Acara',
           validate: (val: any) => {
             if (!val) return true
