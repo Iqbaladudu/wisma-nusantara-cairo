@@ -74,8 +74,8 @@ export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeService
                     <SelectItem value="none">{t('ac.options.none')}</SelectItem>
                     <SelectItem value="4-6_hours">{t('ac.options.4-6_hours')}</SelectItem>
                     <SelectItem value="7-9_hours">{t('ac.options.7-9_hours')}</SelectItem>
-                    <SelectItem value="9-12_hours">{t('ac.options.9-12_hours')}</SelectItem>
-                    <SelectItem value="12-14_hours">{t('ac.options.12-14_hours')}</SelectItem>
+                    <SelectItem value="10-12_hours">{t('ac.options.10-12_hours')}</SelectItem>
+                    <SelectItem value="13-14_hours">{t('ac.options.13-14_hours')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>{t('ac.desc')}</FormDescription>

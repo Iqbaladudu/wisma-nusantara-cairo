@@ -545,10 +545,10 @@
         "desc": "Pilih paket AC sesuai dengan durasi acara Anda",
         "options": {
           "none": "Tidak menggunakan AC",
-          "4-6_hours": "4 - 6 Jam: 100 EGP",
-          "7-9_hours": "7 - 9 Jam: 150 EGP",
-          "9-12_hours": "9 - 12 Jam: 250 EGP",
-          "12-14_hours": "12 - 14 Jam: 300 EGP"
+          "4-6_hours": "4 - 6 Jam: 150 EGP",
+          "7-9_hours": "7 - 9 Jam: 200 EGP",
+          "10-12_hours": "10 - 12 Jam: 300 EGP",
+          "13-14_hours": "13 - 14 Jam: 350 EGP"
         }
       },
       "chairs": {

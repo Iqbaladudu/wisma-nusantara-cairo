@@ -251,10 +251,10 @@ const AUDITORIUM_PACKAGES = {
 const EXCLUDE_SERVICES_PRICING = {
   airConditioner: {
     none: 0,
-    '4-6_hours': 100,
-    '7-9_hours': 150,
-    '9-12_hours': 250,
-    '12-14_hours': 300,
+    '4-6_hours': 150,
+    '7-9_hours': 200,
+    '10-12_hours': 300,
+    '13-14_hours': 350,
   },
   extraChairs: {
     none: 0,
