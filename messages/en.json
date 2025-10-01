@@ -517,8 +517,8 @@
           "none": "No AC",
           "4-6_hours": "4 - 6 Hours: 150 EGP",
           "7-9_hours": "7 - 9 Hours: 200 EGP",
-          "9-12_hours": "10 - 12 Hours: 300 EGP",
-          "12-14_hours": "13 - 14 Hours: 350 EGP"
+          "10-12_hours": "10 - 12 Hours: 300 EGP",
+          "13-14_hours": "13 - 14 Hours: 350 EGP"
         }
       },
       "chairs": {
