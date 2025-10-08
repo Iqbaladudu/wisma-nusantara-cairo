@@ -253,8 +253,8 @@ const EXCLUDE_SERVICES_PRICING = {
     none: 0,
     '4-6_hours': 150,
     '7-9_hours': 200,
-    '10-12_hours': 300,
-    '13-14_hours': 350,
+    '9-12_hours': 300,
+    '12-14_hours': 350,
   },
   extraChairs: {
     none: 0,

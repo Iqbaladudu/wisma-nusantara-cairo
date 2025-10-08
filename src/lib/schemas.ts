@@ -216,7 +216,7 @@ export const auditoriumContactInfoSchema = z.object({
 export const auditoriumExcludeServicesSchema = z.object({
   excludeServices: z.object({
     airConditioner: z
-      .enum(['none', '4-6_hours', '7-9_hours', '10-12_hours', '13-14_hours'])
+      .enum(['none', '4-6_hours', '7-9_hours', '9-12_hours', '12-14_hours'])
       .default('none'),
     extraChairs: z
       .enum([
