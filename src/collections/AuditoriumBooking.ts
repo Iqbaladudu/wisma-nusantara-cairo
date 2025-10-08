@@ -166,10 +166,10 @@ export const AuditoriumBooking: CollectionConfig = {
           defaultValue: 'none',
           options: [
             { label: 'Tidak menggunakan AC', value: 'none' },
-            { label: '4 - 6 Jam: 100 EGP', value: '4-6_hours' },
-            { label: '7 - 9 Jam: 150 EGP', value: '7-9_hours' },
-            { label: '9 - 12 Jam: 250 EGP', value: '9-12_hours' },
-            { label: '12 - 14 Jam: 300 EGP', value: '12-14_hours' },
+            { label: '4 - 6 Jam: 150 EGP', value: '4-6_hours' },
+            { label: '7 - 9 Jam: 200 EGP', value: '7-9_hours' },
+            { label: '10 - 12 Jam: 300 EGP', value: '10-12_hours' },
+            { label: '13 - 14 Jam: 350 EGP', value: '13-14_hours' },
           ],
         },
         {
