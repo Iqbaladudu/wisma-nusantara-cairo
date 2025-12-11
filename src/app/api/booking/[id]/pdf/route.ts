@@ -6,10 +6,13 @@ import {
   generateAuditoriumBookingPDFBuffer,
 } from '@/lib/pdf-server'
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const payload = await getPayload({ config })
-    const bookingId = params.id
+    const { id: bookingId } = await params
 
     // Get booking type from query parameter for conflict resolution
     const { searchParams } = new URL(request.url)
@@ -119,7 +122,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
       const pdfBuffer = await generateHostelBookingPDFBuffer(bookingData, bookingId)
 
-      return new NextResponse(pdfBuffer, {
+      return new NextResponse(pdfBuffer as unknown as BodyInit, {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="hostel_booking_${bookingId}.pdf"`,

@@ -211,7 +211,10 @@ export const AuditoriumBookingPDF = ({
   }
 
   const formatTime = (time: string) => {
-    return time
+    if (!time) return ''
+    // Ensure HH:MM format
+    const [hours, minutes] = time.split(':')
+    return `${hours}:${minutes}`
   }
 
   console.log('formatDate:', formatTime(bookingData.eventDetails.eventTime))

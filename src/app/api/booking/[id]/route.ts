@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const payload = await getPayload({ config })
-    const bookingId = params.id
+    const { id: bookingId } = await params
 
     let hostelBooking = null
     let auditoriumBooking = null

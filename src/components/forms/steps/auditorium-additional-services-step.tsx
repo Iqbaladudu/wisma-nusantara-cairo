@@ -30,7 +30,7 @@ interface AuditoriumExcludeServicesStepProps {
   form: UseFormReturn<AuditoriumBookingFormData>
 }
 
-export function AuditoriumExcludeServicesStep({ form }: AuditoriumExcludeServicesStepProps) {
+export function AuditoriumAdditionalServicesStep({ form }: AuditoriumExcludeServicesStepProps) {
   const watchedValues = form.watch()
   const t = useTranslations('auditorium.exclude')
 

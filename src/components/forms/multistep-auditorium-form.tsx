@@ -23,7 +23,7 @@ import type { Resolver } from 'react-hook-form'
 import { AuditoriumPersonalInfoStep } from './steps/auditorium-personal-info-step'
 import { AuditoriumEventDetailsStep } from './steps/auditorium-event-details-step'
 import { AuditoriumContactInfoStep } from './steps/auditorium-contact-info-step'
-import { AuditoriumExcludeServicesStep } from './steps/auditorium-exclude-services-step'
+import { AuditoriumAdditionalServicesStep } from './steps/auditorium-additional-services-step'
 import { AuditoriumAdditionalInfoStep } from './steps/auditorium-additional-info-step'
 import { AuditoriumBookingSummaryStep } from './steps/auditorium-booking-summary-step'
 
@@ -145,7 +145,7 @@ export function MultistepAuditoriumForm({
       case 3:
         return <AuditoriumContactInfoStep form={form} />
       case 4:
-        return <AuditoriumExcludeServicesStep form={form} />
+        return <AuditoriumAdditionalServicesStep form={form} />
       case 5:
         return <AuditoriumAdditionalInfoStep form={form} />
       case 6:

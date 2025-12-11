@@ -7,10 +7,13 @@ import {
 } from '@/lib/whatsapp-api'
 import { safeParseDate } from '@/lib/booking-utils'
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const payload = await getPayload({ config })
-    const bookingId = params.id
+    const { id: bookingId } = await params
 
     // Try to find in hostel bookings first
     try {

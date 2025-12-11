@@ -58,22 +58,46 @@ function SendWaCell(props: { rowData?: { id?: string }; collectionSlug: string }
   if (sendStatus === 'error') backgroundColor = '#dc3545' // Red for error
   if (sendStatus === 'sending') backgroundColor = '#ffc107' // Yellow for sending
 
+  const downloadUrl = `/api/booking/${rowData?.id}/pdf?type=${
+    collectionSlug.includes('auditorium') ? 'auditorium' : 'hostel'
+  }`
+
   return (
-    <button
-      onClick={handleSendWA}
-      disabled={disabled}
-      style={{
-        backgroundColor: backgroundColor,
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        padding: '5px 10px',
-        fontSize: '12px',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-      }}
-    >
-      {message}
-    </button>
+    <div style={{ display: 'flex', gap: '5px' }}>
+      <a
+        href={downloadUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          backgroundColor: '#007bff', // Blue
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          padding: '5px 10px',
+          fontSize: '12px',
+          textDecoration: 'none',
+          cursor: 'pointer',
+          display: 'inline-block',
+        }}
+      >
+        Download PDF
+      </a>
+      <button
+        onClick={handleSendWA}
+        disabled={disabled}
+        style={{
+          backgroundColor: backgroundColor,
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          padding: '5px 10px',
+          fontSize: '12px',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+      >
+        {message}
+      </button>
+    </div>
   )
 }
 

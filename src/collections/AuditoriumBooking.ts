@@ -377,6 +377,82 @@ export const AuditoriumBooking: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeValidate: [
+      async ({ data, req, operation }) => {
+        // Guard clause: return early if data is undefined or update operation
+        if (!data || operation === 'update') {
+          return data
+        }
+
+        // 1. RECALCULATE PRICE SERVER-SIDE
+        // We do not trust the client-side calculation for security reasons
+        if (data.eventDetails?.eventTime && data.eventDetails?.eventEndTime) {
+            // Import calculation logic dynamically to avoid circular dependencies if any
+            // or just rely on the functions we know exist in lib/api (which we need to import or duplicate if imports are tricky in payload config)
+            // Given the environment, we might need to import from src/lib/api
+             const { calculateAuditoriumPrice, calculateExcludeServicesPrice } = await import('../lib/api')
+
+             const basePricing = calculateAuditoriumPrice(
+               data.eventDetails.eventTime,
+               data.eventDetails.eventEndTime,
+             )
+             
+             const excludeServicesPricing = calculateExcludeServicesPrice(data.excludeServices)
+             const totalCalculatedPrice = basePricing.totalPrice + excludeServicesPricing.totalPrice
+
+             // Overwrite pricing fields securely
+             data.pricing = {
+                ...data.pricing,
+                basePrice: basePricing.totalPrice,
+                excludeServicesPrice: excludeServicesPricing.totalPrice,
+                finalPrice: totalCalculatedPrice,
+                priceBreakdown: basePricing.priceBreakdown,
+                excludeServicesBreakdown: excludeServicesPricing.breakdown.join(', '),
+             }
+
+             console.log(`🔒 Server-side price calculation applied: ${totalCalculatedPrice} EGP`)
+        }
+
+        // 2. CHECK FOR DOUBLE BOOKING (TIME-BASED)
+        if (data.eventDetails?.eventDate && data.eventDetails?.eventTime && data.eventDetails?.eventEndTime) {
+           const targetDate = new Date(data.eventDetails.eventDate)
+           
+           // Find bookings on the same day
+           const sameDayBookings = await req.payload.find({
+              collection: 'auditorium-bookings',
+              where: {
+                'eventDetails.eventDate': {
+                  equals: targetDate.toISOString(), // Ensure date format matches
+                },
+              },
+            })
+
+            if (sameDayBookings.totalDocs > 0) {
+               const newStart = data.eventDetails.eventTime.split(':').map(Number)
+               const newEnd = data.eventDetails.eventEndTime.split(':').map(Number)
+               const newStartMinutes = newStart[0] * 60 + newStart[1]
+               const newEndMinutes = newEnd[0] * 60 + newEnd[1]
+
+               for (const existing of sameDayBookings.docs) {
+                  // Skip if validating against itself (though usually not issue in create)
+                  if (existing.id === data.id) continue;
+
+                  const exStart = existing.eventDetails.eventTime.split(':').map(Number)
+                  const exEnd = existing.eventDetails.eventEndTime.split(':').map(Number)
+                  const exStartMinutes = exStart[0] * 60 + exStart[1]
+                  const exEndMinutes = exEnd[0] * 60 + exEnd[1]
+
+                  // Check overlap: (StartA < EndB) and (EndA > StartB)
+                  if (newStartMinutes < exEndMinutes && newEndMinutes > exStartMinutes) {
+                     throw new Error(`Booking Conflict: Slot ${data.eventDetails.eventTime}-${data.eventDetails.eventEndTime} overlaps with existing booking ${existing.eventDetails.eventTime}-${existing.eventDetails.eventEndTime}`)
+                  }
+               }
+            }
+        }
+
+        return data
+      }
+    ],
     beforeChange: [
       async ({ data, operation }) => {
         // Guard clause: return early if data is undefined
@@ -397,20 +473,10 @@ export const AuditoriumBooking: CollectionConfig = {
     ],
     afterChange: [
       async ({ doc, operation, req }) => {
+        if (process.env.NODE_ENV === 'test') return
         if (operation === 'create') {
           // Send notification to group
           try {
-            const existingBookings = await req.payload.find({
-              collection: 'auditorium-bookings',
-              where: {
-                'eventDetails.eventDate': {
-                  equals: doc.eventDetails.eventDate,
-                },
-              },
-            })
-
-            const isDouble = existingBookings.docs.length > 1
-
             const formattedDate = new Date(doc.eventDetails.eventDate).toLocaleDateString('id-ID', {
               timeZone: 'Africa/Cairo',
               year: 'numeric',
@@ -418,7 +484,11 @@ export const AuditoriumBooking: CollectionConfig = {
               day: 'numeric',
             })
 
-            const notificationMessage = `Ada yang mengisi form di tanggal ${formattedDate}, segera dicek.${isDouble ? ' (Double)' : ''}`
+            const notificationMessage = `Ada booking baru auditorium untuk tanggal ${formattedDate}.
+Acara: ${doc.eventDetails.eventName}
+Waktu: ${doc.eventDetails.eventTime} - ${doc.eventDetails.eventEndTime}
+Pemesan: ${doc.fullName}
+Total: ${doc.pricing.finalPrice} EGP`
 
             const groupResult = await sendWhatsAppMessage(
               '120363027743621417',
